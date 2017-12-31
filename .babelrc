@@ -1,0 +1,14 @@
+{
+  "presets": [
+    [
+      "env", {
+        "targets": {
+          "browsers": ["> 1%"]
+        },
+        "modules": "umd",
+        "debug": false
+      }
+    ]
+  ],
+  "plugins": []
+}

@@ -1,0 +1,94 @@
+{
+  "name": "dexie-orm-wrapper",
+  "version": "0.0.1",
+  "description": "An ORM Addon for Dexie.js",
+  "main": "dist/dexieORMAddon.js",
+  "module": "dist/dexieORMAddon.es.js",
+  "jsnext:main": "dist/dexieORMAddon.es.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/andrehtissot/dexie-orm-wrapper.git"
+  },
+  "keywords": [
+    "indexeddb",
+    "browser",
+    "database",
+    "dexie"
+  ],
+  "author": "André Augusto Tissot <https://github.com/andrehtissot>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/andrehtissot/dexie-orm-wrapper/issues"
+  },
+  "scripts": {
+    "build": "just-build",
+    "watch": "just-build --watch",
+    "test": "npm run build dev && npm run test:unit",
+    "test:unit": "karma start test/karma/karma.conf.js --single-run",
+    "test:debug": "karma start test/karma/karma.conf.js --log-level debug"
+  },
+  "just-build": {
+    "default": [
+      "# Build all targets (es5, es6 and test) and minify the default es5 UMD module",
+      "just-build release test"
+    ],
+    "dexie-orm": [
+      "# Build es5 output",
+      "rollup -c tools/build-configs/rollup.config.js",
+      "babel --module-id DexieORMAddon dist/dexieORMAddon.es.js -o dist/dexieORMAddon.js --source-maps",
+      "node tools/insertBanner.js dist/dexieORMAddon.js dist/dexieORMAddon.es.js",
+      "node tools/replaceVersionAndDate.js dist/dexieORMAddon.js dist/dexieORMAddon.es.js",
+      "eslint src"
+    ],
+    "release": [
+      "# Build ES5 umd module as well as the es6 module.",
+      "just-build dexie-orm",
+      "uglifyjs dist/dexieORMAddon.js -m -c -o dist/dexieORMAddon.min.js --source-map \"filename='dist/dexieORMAddon.min.js.map',includeSources='dist/dexieORMAddon.js.map'\""
+    ],
+    "dev": [
+      "# Build ES5 module and the tests",
+      "just-build dexie-orm test"
+    ],
+    "gzip": [
+      "# Optionally gzip to find the size of the minified & gzipped version",
+      "gzip dist/dexieORMAddon.min.js -k -f -9"
+    ],
+    "test": [
+      "# Build the test suite. Typescript transpiles all but not generators...",
+      "rollup -c tools/build-configs/rollup.tests.config.js",
+      "mkdir -p test/tmp/",
+      "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
+    ]
+  },
+  "engines": {
+    "node": ">=9.3"
+  },
+  "homepage": "https://github.com/andrehtissot/dexie-orm-wrapper/blob/master/README.md",
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-plugin-transform-regenerator": "^6.23.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-env": "^1.6.1",
+    "escape-string-regexp": "^1.0.5",
+    "eslint": "^4.13.1",
+    "just-build": "^0.9.16",
+    "karma": "^2.0.0",
+    "karma-browserstack-launcher": "^1.3.0",
+    "karma-chrome-launcher": "^2.2.0",
+    "karma-firefox-launcher": "^1.1.0",
+    "karma-mocha-reporter": "^2.2.5",
+    "karma-qunit": "^1.2.1",
+    "qunit": "^2.4.1",
+    "qunitjs": "^2.4.1",
+    "rollup": "^0.52.3",
+    "rollup-plugin-commonjs": "^8.2.6",
+    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-sourcemaps": "^0.4.2",
+    "uglify-js": "^3.2.2"
+  },
+  "dependencies": {
+    "babel-runtime": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "dexie": "^2.0.1"
+  }
+}
