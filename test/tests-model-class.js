@@ -69,16 +69,16 @@ test("recover attributes names", ( assert ) => {
     assert.deepEqual(ModelTest1.attributesNames, [ 'id', 'name' ], 'get attributesNames() should return [id,name]')
 })
 
-module("(extend (new Dexie(dbName).Model)).first()")
+module("(extend (new Dexie(dbName).Model)).data.firstInstance()")
 
 asyncTest("Calling first directly from Model", async ( assert, asyncDone ) => {
     const { Model } = newDatabase()
     try {
-        await Model.first()
-        assert.ok(false, 'Model.first() should throw an exception')
+        await Model.data.firstInstance()
+        assert.ok(false, 'Model.data.firstInstance() should throw an exception')
         asyncDone()
     } catch(e) {
-        assert.equal(e.message, 'async first() should only be called from a class that extends Model', 'async first() should only be called from a class that extends Model')
+        assert.equal(e.message, 'data() should only be called from a class that extends Model', 'data() should only be called from a class that extends Model')
         asyncDone()
     }
 }, { autoDone: false })
@@ -105,9 +105,9 @@ asyncTest("simple find first", async ( assert ) => {
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest', 'get objectStoreName() should be overwrittable')
-    const record = await ModelTest.first()
-    assert.ok(record instanceof ModelTest, 'return from ModelTest.first() is an instance of ModelTest')
-    assert.deepEqual(record.attributes, user1, 'returned instance from ModelTest.first() has the attributes as previously defined')
+    const record = await ModelTest.data.firstInstance()
+    assert.ok(record instanceof ModelTest, 'return from ModelTest.data.firstInstance() is an instance of ModelTest')
+    assert.deepEqual(record.attributes, user1, 'returned instance from ModelTest.data.firstInstance() has the attributes as previously defined')
 })
 
 asyncTest("find first when objectStore is empty", async ( assert ) => {
@@ -126,20 +126,20 @@ asyncTest("find first when objectStore is empty", async ( assert ) => {
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest', 'get objectStoreName() should be overwrittable')
-    assert.deepEqual(await ModelTest.first(), null, 'returned instance should be null, since is a valid result when there is no record to retrieve')
+    assert.deepEqual(await ModelTest.data.firstInstance(), undefined, 'returned instance should be undefined, since is a valid result when there is no record to retrieve')
 })
 
-module("(extend (new Dexie(dbName).Model)).firstData()")
+module("(extend (new Dexie(dbName).Model)).data.first()")
 
 asyncTest("Calling firstData directly from Model", async ( assert, asyncDone ) => {
     const db = newDatabase(),
         { AttributeTypes, Model } = db
     try {
-        await Model.firstData()
-        assert.ok(false, 'async firstData() should only be called from a class that extends Model', 'should throw an exception')
+        await Model.data.first()
+        assert.ok(false, 'data() should only be called from a class that extends Model')
         asyncDone()
     } catch(e) {
-        assert.equal(e.message, 'async firstData() should only be called from a class that extends Model', 'should throw an exception')
+        assert.equal(e.message, 'data() should only be called from a class that extends Model', 'data() should only be called from a class that extends Model')
         asyncDone()
     }
 }, { autoDone: false })
@@ -165,7 +165,7 @@ asyncTest("simple find first", async ( assert ) => {
             ]
         }
     }
-    assert.deepEqual(await ModelTest.firstData(), user1, 'returned object from ModelTest.firstData() has the values previously defined')
+    assert.deepEqual(await ModelTest.data.first(), user1, 'returned object from ModelTest.data.first() has the values previously defined')
 })
 
 asyncTest("find first when objectStore is empty", async ( assert ) => {
@@ -183,19 +183,19 @@ asyncTest("find first when objectStore is empty", async ( assert ) => {
             ]
         }
     }
-    assert.deepEqual(await ModelTest.firstData(), {}, 'returned object from ModelTest.firstData() has no values when there is no record to retrieve')
+    assert.deepEqual(await ModelTest.data.first(), undefined, 'returned object from ModelTest.data.first() has no values when there is no record to retrieve')
 })
 
-module("(extend (new Dexie(dbName).Model)).last()")
+module("(extend (new Dexie(dbName).Model)).data.lastInstance()")
 
 asyncTest("Calling last directly from Model", async ( assert, asyncDone ) => {
     const { Model } = newDatabase()
     try {
-        await Model.last()
-        assert.ok(false, 'async last() should only be called from a class that extends Model')
+        await Model.data.lastInstance()
+        assert.ok(false, 'data() should only be called from a class that extends Model')
         asyncDone()
     } catch(e) {
-        assert.equal(e.message, 'async last() should only be called from a class that extends Model', e.message)
+        assert.equal(e.message, 'data() should only be called from a class that extends Model', 'data() should only be called from a class that extends Model')
         asyncDone()
     }
 }, { autoDone: false })
@@ -222,7 +222,7 @@ asyncTest("simple find last", async ( assert ) => {
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest')
-    const record = await ModelTest.last()
+    const record = await ModelTest.data.lastInstance()
     assert.ok(record instanceof ModelTest, 'record should be an instance of ModelTest')
     assert.deepEqual(record.attributes, user2, 'attributes of retrieved record should be as previously defined')
 })
@@ -242,19 +242,19 @@ asyncTest("find last when objectStore is empty", async ( assert ) => {
             ]
         }
     }
-    assert.deepEqual(await ModelTest.last(), null, 'returned instance should be null, since is a valid result when there is no record to retrieve')
+    assert.deepEqual(await ModelTest.data.lastInstance(), undefined, 'returned instance should be undefined, since is a valid result when there is no record to retrieve')
 })
 
-module("(extend (new Dexie(dbName).Model)).lastData()")
+module("(extend (new Dexie(dbName).Model)).data.last()")
 
 asyncTest("Calling lastData directly from Model", async ( assert, asyncDone ) => {
     const { AttributeTypes, Model } = newDatabase()
     try {
-        await Model.lastData()
-        assert.ok(false, 'async lastData() should only be called from a class that extends Model')
+        await Model.data.last()
+        assert.ok(false, 'data() should only be called from a class that extends Model')
         asyncDone()
     } catch(e) {
-        assert.equal(e.message, 'async lastData() should only be called from a class that extends Model', e.message)
+        assert.equal(e.message, 'data() should only be called from a class that extends Model', 'data() should only be called from a class that extends Model')
         asyncDone()
     }
 }, { autoDone: false })
@@ -280,7 +280,7 @@ asyncTest("simple find last", async ( assert ) => {
             ]
         }
     }
-    assert.deepEqual(await ModelTest.lastData(), user2, 'returned instance from ModelTest.lastData() has the values as previously defined')
+    assert.deepEqual(await ModelTest.data.last(), user2, 'returned instance from ModelTest.data.last() has the values as previously defined')
 })
 
 asyncTest("find last when objectStore is empty", async ( assert ) => {
@@ -298,7 +298,7 @@ asyncTest("find last when objectStore is empty", async ( assert ) => {
             ]
         }
     }
-    assert.deepEqual(await ModelTest.lastData(), {}, 'returned object from ModelTest.lastData() has no values when there is no record to retrieve')
+    assert.deepEqual(await ModelTest.data.last(), undefined, 'returned object from ModelTest.data.last() has no values when there is no record to retrieve')
 })
 
 module("(extend (new Dexie(dbName).Model)).saveData()")

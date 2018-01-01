@@ -59,38 +59,12 @@ function checkObjectStoreExistence(objectStore){
 }
 
 export default function generateModel(db) {
-    const Model = class Model extends  {
-        static async first() {
-            forbidDirectCallingToModel(this, 'async first()')
-            checkObjectStoreExistence(db[this.objectStoreName])
-            const data = await db[this.objectStoreName].toCollection().first()
-            return (data === undefined) ? null : new this(data, { persisted: true })
+    const Model = class Model {
+        static get data() {
+            forbidDirectCallingToModel(this, 'data()')
+            db[this.objectStoreName].model = this
+            return db[this.objectStoreName]
         }
-
-        static async firstData() {
-            forbidDirectCallingToModel(this, 'async firstData()')
-            checkObjectStoreExistence(db[this.objectStoreName])
-            const data = await db[this.objectStoreName].toCollection().first()
-            return (data === undefined) ? {} : data
-        }
-
-        static async last() {
-            forbidDirectCallingToModel(this, 'async last()')
-            checkObjectStoreExistence(db[this.objectStoreName])
-            const data = await db[this.objectStoreName].toCollection().last()
-            return (data === undefined) ? null : new this(data, { persisted: true })
-        }
-
-        static async lastData() {
-            forbidDirectCallingToModel(this, 'async lastData()')
-            const data = await db[this.objectStoreName].toCollection().last()
-            return (data === undefined) ? {} : data
-        }
-
-        // static find() {
-        //     forbidDirectCallingToModel(this, 'find()')
-        //     return new DORMWQuery(Connection, this)
-        // }
 
         static get primaryKeys() {
             forbidDirectCallingToModel(this, 'get primaryKeys()')

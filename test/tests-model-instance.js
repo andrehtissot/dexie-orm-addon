@@ -368,7 +368,7 @@ asyncTest("simple delete", async ( assert ) => {
         }
     }
     for(let expectedRecord of [user2, user1]) {
-        const record = await ModelTest.last({ returnAs: 'instance' })
+        const record = await ModelTest.data.lastInstance()
         assert.ok(record instanceof ModelTest, 'record is a instance of ModelTest')
         assert.deepEqual(record.attributes, expectedRecord, 'object attributes are equal to the original object')
         assert.equal(record.id, expectedRecord.id, 'id is equal')
@@ -380,7 +380,7 @@ asyncTest("simple delete", async ( assert ) => {
             assert.ok(await deletePromise, 'calling delete() should return true only if it had the primary keys filled')
         }
     }
-    const record = await ModelTest.last({ returnAs: 'instance' })
+    const record = await ModelTest.data.lastInstance()
     assert.equal(record, null, 'there is no records to return')
 })
 
@@ -417,7 +417,7 @@ asyncTest("delete for composite primary key", async ( assert ) => {
         assert.deepEqual(foundInstances, variants, 'saved records should be found just as saved')
     }
     for (var i = 8; i >= 0; i--) {
-        const savedInstance = await ModelTest.last()
+        const savedInstance = await ModelTest.data.lastInstance()
         assert.deepEqual(savedInstance.attributes, variants[i], 'last record should be '+JSON.stringify(variants[i])+' in the iteration '+i)
         assert.ok(await savedInstance.delete(), 'should be able to delete record '+i+' ('+
             JSON.stringify(savedInstance.attributes)+')')

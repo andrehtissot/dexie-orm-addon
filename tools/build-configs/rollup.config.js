@@ -11,8 +11,7 @@ export default {
     },
   ],
   globals: {
-    Dexie: "dexie"
   },
-  external: ['Dexie', 'babel-runtime/core-js/map', 'babel-runtime/helpers/typeof'],
+  external: ['babel-runtime/core-js/map', 'babel-runtime/helpers/typeof'],
   plugins: [ sourcemaps() ]
 };

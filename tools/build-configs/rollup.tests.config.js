@@ -15,10 +15,9 @@ export default {
     sourcemap: true
   },
   globals: {
-    Dexie: "dexie",
     QUnit: "QUnit"
   },
-  external: ['Dexie', 'QUnit', 'babel-runtime'],
+  external: ['QUnit', 'babel-runtime'],
   plugins: [
     sourcemaps(),
     nodeResolve({browser: true}),
