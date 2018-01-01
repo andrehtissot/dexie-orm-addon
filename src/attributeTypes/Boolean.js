@@ -1,8 +1,8 @@
 /*!
- * Dexie ORM Wrapper {version} ({date})
+ * Dexie ORM Addon {version} ({date})
  * https://github.com/andrehtissot/dexie-orm-wrapper
  *
- * Requires Dexie IndexedDB Wrapper
+ * Requires Dexie IndexedDB Addon
  * http://dexie.org
  *
  * Copyright André Augusto Tissot

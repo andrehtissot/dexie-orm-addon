@@ -4,8 +4,8 @@
 // import "./attributeTypes/tests-date-time"
 // import './tests-opened-databases'
 // import "./tests-model-class"
-import "./tests-model-instance"
-
+// import "./tests-model-instance"
+import './tests-query-and-all-query-result'
 
 
 

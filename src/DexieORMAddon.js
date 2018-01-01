@@ -14,6 +14,7 @@ import Integer from './attributeTypes/Integer'
 import Boolean from './attributeTypes/Boolean'
 import String from './attributeTypes/String'
 import DateTime from './attributeTypes/DateTime'
+import handleOpenedDatabases from './handleOpenedDatabases'
 
 export default function dexieORMAddon(db) {
     db.Model = generateModel(db)
@@ -23,9 +24,7 @@ export default function dexieORMAddon(db) {
         String: String,
         DateTime: DateTime
     }
-    Dexie.openedDatabases.set(db.name, db)
+    handleOpenedDatabases(db)
 }
-
-Dexie.openedDatabases = new Map()
 
 Dexie.addons.push(dexieORMAddon)

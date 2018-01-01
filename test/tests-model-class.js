@@ -12,41 +12,6 @@ test("attribute Model holds an object", ( assert ) => {
     assert.equal(typeof db.Model, 'function', 'db.Model is accessible as a class')
 })
 
-module("(extend (new Dexie(dbName).Model)).constructor()")
-
-test("extend, but dont implement any method or attribute", ( assert ) => {
-    const { Model } = newDatabase()
-    class EmptyModelTest extends Model {}
-    assert.equal(EmptyModelTest.objectStoreName, 'EmptyModelTest', 'Calling EmptyModelTest.objectStoreName returns the overwritten value')
-    assert.throws(() => EmptyModelTest.attributesTypes, /get attributesTypes\(\) must be implemented in the extending class/, 'get attributesTypes() must be implemented in the extending class')
-    assert.throws(() => EmptyModelTest.primaryKeys, /get attributesTypes\(\) must be implemented in the extending class/, 'get attributesTypes() must be implemented in the extending class')
-    assert.throws(() => Model.attributesTypes, /get attributesTypes\(\) should only be called from a class that extends Model/, 'get attributesTypes() should only be called from a class that extends Model')
-    assert.throws(() => Model.primaryKeys, /get primaryKeys\(\) should only be called from a class that extends Model/, 'get primaryKeys() should only be called from a class that extends Model')
-    assert.throws(() => { new Model() }, /Model should never be instatiated directly/, 'Model should never be instatiated directly')
-})
-
-test("extend, implement and override methods and attributes", ( assert ) => {
-    const { AttributeTypes, Model } = newDatabase()
-    var attributes = [
-        [ 'id', AttributeTypes.Integer, { min: 1 } ],
-        [ 'name', AttributeTypes.String, { minLength: 1 } ]
-    ]
-    class ModelTest1 extends Model {
-        static get primaryKeys() {
-            return [ 'name' ]
-        }
-        static get objectStoreName() {
-            return 'ObjectStoreTest1'
-        }
-        static get attributesTypes() {
-            return attributes
-        }
-    }
-    assert.equal(ModelTest1.objectStoreName, 'ObjectStoreTest1', 'get objectStoreName() should be overwrittable')
-    assert.deepEqual(ModelTest1.primaryKeys, [ 'name' ], 'get primaryKeys() should be overwrittable')
-    assert.deepEqual(ModelTest1.attributesTypes, attributes, 'get attributesTypes() should be overwrittable')
-})
-
 module("(extend (new Dexie(dbName).Model)).primaryKeys")
 
 test("Calling primaryKeys directly from Model", ( assert ) => {

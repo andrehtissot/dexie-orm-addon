@@ -3,6 +3,41 @@ import {module, test} from 'QUnit'
 
 deleteAllDatabasesWhenDone();
 
+module("(extend (new Dexie(dbName).Model)).constructor()")
+
+test("extend, but dont implement any method or attribute", ( assert ) => {
+    const { Model } = newDatabase()
+    class EmptyModelTest extends Model {}
+    assert.equal(EmptyModelTest.objectStoreName, 'EmptyModelTest', 'Calling EmptyModelTest.objectStoreName returns the overwritten value')
+    assert.throws(() => EmptyModelTest.attributesTypes, /get attributesTypes\(\) must be implemented in the extending class/, 'get attributesTypes() must be implemented in the extending class')
+    assert.throws(() => EmptyModelTest.primaryKeys, /get attributesTypes\(\) must be implemented in the extending class/, 'get attributesTypes() must be implemented in the extending class')
+    assert.throws(() => Model.attributesTypes, /get attributesTypes\(\) should only be called from a class that extends Model/, 'get attributesTypes() should only be called from a class that extends Model')
+    assert.throws(() => Model.primaryKeys, /get primaryKeys\(\) should only be called from a class that extends Model/, 'get primaryKeys() should only be called from a class that extends Model')
+    assert.throws(() => { new Model() }, /Model should never be instatiated directly/, 'Model should never be instatiated directly')
+})
+
+test("extend, implement and override methods and attributes", ( assert ) => {
+    const { AttributeTypes, Model } = newDatabase()
+    var attributes = [
+        [ 'id', AttributeTypes.Integer, { min: 1 } ],
+        [ 'name', AttributeTypes.String, { minLength: 1 } ]
+    ]
+    class ModelTest1 extends Model {
+        static get primaryKeys() {
+            return [ 'name' ]
+        }
+        static get objectStoreName() {
+            return 'ObjectStoreTest1'
+        }
+        static get attributesTypes() {
+            return attributes
+        }
+    }
+    assert.equal(ModelTest1.objectStoreName, 'ObjectStoreTest1', 'get objectStoreName() should be overwrittable')
+    assert.deepEqual(ModelTest1.primaryKeys, [ 'name' ], 'get primaryKeys() should be overwrittable')
+    assert.deepEqual(ModelTest1.attributesTypes, attributes, 'get attributesTypes() should be overwrittable')
+})
+
 module("(new (extend (new Dexie(dbName).Model))).attributes")
 
 test("recover data as object", ( assert ) => {
@@ -276,225 +311,228 @@ asyncTest("duplicate record changing its default primary key value", async ( ass
     assert.equal(typeof db.ModelTest, 'object', 'ModelTest should be accessible as a valid objectStore')
     if(typeof db.ModelTest === 'object') {
         const foundInstances = await db.ModelTest.toArray()
-        assert.deepEqual(foundInstances, [ { id: 1, name: 'Test' }, { id: 2, name: 'Test' } ])
+        assert.deepEqual(foundInstances, [ { id: 1, name: 'Test' }, { id: 2, name: 'Test' } ], 'the record retrieved should be equal to previously defined')
     }
 })
 
-// asyncTest("duplicating record changing its composite primary key attributes and values", async ( assert ) => {
-//     const { AttributeTypes, Model, Migrations, Connection } = newTestModules()
-//     Migrations.addVersion(1, { ModelTest1: '[id+code]' });
-//     class ModelTest1 extends Model {
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'code', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     const instance = new ModelTest1()
-//     const variants = []
-//     for(let id of [1, 2, 3]) {
-//         for(let code of ['A', 'B', 'C']) {
-//             instance.id = id
-//             instance.code = code
-//             variants.push( { id: id, code: code } )
-//             const didItSave = await instance.save()
-//             assert.ok(didItSave)
-//         }
-//     }
-//     const connection = await Connection.get()
-//     assert.equal(typeof connection.ModelTest1, 'object')
-//     if(typeof connection.ModelTest1 === 'object') {
-//         const foundInstances = await connection.ModelTest1.toArray()
-//         assert.deepEqual(foundInstances, variants)
-//     }
-// })
+asyncTest("duplicating record changing its composite primary key attributes and values", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ ModelTest: '[id+code]' })
+    class ModelTest extends Model {
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'code', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const instance = new ModelTest(),
+        variants = []
+    for(let id of [1, 2, 3]) {
+        for(let code of ['A', 'B', 'C']) {
+            instance.id = id
+            instance.code = code
+            variants.push( { id: id, code: code } )
+            assert.ok(await instance.save(), 'should save '+JSON.stringify(instance.attributes)+' successfully')
+        }
+    }
+    assert.equal(typeof db.ModelTest, 'object', 'ModelTest should be accessible as a valid objectStore')
+    if(typeof db.ModelTest === 'object') {
+        const foundInstances = await db.ModelTest.toArray()
+        assert.deepEqual(foundInstances, variants, 'the record retrieved should be equal to previously defined')
+    }
+})
 
-// module("(new (extend (new Dexie(dbName).Model))).delete()")
+module("(new (extend (new Dexie(dbName).Model))).delete()")
 
-// asyncTest("simple delete", async ( assert ) => {
-//     const user1 = { id: 1, name: 'Test User 1' },
-//         user2 = { id: 2, name: 'Test User 2' },
-//         { AttributeTypes, Model, Migrations, Connection } = newTestModules()
-//     Migrations.setPopulate((dexieDB) => {
-//         dexieDB.ObjectStoreTest1.add( user1 )
-//         dexieDB.ObjectStoreTest1.add( user2 )
-//     })
-//     Migrations.addVersion(1, { ObjectStoreTest1: 'id,name' });
-//     class ModelTest1 extends Model {
-//         static get objectStoreName() {
-//             return 'ObjectStoreTest1'
-//         }
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'name', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     for(let expectedRecord of [user2, user1]) {
-//         const record = await ModelTest1.last({ returnAs: 'instance' })
-//         assert.ok(record instanceof ModelTest1, 'record is a instance of ModelTest1')
-//         assert.deepEqual(record.attributes, expectedRecord, 'object attributes are equal to the original object')
-//         assert.equal(record.id, expectedRecord.id, 'id is equal')
-//         assert.equal(record.name, expectedRecord.name, 'name is equal')
-//         assert.equal(typeof record.delete, 'function', 'model instances should have a delete method')
-//         if(typeof record.delete === 'function') {
-//             const deletePromise = record.delete()
-//             assert.ok(typeof deletePromise.then === 'function' && typeof deletePromise.catch === 'function', 'delete() should return a promise')
-//             assert.ok(await deletePromise, 'calling delete() should return true only if it had the primary keys filled')
-//         }
-//     }
-//     const record = await ModelTest1.last({ returnAs: 'instance' })
-//     assert.equal(record, null, 'there is no records to return')
-// })
+asyncTest("simple delete", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db,
+        user1 = { id: 1, name: 'Test User 1' },
+        user2 = { id: 2, name: 'Test User 2' }
+    db.version(1).stores({ ObjectStoreTest: 'id,name' })
+    db.on("populate", () => {
+        db.ObjectStoreTest.add( user1 )
+        db.ObjectStoreTest.add( user2 )
+    })
+    class ModelTest extends Model {
+        static get objectStoreName() {
+            return 'ObjectStoreTest'
+        }
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    for(let expectedRecord of [user2, user1]) {
+        const record = await ModelTest.last({ returnAs: 'instance' })
+        assert.ok(record instanceof ModelTest, 'record is a instance of ModelTest')
+        assert.deepEqual(record.attributes, expectedRecord, 'object attributes are equal to the original object')
+        assert.equal(record.id, expectedRecord.id, 'id is equal')
+        assert.equal(record.name, expectedRecord.name, 'name is equal')
+        assert.equal(typeof record.delete, 'function', 'model instances should have a delete method')
+        if(typeof record.delete === 'function') {
+            const deletePromise = record.delete()
+            assert.ok(typeof deletePromise.then === 'function' && typeof deletePromise.catch === 'function', 'delete() should return a promise')
+            assert.ok(await deletePromise, 'calling delete() should return true only if it had the primary keys filled')
+        }
+    }
+    const record = await ModelTest.last({ returnAs: 'instance' })
+    assert.equal(record, null, 'there is no records to return')
+})
 
-// asyncTest("delete for composite primary key", async ( assert ) => {
-//     assert.expect(30)
-//     const { AttributeTypes, Model, Migrations, Connection } = newTestModules()
-//     Migrations.addVersion(1, { ModelTest1: '[id+code]' });
-//     class ModelTest1 extends Model {
-//         static get primaryKeys() {
-//             return [ 'id', 'code' ]
-//         }
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'code', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     const instance = new ModelTest1(),
-//         variants = []
-//     for(let id of [1, 2, 3]) {
-//         for(let code of ['A', 'B', 'C']) {
-//             instance.id = id
-//             instance.code = code
-//             variants.push( { id: id, code: code } )
-//             const didItSave = await instance.save()
-//             assert.ok(didItSave, 'saving '+JSON.stringify(instance.attributes)+' should be successful')
-//         }
-//     }
-//     const connection = await Connection.get()
-//     assert.equal(typeof connection.ModelTest1, 'object', 'ModelTest1 should exist as objectStore')
-//     if(typeof connection.ModelTest1 === 'object') {
-//         const foundInstances = await connection.ModelTest1.toArray()
-//         assert.equal(foundInstances.length, 9, 'should find all 9 saved records')
-//         assert.deepEqual(foundInstances, variants, 'saved records should be found just as saved')
-//     }
-//     for (var i = 8; i >= 0; i--) {
-//         const savedInstance = await ModelTest1.last()
-//         assert.deepEqual(savedInstance.attributes, variants[i], 'last record should be '+JSON.stringify(variants[i])+' in the iteration '+i)
-//         assert.ok(await savedInstance.delete(), 'should be able to delete record '+i+' ('+
-//             JSON.stringify(savedInstance.attributes)+')')
-//     }
-// })
+asyncTest("delete for composite primary key", async ( assert ) => {
+    assert.expect(30)
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ ModelTest: '[id+code]' })
+    class ModelTest extends Model {
+        static get primaryKeys() {
+            return [ 'id', 'code' ]
+        }
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'code', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const instance = new ModelTest(),
+        variants = []
+    for(let id of [1, 2, 3]) {
+        for(let code of ['A', 'B', 'C']) {
+            instance.id = id
+            instance.code = code
+            variants.push( { id: id, code: code } )
+            assert.ok(await instance.save(), 'saving '+JSON.stringify(instance.attributes)+' should be successful')
+        }
+    }
+    assert.equal(typeof db.ModelTest, 'object', 'ModelTest should exist as objectStore')
+    if(typeof db.ModelTest === 'object') {
+        const foundInstances = await db.ModelTest.toArray()
+        assert.equal(foundInstances.length, 9, 'should find all 9 saved records')
+        assert.deepEqual(foundInstances, variants, 'saved records should be found just as saved')
+    }
+    for (var i = 8; i >= 0; i--) {
+        const savedInstance = await ModelTest.last()
+        assert.deepEqual(savedInstance.attributes, variants[i], 'last record should be '+JSON.stringify(variants[i])+' in the iteration '+i)
+        assert.ok(await savedInstance.delete(), 'should be able to delete record '+i+' ('+
+            JSON.stringify(savedInstance.attributes)+')')
+    }
+})
 
-// module("(new (extend (new Dexie(dbName).Model))).reload()")
+module("(new (extend (new Dexie(dbName).Model))).reload()")
 
-// asyncTest("simple reload", async ( assert ) => {
-//     const { AttributeTypes, Model, Migrations } = newTestModules()
-//     Migrations.addVersion(1, { users: 'id,name' });
-//     class User extends Model {
-//         static get objectStoreName() {
-//             return 'users'
-//         }
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'name', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     const userData = { id: 1, name: 'user name' },
-//         userInstance = new User(userData)
-//     assert.ok(await userInstance.save(), 'save() should be successful')
-//     userInstance.name = 'testing'
-//     userInstance.id = 2
-//     assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
-//     assert.equal(userInstance.id, 2, 'id should be changable in memory')
-//     assert.ok(await userInstance.reload(), 'reload() should be successful')
-//     assert.equal(userInstance.name, 'user name', 'name should be changed to saved value')
-//     assert.equal(userInstance.id, 1, 'id should be changed to saved value')
-// })
+asyncTest("simple reload", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ users: 'id,name' })
+    class User extends Model {
+        static get objectStoreName() {
+            return 'users'
+        }
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const userData = { id: 1, name: 'user name' },
+        userInstance = new User(userData)
+    assert.ok(await userInstance.save(), 'save() should be successful')
+    userInstance.name = 'testing'
+    userInstance.id = 2
+    assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
+    assert.equal(userInstance.id, 2, 'id should be changable in memory')
+    assert.ok(await userInstance.reload(), 'reload() should be successful')
+    assert.equal(userInstance.name, 'user name', 'name should be changed to saved value')
+    assert.equal(userInstance.id, 1, 'id should be changed to saved value')
+})
 
-// asyncTest("reload when record is not currently in the database", async ( assert ) => {
-//     const { AttributeTypes, Model, Migrations } = newTestModules()
-//     Migrations.addVersion(1, { users: 'id,name' });
-//     class User extends Model {
-//         static get objectStoreName() {
-//             return 'users'
-//         }
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'name', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     const userData = { id: 1, name: 'user name' },
-//         userInstance = new User(userData)
-//     userInstance.name = 'testing'
-//     userInstance.id = 2
-//     assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
-//     assert.equal(userInstance.id, 2, 'id should be changable in memory')
-//     assert.notOk(await userInstance.reload(), 'reload() should not be successful')
-//     assert.equal(userInstance.name, 'testing', 'if the name was not persisted, should not be reloadable')
-//     assert.equal(userInstance.id, 2, 'if the id was not persisted, should not be reloadable')
-// })
+asyncTest("reload when record is not currently in the database", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ users: 'id,name' })
+    class User extends Model {
+        static get objectStoreName() {
+            return 'users'
+        }
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const userData = { id: 1, name: 'user name' },
+        userInstance = new User(userData)
+    userInstance.name = 'testing'
+    userInstance.id = 2
+    assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
+    assert.equal(userInstance.id, 2, 'id should be changable in memory')
+    assert.notOk(await userInstance.reload(), 'reload() should not be successful')
+    assert.equal(userInstance.name, 'testing', 'if the name was not persisted, should not be reloadable')
+    assert.equal(userInstance.id, 2, 'if the id was not persisted, should not be reloadable')
+})
 
-// asyncTest("reload after a record was delete", async ( assert ) => {
-//     const { AttributeTypes, Model, Migrations } = newTestModules()
-//     Migrations.addVersion(1, { users: 'id,name' });
-//     class User extends Model {
-//         static get objectStoreName() {
-//             return 'users'
-//         }
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'name', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     const userData = { id: 1, name: 'user name' },
-//         userInstance = new User(userData)
-//     assert.ok(await userInstance.save(), 'save() should be successful')
-//     userInstance.name = 'testing'
-//     userInstance.id = 2
-//     assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
-//     assert.equal(userInstance.id, 2, 'id should be changable in memory')
-//     assert.ok(await userInstance.delete(), 'delete() should be successful')
-//     assert.notOk(await userInstance.reload(), 'reload() should not be successful since it is not persisted anymore')
-//     assert.equal(userInstance.name, 'testing', 'name should be changed to saved value')
-//     assert.equal(userInstance.id, 2, 'id should be changed to saved value')
-// })
+asyncTest("reload after a record was delete", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ users: 'id,name' })
+    class User extends Model {
+        static get objectStoreName() {
+            return 'users'
+        }
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const userData = { id: 1, name: 'user name' },
+        userInstance = new User(userData)
+    assert.ok(await userInstance.save(), 'save() should be successful')
+    userInstance.name = 'testing'
+    userInstance.id = 2
+    assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
+    assert.equal(userInstance.id, 2, 'id should be changable in memory')
+    assert.ok(await userInstance.delete(), 'delete() should be successful')
+    assert.notOk(await userInstance.reload(), 'reload() should not be successful since it is not persisted anymore')
+    assert.equal(userInstance.name, 'testing', 'name should be changed to saved value')
+    assert.equal(userInstance.id, 2, 'id should be changed to saved value')
+})
 
-// asyncTest("reload the record has composite primary keys", async ( assert ) => {
-//     const { AttributeTypes, Model, Migrations } = newTestModules()
-//     Migrations.addVersion(1, { users: '[id+name]' });
-//     class User extends Model {
-//         static get primaryKeys() {
-//             return [ 'id', 'name' ]
-//         }
-//         static get objectStoreName() {
-//             return 'users'
-//         }
-//         static get attributesTypes() {
-//             return [
-//                 [ 'id', AttributeTypes.Integer, { min: 1 } ],
-//                 [ 'name', AttributeTypes.String, { minLength: 1 } ]
-//             ]
-//         }
-//     }
-//     const userData = { id: 1, name: 'user name' },
-//         userInstance = new User(userData)
-//     assert.ok(await userInstance.save(), 'save() should be successful')
-//     userInstance.name = 'testing'
-//     userInstance.id = 2
-//     assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
-//     assert.equal(userInstance.id, 2, 'id should be changable in memory')
-//     assert.ok(await userInstance.reload(), 'reload() should be successful')
-//     assert.equal(userInstance.name, 'user name', 'name should be changed to saved value')
-//     assert.equal(userInstance.id, 1, 'id should be changed to saved value')
-// })
+asyncTest("reload the record has composite primary keys", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ users: '[id+name]' })
+    class User extends Model {
+        static get primaryKeys() {
+            return [ 'id', 'name' ]
+        }
+        static get objectStoreName() {
+            return 'users'
+        }
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const userData = { id: 1, name: 'user name' },
+        userInstance = new User(userData)
+    assert.ok(await userInstance.save(), 'save() should be successful')
+    userInstance.name = 'testing'
+    userInstance.id = 2
+    assert.equal(userInstance.name, 'testing', 'name should be changable in memory')
+    assert.equal(userInstance.id, 2, 'id should be changable in memory')
+    assert.ok(await userInstance.reload(), 'reload() should be successful')
+    assert.equal(userInstance.name, 'user name', 'name should be changed to saved value')
+    assert.equal(userInstance.id, 1, 'id should be changed to saved value')
+})

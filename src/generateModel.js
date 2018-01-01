@@ -13,7 +13,6 @@ import DirectMehodCallToModelException from './exceptions/DirectMehodCallToModel
 import DirectInstantiationOfModelException from './exceptions/DirectInstantiationOfModelException'
 import ModelsObjectStoreDoestExistException from './exceptions/ModelsObjectStoreDoestExistException'
 import MethodMustBeImplementedException from './exceptions/MethodMustBeImplementedException'
-// import DORMWQuery from './classes/DORMWQuery'
 
 const privateData = new WeakMap()
 
@@ -33,13 +32,13 @@ function setAttributes(instance, attributesValues) {
     }
 }
 
-// function getPrimaryKeyValuesFromPrivateDataOrExtract(instance){
-//     let primaryKeyValues = privateData.get(instance).persistedPrimarykeys
-//     if(primaryKeyValues === undefined) {
-//         return extractPrimaryKeyValues(instance)
-//     }
-//     return primaryKeyValues
-// }
+function getPrimaryKeyValuesFromPrivateDataOrExtract(instance){
+    let primaryKeyValues = privateData.get(instance).persistedPrimarykeys
+    if(primaryKeyValues === undefined) {
+        return extractPrimaryKeyValues(instance)
+    }
+    return primaryKeyValues
+}
 
 function areRecordsDataValid(modelClass, records) {
     const attributesTypes = modelClass.attributesTypes
@@ -60,7 +59,7 @@ function checkObjectStoreExistence(objectStore){
 }
 
 export default function generateModel(db) {
-    const Model = class Model {
+    const Model = class Model extends  {
         static async first() {
             forbidDirectCallingToModel(this, 'async first()')
             checkObjectStoreExistence(db[this.objectStoreName])
@@ -84,15 +83,14 @@ export default function generateModel(db) {
 
         static async lastData() {
             forbidDirectCallingToModel(this, 'async lastData()')
-            const connection = db,
-                data = await connection[this.objectStoreName].toCollection().last()
+            const data = await db[this.objectStoreName].toCollection().last()
             return (data === undefined) ? {} : data
         }
 
-    //     static find() {
-    //         forbidDirectCallingToModel(this, 'find()')
-    //         return new DORMWQuery(Connection, this)
-    //     }
+        // static find() {
+        //     forbidDirectCallingToModel(this, 'find()')
+        //     return new DORMWQuery(Connection, this)
+        // }
 
         static get primaryKeys() {
             forbidDirectCallingToModel(this, 'get primaryKeys()')
@@ -119,14 +117,11 @@ export default function generateModel(db) {
 
         static async saveData(records, options = { force: false }) {
             forbidDirectCallingToModel(this, 'async saveData()')
+            checkObjectStoreExistence(db[this.objectStoreName])
             if(!options.force && !areRecordsDataValid(this, records)) {
                 return false
             }
-            const connection = db
-            if(connection[this.objectStoreName] === undefined) {
-                throw new ModelsObjectStoreDoestExistException()
-            }
-            await connection[this.objectStoreName].bulkPut(records)
+            await db[this.objectStoreName].bulkPut(records)
             return true
         }
 
@@ -194,41 +189,39 @@ export default function generateModel(db) {
         }
 
         async save(options = { force: false }) {
-            if( !options.force && !this.isValid )
+            checkObjectStoreExistence(db[this.constructor.objectStoreName])
+            if( !options.force && !this.isValid ) {
                 return false
-            const connection = db
-            privateData.get(this).persistedPrimarykeys = extractPrimaryKeyValues(this)
-            if(connection[this.constructor.objectStoreName] === undefined) {
-                throw new ModelsObjectStoreDoestExistException()
             }
+            privateData.get(this).persistedPrimarykeys = extractPrimaryKeyValues(this)
             // primary key definition is optional
-            await connection[this.constructor.objectStoreName].put(this.attributes)
+            await db[this.constructor.objectStoreName].put(this.attributes)
             return true
         }
 
-    //     async delete() {
-    //         const connection = db,
-    //             primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
-    //         if(primaryKeyValues === undefined) {
-    //             return false
-    //         }
-    //         await connection[this.constructor.objectStoreName].delete(primaryKeyValues)
-    //         return true
-    //     }
+        async delete() {
+            checkObjectStoreExistence(db[this.constructor.objectStoreName])
+            const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
+            if(primaryKeyValues === undefined) {
+                return false
+            }
+            await db[this.constructor.objectStoreName].delete(primaryKeyValues)
+            return true
+        }
 
-    //     async reload() {
-    //         const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
-    //         if(primaryKeyValues === undefined) {
-    //             return false
-    //         }
-    //         const connection = db,
-    //             attributesValues = await connection[this.constructor.objectStoreName].get(primaryKeyValues)
-    //         if(attributesValues === undefined) {
-    //             return false
-    //         }
-    //         setAttributes(this, attributesValues)
-    //         return true
-    //     }
+        async reload() {
+            checkObjectStoreExistence(db[this.constructor.objectStoreName])
+            const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
+            if(primaryKeyValues === undefined) {
+                return false
+            }
+            const attributesValues = await db[this.constructor.objectStoreName].get(primaryKeyValues)
+            if(attributesValues === undefined) {
+                return false
+            }
+            setAttributes(this, attributesValues)
+            return true
+        }
     }
 
     function forbidDirectCallingToModel(staticObject, methodName){

@@ -20,5 +20,5 @@ asyncTest("should not hold closed database connections", async ( assert ) => {
     await db.open()
     assert.ok(Dexie.openedDatabases.has(db.name), 'opened database should be accessible')
     Dexie.openedDatabases.get(db.name).close()
-    assert.ok(Dexie.openedDatabases.has(db.name), 'closed database should not be accessible')
+    assert.notOk(Dexie.openedDatabases.has(db.name), 'closed database should not be accessible')
 })
