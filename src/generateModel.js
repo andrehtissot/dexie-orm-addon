@@ -84,6 +84,12 @@ export default function generateModel(db) {
             throw new MethodMustBeImplementedException('get attributesTypes()')
         }
 
+        static get relatesTo() {
+            forbidDirectCallingToModel(this, 'get relatesTo()')
+            // Default objectStore has no attributes
+            throw new MethodMustBeImplementedException('get relatesTo()')
+        }
+
         static get attributesNames() {
             forbidDirectCallingToModel(this, 'get attributesNames()')
             return this.attributesTypes.map((a) => a[0])
@@ -195,6 +201,22 @@ export default function generateModel(db) {
             }
             setAttributes(this, attributesValues)
             return true
+        }
+
+        fetch(relationshipName) {
+            checkObjectStoreExistence(db[this.constructor.objectStoreName])
+            if(this.constructor.relatesTo[relationshipName] === undefined) {
+                return undefined
+            }
+            const relationship = this.constructor.relatesTo[relationshipName]
+            switch(relationship[0]){
+                case 'one':
+                case 'first':
+                    return relationship[2].data.where(relationship[3]).equals(this[relationship[1]]).firstInstance()
+                case 'last':
+                    return relationship[2].data.where(relationship[3]).equals(this[relationship[1]]).reverse().firstInstance()
+                case 'all': return relationship[2].data.where(relationship[3]).equals(this[relationship[1]])
+            }
         }
     }
 

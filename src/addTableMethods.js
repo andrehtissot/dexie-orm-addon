@@ -39,4 +39,11 @@ export default function addTableMethods(db) {
     db.Table.prototype.lastInstance = function() {
         return this.toCollection().lastInstance()
     }
+
+    db.Table.prototype.getInstance = async function(...args) {
+        const found = await this.get(...args)
+        if(found !== undefined) {
+            return new this.model(found)
+        }
+    }
 }
