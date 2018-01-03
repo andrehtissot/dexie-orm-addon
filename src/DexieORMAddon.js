@@ -23,15 +23,7 @@ import addTableMethods from './addTableMethods'
 
 export default function DexieORMAddon(db) {
     db.Model = generateModel(db)
-    db.AttributeTypes = {
-        Boolean: Boolean,
-        Character: Character,
-        DateTime: DateTime,
-        Integer: Integer,
-        Number: Number,
-        Object: TypeObject,
-        String: String
-    }
+    db.AttributeTypes = { Boolean, Character, DateTime, Integer, Number, Object, String }
     handleOpenedDatabases(db)
     addCollectionMethods(db)
     addTableMethods(db)

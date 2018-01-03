@@ -1,27 +1,7 @@
-import {asyncTest, deleteAllDatabasesWhenDone, newDatabase} from "./helper-functions"
+import {asyncTest, deleteAllDatabasesWhenDone, newDatabase, newModulesAndSimpleExampleQueryWithEmptyQueryResult} from "./helper-functions"
 import {module, test} from 'QUnit'
 
 deleteAllDatabasesWhenDone();
-
-async function newModulesAndSimpleExampleQueryWithEmptyQueryResult() {
-    const db = newDatabase(),
-        { AttributeTypes, Model } = db
-    db.version(1).stores({ ModelTest: 'id,name' })
-    class ModelTest extends Model {
-        static get attributesTypes() {
-            return [
-                [ 'id', AttributeTypes.Integer, { min: 1 } ],
-                [ 'name', AttributeTypes.String, { minLength: 1 } ]
-            ]
-        }
-    }
-    await db.open()
-    return {
-        db: db,
-        ModelTest: ModelTest,
-        modelTestData: ModelTest.data
-    }
-}
 
 async function newModulesAndSimpleExampleQuery() {
     const { db, ModelTest, modelTestData } = await newModulesAndSimpleExampleQueryWithEmptyQueryResult()

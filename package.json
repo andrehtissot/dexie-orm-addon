@@ -1,5 +1,5 @@
 {
-  "name": "dexie-orm-wrapper",
+  "name": "dexie-orm-addon",
   "version": "0.0.1",
   "description": "An ORM Addon for Dexie.js",
   "main": "dist/dexieORMAddon.js",
@@ -7,7 +7,7 @@
   "jsnext:main": "dist/dexieORMAddon.es.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/andrehtissot/dexie-orm-wrapper.git"
+    "url": "https://github.com/andrehtissot/dexie-orm-addon.git"
   },
   "keywords": [
     "indexeddb",
@@ -18,7 +18,7 @@
   "author": "André Augusto Tissot <https://github.com/andrehtissot>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/andrehtissot/dexie-orm-wrapper/issues"
+    "url": "https://github.com/andrehtissot/dexie-orm-addon/issues"
   },
   "scripts": {
     "build": "just-build",
@@ -63,7 +63,7 @@
   "engines": {
     "node": ">=9.3"
   },
-  "homepage": "https://github.com/andrehtissot/dexie-orm-wrapper/blob/master/README.md",
+  "homepage": "https://github.com/andrehtissot/dexie-orm-addon/blob/master/README.md",
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-plugin-transform-regenerator": "^6.26.0",
