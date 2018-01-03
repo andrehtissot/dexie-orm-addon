@@ -10,8 +10,8 @@
  */
 
 export default class DORMWMethodMustBeImplementedException extends Error {
-    constructor(getterName, ...params) {
-        super(getterName + " must be implemented in the extending class", ...params);
+    constructor(functionName, ...params) {
+        super(functionName + " must be implemented in the extending class", ...params);
         if (Error.captureStackTrace) {
             Error.captureStackTrace(this, this.constructor);
         }

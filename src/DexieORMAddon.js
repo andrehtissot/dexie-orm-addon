@@ -10,10 +10,13 @@
  */
 
 import generateModel from './generateModel'
-import Integer from './attributeTypes/Integer'
 import Boolean from './attributeTypes/Boolean'
-import String from './attributeTypes/String'
+import Character from './attributeTypes/Character'
 import DateTime from './attributeTypes/DateTime'
+import Integer from './attributeTypes/Integer'
+import Number from './attributeTypes/Number'
+import String from './attributeTypes/String'
+import TypeObject from './attributeTypes/Object'
 import handleOpenedDatabases from './handleOpenedDatabases'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
@@ -21,10 +24,13 @@ import addTableMethods from './addTableMethods'
 export default function DexieORMAddon(db) {
     db.Model = generateModel(db)
     db.AttributeTypes = {
-        Integer: Integer,
         Boolean: Boolean,
-        String: String,
-        DateTime: DateTime
+        Character: Character,
+        DateTime: DateTime,
+        Integer: Integer,
+        Number: Number,
+        Object: TypeObject,
+        String: String
     }
     handleOpenedDatabases(db)
     addCollectionMethods(db)
