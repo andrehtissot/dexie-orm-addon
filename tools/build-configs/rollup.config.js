@@ -10,8 +10,6 @@ export default {
       sourcemap: true
     },
   ],
-  globals: {
-  },
   external: ['babel-runtime/core-js/map', 'babel-runtime/helpers/typeof'],
   plugins: [ sourcemaps() ]
 };

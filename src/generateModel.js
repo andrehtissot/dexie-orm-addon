@@ -1,6 +1,6 @@
 /*!
  * Dexie ORM Addon {version} ({date})
- * https://github.com/andrehtissot/dexie-orm-wrapper
+ * https://github.com/andrehtissot/dexie-orm-addon
  *
  * Requires Dexie IndexedDB Addon
  * http://dexie.org
@@ -120,7 +120,7 @@ export default function generateModel(db) {
     //     }
 
         constructor(attributesValues, options = { persisted: false }) {
-            if (new.target === Model) {
+            if (this.constructor === Model) {
               throw new DirectInstantiationOfModelException();
             }
             setAttributes(this, attributesValues)

@@ -12,10 +12,10 @@ export default {
     file: 'tools/tmp/rollup/tests.es.js',
     format: 'es',
     name: 'DexieORMAddonTests',
-    sourcemap: true
-  },
-  globals: {
-    QUnit: "QUnit"
+    sourcemap: true,
+    globals: {
+      QUnit: "QUnit"
+    }
   },
   external: ['QUnit', 'babel-runtime'],
   plugins: [

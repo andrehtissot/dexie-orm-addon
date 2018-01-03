@@ -1,6 +1,6 @@
 /*!
  * Dexie ORM Addon {version} ({date})
- * https://github.com/andrehtissot/dexie-orm-wrapper
+ * https://github.com/andrehtissot/dexie-orm-addon
  *
  * Requires Dexie IndexedDB Addon
  * http://dexie.org
@@ -18,7 +18,7 @@ import handleOpenedDatabases from './handleOpenedDatabases'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
 
-export default function dexieORMAddon(db) {
+export default function DexieORMAddon(db) {
     db.Model = generateModel(db)
     db.AttributeTypes = {
         Integer: Integer,
@@ -31,4 +31,4 @@ export default function dexieORMAddon(db) {
     addTableMethods(db)
 }
 
-Dexie.addons.push(dexieORMAddon)
+// Dexie.addons.push(dexieORMAddon)

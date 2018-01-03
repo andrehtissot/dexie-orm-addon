@@ -1,4 +1,4 @@
-import {asyncTest, deleteAllDatabasesWhenDone, newDatabase} from "./helper-functions"
+import {asyncTest, deleteAllDatabasesWhenDone, newDatabase, doesSupportCompositeObjectStoreKeys} from "./helper-functions"
 import {module, test} from 'QUnit'
 
 deleteAllDatabasesWhenDone();
@@ -289,7 +289,7 @@ asyncTest("saving a simple valid previous existing record", async ( assert ) => 
 asyncTest("duplicate record changing its default primary key value", async ( assert ) => {
     const db = newDatabase(),
         { AttributeTypes, Model } = db
-    db.version(1).stores({ ModelTest: '[id+name]' })
+    db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
             return [
@@ -316,6 +316,11 @@ asyncTest("duplicate record changing its default primary key value", async ( ass
 })
 
 asyncTest("duplicating record changing its composite primary key attributes and values", async ( assert ) => {
+    if(!(await doesSupportCompositeObjectStoreKeys())) {
+        // For some browsers, like Internet Explorer, Edge and Safari (< v10), there is no support for composite primary keys.
+        assert.ok(true, 'Current browser does not support composite primary keys')
+        return
+    }
     const db = newDatabase(),
         { AttributeTypes, Model } = db
     db.version(1).stores({ ModelTest: '[id+code]' })
@@ -385,6 +390,11 @@ asyncTest("simple delete", async ( assert ) => {
 })
 
 asyncTest("delete for composite primary key", async ( assert ) => {
+    if(!(await doesSupportCompositeObjectStoreKeys())) {
+        // For some browsers, like Internet Explorer, Edge and Safari (< v10), there is no support for composite primary keys.
+        assert.ok(true, 'Current browser does not support composite primary keys')
+        return
+    }
     assert.expect(30)
     const db = newDatabase(),
         { AttributeTypes, Model } = db
@@ -508,6 +518,11 @@ asyncTest("reload after a record was delete", async ( assert ) => {
 })
 
 asyncTest("reload the record has composite primary keys", async ( assert ) => {
+    if(!(await doesSupportCompositeObjectStoreKeys())) {
+        // For some browsers, like Internet Explorer, Edge and Safari (< v10), there is no support for composite primary keys.
+        assert.ok(true, 'Current browser does not support composite primary keys')
+        return
+    }
     const db = newDatabase(),
         { AttributeTypes, Model } = db
     db.version(1).stores({ users: '[id+name]' })

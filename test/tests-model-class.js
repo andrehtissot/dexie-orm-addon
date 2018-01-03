@@ -1,5 +1,6 @@
 import {asyncTest, deleteAllDatabasesWhenDone, newDatabase, newTestDatabaseName} from "./helper-functions"
 import {module, test} from 'QUnit'
+import DexieORMAddon from '../src/DexieORMAddon'
 
 deleteAllDatabasesWhenDone()
 
@@ -8,7 +9,7 @@ module("new Dexie(dbName).Model")
 test("attribute Model holds an object", ( assert ) => {
     assert.equal(typeof Dexie, 'function', 'Dexie is accessible as a class')
     const dbName = newTestDatabaseName(),
-        db = new Dexie(dbName)
+        db = new Dexie(dbName, { addons: [ DexieORMAddon ] })
     assert.equal(typeof db.Model, 'function', 'db.Model is accessible as a class')
 })
 

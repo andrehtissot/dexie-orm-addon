@@ -1,6 +1,6 @@
 /*!
  * Dexie ORM Addon {version} ({date})
- * https://github.com/andrehtissot/dexie-orm-wrapper
+ * https://github.com/andrehtissot/dexie-orm-addon
  *
  * Requires Dexie IndexedDB Addon
  * http://dexie.org
