@@ -9,4 +9,5 @@ before_script:
   - sh -e /etc/init.d/xvfb start
 script:
   - npm run build dev
+  - karma start test/karma/karma.conf.chrome.js --single-run
   - karma start test/karma/karma.conf.firefox.js --single-run
