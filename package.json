@@ -24,8 +24,8 @@
     "build": "just-build",
     "watch": "just-build --watch",
     "test": "npm run build dev && npm run test:unit",
-    "test:unit": "karma start test/karma/karma.conf.js --single-run",
-    "test:debug": "karma start test/karma/karma.conf.js --log-level debug"
+    "test:unit": "karma start test/karma/karma.conf.chrome.js --single-run",
+    "test:debug": "karma start test/karma/karma.conf.chrome.js --log-level debug"
   },
   "just-build": {
     "default": [
