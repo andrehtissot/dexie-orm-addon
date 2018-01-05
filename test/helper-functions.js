@@ -82,7 +82,7 @@ export function doesSupportCompositeObjectStoreKeys(){
     return compositeObjectStoreKeysIsSupported()
 }
 
-export async function newModulesAndSimpleExampleQueryWithEmptyQueryResult() {
+export async function newModulesAndSimpleExampleClass() {
     const db = newDatabase(),
         { AttributeTypes, Model } = db
     db.version(1).stores({ ModelTest: 'id,name' })

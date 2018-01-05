@@ -105,19 +105,20 @@ export default function generateModel(db) {
             return true
         }
 
-    //     static async save(records, options = { force: false }) {
-    //         let attributes = new Array(records.length)
-    //         for (let i = records.length - 1; i >= 0; i--) {
-    //             attributes[i] = records[i].attributes
-    //         }
-    //         const didSave = await this.saveData(records, options)
-    //         if (didSave) {
-    //             for(let record of records) {
-    //                 privateData.get(record).persistedPrimarykeys = extractPrimaryKeyValues(record)
-    //             }
-    //         }
-    //         return didSave
-    //     }
+        static async save(records, options = { force: false }) {
+            forbidDirectCallingToModel(this, 'async save()')
+            checkObjectStoreExistence(db[this.objectStoreName])
+            if(!options.force && !areRecordsDataValid(this, records)) {
+                return false
+            }
+            const didSave = await this.saveData(records, options)
+            if (didSave) {
+                for(let record of records) {
+                    privateData.get(record).persistedPrimarykeys = extractPrimaryKeyValues(record)
+                }
+            }
+            return didSave
+        }
 
         constructor(attributesValues, options = { persisted: false }) {
             if (this.constructor === Model) {
@@ -141,7 +142,7 @@ export default function generateModel(db) {
             return attributes
         }
 
-        validateAttributes(attributesNamesToValidate) {
+        validate(attributesNamesToValidate) {
             const attributesTypes = this.constructor.attributesTypes,
                 invalidAttributes = new Map(),
                 attributesNames = attributesNamesToValidate === undefined
@@ -212,10 +213,14 @@ export default function generateModel(db) {
             switch(relationship[0]){
                 case 'one':
                 case 'first':
+                    // Returns a promise. The related instance is returned when promise is done.
                     return relationship[2].data.where(relationship[3]).equals(this[relationship[1]]).firstInstance()
                 case 'last':
+                    // Returns a promise. The related instance is returned when promise is done.
                     return relationship[2].data.where(relationship[3]).equals(this[relationship[1]]).reverse().firstInstance()
-                case 'all': return relationship[2].data.where(relationship[3]).equals(this[relationship[1]])
+                case 'all':
+                    // Returns a dexie collection from the related model.
+                    return relationship[2].data.where(relationship[3]).equals(this[relationship[1]])
             }
         }
     }

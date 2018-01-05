@@ -3,41 +3,6 @@ import {module, test} from 'QUnit'
 
 deleteAllDatabasesWhenDone();
 
-module("(extend (new Dexie(dbName).Model)).constructor()")
-
-test("extend, but dont implement any method or attribute", ( assert ) => {
-    const { Model } = newDatabase()
-    class EmptyModelTest extends Model {}
-    assert.equal(EmptyModelTest.objectStoreName, 'EmptyModelTest', 'Calling EmptyModelTest.objectStoreName returns the overwritten value')
-    assert.throws(() => EmptyModelTest.attributesTypes, /get attributesTypes\(\) must be implemented in the extending class/, 'get attributesTypes() must be implemented in the extending class')
-    assert.throws(() => EmptyModelTest.primaryKeys, /get attributesTypes\(\) must be implemented in the extending class/, 'get attributesTypes() must be implemented in the extending class')
-    assert.throws(() => Model.attributesTypes, /get attributesTypes\(\) should only be called from a class that extends Model/, 'get attributesTypes() should only be called from a class that extends Model')
-    assert.throws(() => Model.primaryKeys, /get primaryKeys\(\) should only be called from a class that extends Model/, 'get primaryKeys() should only be called from a class that extends Model')
-    assert.throws(() => { new Model() }, /Model should never be instatiated directly/, 'Model should never be instatiated directly')
-})
-
-test("extend, implement and override methods and attributes", ( assert ) => {
-    const { AttributeTypes, Model } = newDatabase()
-    var attributes = [
-        [ 'id', AttributeTypes.Integer, { min: 1 } ],
-        [ 'name', AttributeTypes.String, { minLength: 1 } ]
-    ]
-    class ModelTest1 extends Model {
-        static get primaryKeys() {
-            return [ 'name' ]
-        }
-        static get objectStoreName() {
-            return 'ObjectStoreTest1'
-        }
-        static get attributesTypes() {
-            return attributes
-        }
-    }
-    assert.equal(ModelTest1.objectStoreName, 'ObjectStoreTest1', 'get objectStoreName() should be overwrittable')
-    assert.deepEqual(ModelTest1.primaryKeys, [ 'name' ], 'get primaryKeys() should be overwrittable')
-    assert.deepEqual(ModelTest1.attributesTypes, attributes, 'get attributesTypes() should be overwrittable')
-})
-
 module("(new (extend (new Dexie(dbName).Model))).attributes")
 
 test("recover data as object", ( assert ) => {
@@ -85,10 +50,10 @@ asyncTest("simple validation test", async ( assert ) => {
     for(let i in recordsData) {
         instances[i] = new ModelTest(recordsData[i])
         validations[i] = {
-            forId: instances[i].validateAttributes( [ 'id' ] ),
-            forName: instances[i].validateAttributes( [ 'name' ] ),
-            forBoth: instances[i].validateAttributes( [ 'id', 'name' ] ),
-            forAll: instances[i].validateAttributes()
+            forId: instances[i].validate( [ 'id' ] ),
+            forName: instances[i].validate( [ 'name' ] ),
+            forBoth: instances[i].validate( [ 'id', 'name' ] ),
+            forAll: instances[i].validate()
         }
     }
 

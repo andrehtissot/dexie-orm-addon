@@ -21,9 +21,11 @@ import handleOpenedDatabases from './handleOpenedDatabases'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
 
+export const AttributeTypes = { Boolean, Character, DateTime, Integer, Number, Object, String }
+
 export default function DexieORMAddon(db) {
     db.Model = generateModel(db)
-    db.AttributeTypes = { Boolean, Character, DateTime, Integer, Number, Object, String }
+    db.AttributeTypes = AttributeTypes
     handleOpenedDatabases(db)
     addCollectionMethods(db)
     addTableMethods(db)

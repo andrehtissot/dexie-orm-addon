@@ -105,6 +105,9 @@ asyncTest("simple relationship to all", async ( assert ) => {
     ])
     const person99 = new Person({ id: 99, name: 'Person 99' })
     assert.equal(typeof person99.fetch, 'function', 'model instances should be able to fetch associated records')
+
+    console.log(person99.fetch('games'))
+
     const games = await person99.fetch('games').toArray()
     assert.deepEqual(games, [], 'person99 should fetch an empty array, since there is no games with personId 99')
     for (let i = peoplesData.length - 1; i >= 0; i--) {
