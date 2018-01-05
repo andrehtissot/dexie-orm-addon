@@ -5,3 +5,11 @@ An ORM Addon for Dexie.js
 [![npm](https://img.shields.io/npm/dt/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![npm](https://img.shields.io/npm/v/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+
+### Version 0
+
+This addon is still in Alpha.
+This is a great moment to contribute with features, comments and tests.
+Until version 1.0.0, the structure may change as it's design matures.
+All features in this repository should always work, even if they change from a version to another, in all browsers supported by [Dexie.js](http://dexie.org/).

@@ -1,6 +1,6 @@
 {
   "name": "dexie-orm-addon",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An ORM Addon for Dexie.js",
   "main": "dist/dexieORMAddon.js",
   "module": "dist/dexieORMAddon.es.js",
