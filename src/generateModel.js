@@ -43,8 +43,8 @@ function getPrimaryKeyValuesFromPrivateDataOrExtract(instance){
 function areRecordsDataValid(modelClass, records) {
     const attributesTypes = modelClass.attributesTypes
     for(let record of records) {
-        for(let attributeType of attributesTypes) {
-            if(attributeType[1].validate(record[attributeType[0]], attributeType[2]) !== true) {
+        for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
+            if(attributeTypeObject.validate(record[attributeName], validationOptions) !== true) {
                 return false
             }
         }
@@ -148,11 +148,11 @@ export default function generateModel(db) {
                 attributesNames = attributesNamesToValidate === undefined
                     ? this.constructor.attributesNames
                     : attributesNamesToValidate
-            for(let attributeType of attributesTypes) {
-                if(attributesNames.includes(attributeType[0])){
-                    const validationMessage = attributeType[1].validate(this[attributeType[0]], attributeType[2])
+            for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
+                if(attributesNames.includes(attributeName)){
+                    const validationMessage = attributeTypeObject.validate(this[attributeName], validationOptions)
                     if(validationMessage !== true) {
-                        invalidAttributes.set(attributeType[0], validationMessage)
+                        invalidAttributes.set(attributeName, validationMessage)
                     }
                 }
             }
@@ -161,8 +161,8 @@ export default function generateModel(db) {
 
         get isValid() {
             const attributesTypes = this.constructor.attributesTypes
-            for(let attributeType of attributesTypes) {
-                if(attributeType[1].validate(this[attributeType[0]], attributeType[2]) !== true) {
+            for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
+                if(attributeTypeObject.validate(this[attributeName], validationOptions) !== true) {
                     return false
                 }
             }
@@ -209,18 +209,18 @@ export default function generateModel(db) {
             if(this.constructor.relatesTo[relationshipName] === undefined) {
                 return undefined
             }
-            const relationship = this.constructor.relatesTo[relationshipName]
-            switch(relationship[0]){
+            const [ relationshipType, internalAttibuteName, relatedModelClass, relatedModelAttributeName ] = this.constructor.relatesTo[relationshipName]
+            switch(relationshipType){
                 case 'one':
                 case 'first':
                     // Returns a promise. The related instance is returned when promise is done.
-                    return relationship[2].data.where(relationship[3]).equals(this[relationship[1]]).firstInstance()
+                    return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName]).firstInstance()
                 case 'last':
                     // Returns a promise. The related instance is returned when promise is done.
-                    return relationship[2].data.where(relationship[3]).equals(this[relationship[1]]).reverse().firstInstance()
+                    return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName]).reverse().firstInstance()
                 case 'all':
                     // Returns a dexie collection from the related model.
-                    return relationship[2].data.where(relationship[3]).equals(this[relationship[1]])
+                    return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName])
             }
         }
     }
