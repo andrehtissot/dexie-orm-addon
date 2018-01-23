@@ -1,6 +1,6 @@
 {
   "name": "dexie-orm-addon",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "An ORM Addon for Dexie.js",
   "main": "dist/dexieORMAddon.js",
   "module": "dist/dexieORMAddon.es.js",
@@ -61,7 +61,7 @@
     ]
   },
   "engines": {
-    "node": ">=9.3"
+    "node": ">=9.4"
   },
   "homepage": "https://github.com/andrehtissot/dexie-orm-addon/blob/master/README.md",
   "devDependencies": {
@@ -69,20 +69,20 @@
     "babel-preset-env": "^1.6.1",
     "dexie-opened-databases-addon": "0.0.4",
     "escape-string-regexp": "^1.0.5",
-    "eslint": "^4.14.0",
+    "eslint": "^4.16.0",
     "just-build": "^0.9.16",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-qunit": "^1.2.1",
-    "qunit": "^2.4.1",
-    "qunitjs": "^2.4.1",
-    "rollup": "^0.53.3",
+    "qunit": "^2.5.0",
+    "qunitjs": "^2.5.0",
+    "rollup": "^0.55.0",
     "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.0",
+    "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "uglify-js": "^3.3.4"
+    "uglify-js": "^3.3.8"
   },
   "dependencies": {
     "dexie": "^2.0.1"
