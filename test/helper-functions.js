@@ -1,4 +1,5 @@
 import DexieORMAddon from '../src/DexieORMAddon'
+import DexieOpenedDatabasesAddon from 'dexie-opened-databases-addon'
 import {test, done} from 'QUnit'
 
 export function asyncTest(testDescription, testFunction, options = { autoDone: true }) {
@@ -30,7 +31,7 @@ export function newDatabase(options = {}) {
     if(dbName === undefined) {
         dbName = newTestDatabaseName()
     }
-    return new Dexie(dbName, { addons: [ DexieORMAddon ] })
+    return new Dexie(dbName, { addons: [ DexieORMAddon, DexieOpenedDatabasesAddon ] })
 }
 
 export async function deleteAllDatabases() {

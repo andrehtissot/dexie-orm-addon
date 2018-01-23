@@ -17,7 +17,6 @@ import Integer from './attributeTypes/Integer'
 import Number from './attributeTypes/Number'
 import String from './attributeTypes/String'
 import TypeObject from './attributeTypes/Object'
-import handleOpenedDatabases from './handleOpenedDatabases'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
 
@@ -26,9 +25,8 @@ export const AttributeTypes = { Boolean, Character, DateTime, Integer, Number, O
 export default function DexieORMAddon(db) {
     db.Model = generateModel(db)
     db.AttributeTypes = AttributeTypes
-    handleOpenedDatabases(db)
     addCollectionMethods(db)
     addTableMethods(db)
 }
 
-// Dexie.addons.push(dexieORMAddon)
+// Dexie.addons.push(DexieORMAddon)

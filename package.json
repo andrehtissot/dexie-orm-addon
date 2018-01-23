@@ -67,6 +67,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "dexie-opened-databases-addon": "0.0.4",
     "escape-string-regexp": "^1.0.5",
     "eslint": "^4.14.0",
     "just-build": "^0.9.16",
