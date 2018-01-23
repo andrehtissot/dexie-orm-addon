@@ -1,4 +1,8 @@
-sudo: false
+#Temporary Meltdown workaround BEGIN
+sudo: required
+#Temporary Meltdown workaround ELSE
+# sudo: false
+#Temporary Meltdown workaround END
 language: node_js
 node_js:
   - 9
@@ -7,6 +11,10 @@ before_install:
 before_script:
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
+#Temporary Meltdown workaround BEGIN
+  - sudo chown root /opt/google/chrome/chrome-sandbox
+  - sudo chmod 4755 /opt/google/chrome/chrome-sandbox
+#Temporary Meltdown workaround END
 script:
   - npm run build dev
   - karma start test/karma/karma.conf.chrome.js --single-run
