@@ -1,6 +1,6 @@
 {
   "name": "dexie-orm-addon",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "An ORM Addon for Dexie.js",
   "main": "dist/dexieORMAddon.js",
   "module": "dist/dexieORMAddon.es.js",
@@ -77,7 +77,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-qunit": "^1.2.1",
     "qunit": "^2.5.0",
-    "qunitjs": "^2.5.0",
+    "qunitjs": "^2.4.1",
     "rollup": "^0.55.0",
     "rollup-plugin-commonjs": "^8.2.6",
     "rollup-plugin-node-resolve": "^3.0.2",
