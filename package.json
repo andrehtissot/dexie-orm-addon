@@ -23,9 +23,11 @@
   "scripts": {
     "build": "just-build",
     "watch": "just-build --watch",
-    "test": "npm run build dev && npm run test:unit",
-    "test:unit": "karma start test/karma/karma.conf.chrome.js --single-run",
-    "test:debug": "karma start test/karma/karma.conf.chrome.js --log-level debug"
+    "test": "npm run test:chrome",
+    "test:debug": "karma start test/karma/karma.conf.chrome.js --log-level debug",
+    "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
+    "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
+    "test:safari": "npm run build dev && karma start test/karma/karma.conf.safari.js --single-run"
   },
   "just-build": {
     "default": [
@@ -69,22 +71,22 @@
     "babel-preset-env": "^1.6.1",
     "dexie-opened-databases-addon": "0.0.4",
     "escape-string-regexp": "^1.0.5",
-    "eslint": "^4.16.0",
+    "eslint": "^4.19.1",
     "just-build": "^0.9.16",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-mocha-reporter": "^2.2.5",
-    "karma-qunit": "^1.2.1",
-    "qunit": "^2.5.0",
+    "karma-qunit": "^2.0.1",
+    "qunit": "^2.6.0",
     "qunitjs": "^2.4.1",
-    "rollup": "^0.55.0",
-    "rollup-plugin-commonjs": "^8.2.6",
-    "rollup-plugin-node-resolve": "^3.0.2",
+    "rollup": "^0.57.1",
+    "rollup-plugin-commonjs": "^9.1.0",
+    "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "uglify-js": "^3.3.8"
+    "uglify-js": "^3.3.16"
   },
   "dependencies": {
-    "dexie": "^2.0.1"
+    "dexie": "^2.0.2"
   }
 }

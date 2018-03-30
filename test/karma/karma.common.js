@@ -11,7 +11,6 @@ module.exports = {
     ],
     files: [
         'node_modules/babel-polyfill/dist/polyfill.min.js',
-        'node_modules/qunitjs/qunit/qunit.js',
         'node_modules/dexie/dist/dexie.js',
         'test/karma/karma-env.js',
         { pattern: 'test/worker.js', watched: true, included: false, served: true },
