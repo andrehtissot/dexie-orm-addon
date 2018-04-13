@@ -11,6 +11,9 @@
 
 const Number = {
     validate: (value, options) => {
+        if(value === undefined && (options === undefined || options.require !== true)) {
+            return true
+        }
         if(typeof value !== 'number') {
             return 'is not a Number'
         }

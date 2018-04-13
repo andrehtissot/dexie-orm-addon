@@ -11,6 +11,9 @@
 
 const String = {
     validate: (value, options) => {
+        if(value === undefined && (options === undefined || options.require !== true)) {
+            return true
+        }
         if(typeof value !== 'string') {
             return 'is not a String'
         }

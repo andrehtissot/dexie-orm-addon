@@ -11,6 +11,9 @@
 
 const TypeObject = {
     validate: (value, options) => {
+        if(value === undefined && (options === undefined || options.require !== true)) {
+            return true
+        }
         if(typeof value !== 'object') {
             return 'is not an Object'
         }
