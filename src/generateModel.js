@@ -27,7 +27,9 @@ function extractPrimaryKeyValues(instance) {
 function setAttributes(instance, attributesValues) {
     if(typeof attributesValues === 'object') {
         for(let attrName of instance.constructor.attributesNames) {
-            instance[attrName] = attributesValues[attrName]
+            if(attributesValues[attrName] !== undefined) {
+                instance[attrName] = attributesValues[attrName]
+            }
         }
     }
 }
