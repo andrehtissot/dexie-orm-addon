@@ -139,7 +139,9 @@ export default function generateModel(db) {
         get attributes() {
             const attributes = {}
             for(let attrName of this.constructor.attributesNames) {
-                attributes[attrName] = this[attrName]
+                if(this[attrName] !== undefined) {
+                    attributes[attrName] = this[attrName]
+                }
             }
             return attributes
         }
@@ -177,8 +179,11 @@ export default function generateModel(db) {
                 return false
             }
             privateData.get(this).persistedPrimarykeys = extractPrimaryKeyValues(this)
-            // primary key definition is optional
-            await db[this.constructor.objectStoreName].put(this.attributes)
+            if(privateData.get(this).persistedPrimarykeys === undefined) {
+                await db[this.constructor.objectStoreName].add(this.attributes)
+            } else {
+                await db[this.constructor.objectStoreName].put(this.attributes)
+            }
             return true
         }
 
