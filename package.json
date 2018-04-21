@@ -27,7 +27,8 @@
     "test:debug": "karma start test/karma/karma.conf.chrome.js --log-level debug",
     "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
     "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
-    "test:safari": "npm run build dev && karma start test/karma/karma.conf.safari.js --single-run"
+    "test:safari": "npm run build dev && karma start test/karma/karma.conf.safari.js --single-run",
+    "test:opera": "npm run build dev && karma start test/karma/karma.conf.opera.js --single-run"
   },
   "just-build": {
     "default": [
@@ -77,7 +78,9 @@
     "karma-chrome-launcher": "^2.2.0",
     "karma-firefox-launcher": "^1.1.0",
     "karma-mocha-reporter": "^2.2.5",
+    "karma-opera-launcher": "^1.0.0",
     "karma-qunit": "^2.0.1",
+    "karma-safari-launcher": "^1.0.0",
     "qunit": "^2.6.0",
     "qunitjs": "^2.4.1",
     "rollup": "^0.57.1",

@@ -1,4 +1,6 @@
-import {asyncTest, deleteAllDatabasesWhenDone, newDatabase, newTestDatabaseName} from "./helper-functions"
+import asyncTest from "./helper-functions/asyncTest"
+import newDatabase, {newTestDatabaseName} from "./helper-functions/newDatabase"
+import {deleteAllDatabasesWhenDone} from "./helper-functions/deleteAllDatabases"
 import {module, test} from 'QUnit'
 import DexieORMAddon from '../src/DexieORMAddon'
 

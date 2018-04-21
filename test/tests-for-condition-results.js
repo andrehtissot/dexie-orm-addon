@@ -1,4 +1,7 @@
-import {asyncTest, deleteAllDatabasesWhenDone, newDatabase, newModulesAndSimpleExampleClass} from "./helper-functions"
+import asyncTest from "./helper-functions/asyncTest"
+import newDatabase from "./helper-functions/newDatabase"
+import {deleteAllDatabasesWhenDone} from "./helper-functions/deleteAllDatabases"
+import newModulesAndSimpleExampleClass from "./helper-functions/newModulesAndSimpleExampleClass"
 import {module, test} from 'QUnit'
 
 deleteAllDatabasesWhenDone();

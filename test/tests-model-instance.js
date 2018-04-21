@@ -1,4 +1,7 @@
-import {asyncTest, deleteAllDatabasesWhenDone, newDatabase, doesSupportCompositeObjectStoreKeys} from "./helper-functions"
+import asyncTest from "./helper-functions/asyncTest"
+import newDatabase from "./helper-functions/newDatabase"
+import {deleteAllDatabasesWhenDone} from "./helper-functions/deleteAllDatabases"
+import doesSupportCompositeObjectStoreKeys from "./helper-functions/doesSupportCompositeObjectStoreKeys"
 import {module, test} from 'QUnit'
 
 deleteAllDatabasesWhenDone();
@@ -323,8 +326,7 @@ asyncTest("simple delete", async ( assert ) => {
         user2 = { id: 2, name: 'Test User 2' }
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
     db.on("populate", () => {
-        db.ObjectStoreTest.add( user1 )
-        db.ObjectStoreTest.add( user2 )
+        db.ObjectStoreTest.bulkAdd([user1, user2])
     })
     class ModelTest extends Model {
         static get objectStoreName() {
@@ -339,6 +341,8 @@ asyncTest("simple delete", async ( assert ) => {
     }
     for(let expectedRecord of [user2, user1]) {
         const record = await ModelTest.data.lastInstance()
+        assert.notEqual(record, undefined, 'record should not be undefined')
+        assert.notEqual(record, null, 'record should not be null')
         assert.ok(record instanceof ModelTest, 'record is a instance of ModelTest')
         assert.deepEqual(record.attributes, expectedRecord, 'object attributes are equal to the original object')
         assert.equal(record.id, expectedRecord.id, 'id is equal')
