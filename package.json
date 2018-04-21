@@ -24,11 +24,18 @@
     "build": "just-build",
     "watch": "just-build --watch",
     "test": "npm run test:chrome",
-    "test:debug": "karma start test/karma/karma.conf.chrome.js --log-level debug",
     "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
+    "test:chrome:debug": "npm run build dev && karma start test/karma/karma.conf.chrome.js --log-level debug",
     "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
+    "test:firefox:debug": "npm run build dev && karma start test/karma/karma.conf.firefox.js --log-level debug",
+    "test:edge": "npm run build dev && karma start test/karma/karma.conf.edge.js --single-run",
+    "test:edge:debug": "npm run build dev && karma start test/karma/karma.conf.edge.js --log-level debug",
+    "test:ie": "npm run build dev && karma start test/karma/karma.conf.ie.js --single-run",
+    "test:ie:debug": "npm run build dev && karma start test/karma/karma.conf.ie.js --log-level debug",
     "test:safari": "npm run build dev && karma start test/karma/karma.conf.safari.js --single-run",
-    "test:opera": "npm run build dev && karma start test/karma/karma.conf.opera.js --single-run"
+    "test:safari:debug": "npm run build dev && karma start test/karma/karma.conf.safari.js --log-level debug",
+    "test:opera": "npm run build dev && karma start test/karma/karma.conf.opera.js --single-run",
+    "test:opera:debug": "npm run build dev && karma start test/karma/karma.conf.opera.js --log-level debug"
   },
   "just-build": {
     "default": [
@@ -76,7 +83,9 @@
     "just-build": "^0.9.16",
     "karma": "^2.0.0",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-edge-launcher": "^0.4.2",
     "karma-firefox-launcher": "^1.1.0",
+    "karma-ie-launcher": "^1.0.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-opera-launcher": "^1.0.0",
     "karma-qunit": "^2.0.1",
