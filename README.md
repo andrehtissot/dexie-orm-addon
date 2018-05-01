@@ -2,9 +2,12 @@
 An ORM Addon for Dexie.js
 
 [![Build Status](https://www.travis-ci.org/andrehtissot/dexie-orm-addon.svg?branch=master)](https://www.travis-ci.org/andrehtissot/dexie-orm-addon)
-[![npm](https://img.shields.io/npm/dt/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
-[![npm](https://img.shields.io/npm/v/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
+[![npm downloads](https://img.shields.io/npm/dt/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
+[![npm version](https://img.shields.io/npm/v/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Known Vulnerabilities](https://snyk.io/test/github/andrehtissot/dexie-orm-addon/badge.svg?targetFile=package.json)](https://snyk.io/test/github/andrehtissot/dexie-orm-addon?targetFile=package.json)
+[![Dependency Status](https://img.shields.io/david/andrehtissot/dexie-orm-addon.svg)](https://david-dm.org/andrehtissot/dexie-orm-addon)
+[![DevDependency Status](https://img.shields.io/david/dev/andrehtissot/dexie-orm-addon.svg)](https://david-dm.org/andrehtissot/dexie-orm-addon?type=dev)
 
 
 ### Version 0
