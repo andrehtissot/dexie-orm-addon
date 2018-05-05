@@ -1,12 +1,13 @@
-#Temporary Meltdown workaround BEGIN
-sudo: required
-#Temporary Meltdown workaround ELSE
-# sudo: false
-#Temporary Meltdown workaround END
+sudo: false
 language: node_js
 node_js:
   - 9
+addons:
+  code_climate:
+    repo_token:
+      secure: "wkFhjLNaamGsNgBKoKrvkIQ9zroNJoYKsVt4JbGmSJr2U2jn/DJb3Opl1dA3RNEsJ9Rc8xpj0QmkDUzZ+A1ZFEdk9YqDD0oWVRZSnw0emAZoqzQVOi8Lug2vf1oikSdECh2hxxbQz6lIJqNl4LMczkUIoeN8RUvFQYYPMO2j51ATcenWgFwI8jhVbknqTpAyVakuRu755QTei/0+sTwzbdum5Tubj0TRCllfdXArHncHNrflk3d++SZ7nDio3keLyL6kQ5RimEglzOEGCHcjeEN25liTASvAP2tQVL264fwgTvuTXJb+dlDFL373xQftsOwHm90aFFQelh8OmYl3c6vq1bzf5TaqWxIRP9L1SrSPjcJcGafAiOlP9lq/Ue2RzjXiq/LNhh5eNbiU/oqTXJleZqBmumcPO7O8G5H6pqkM76BQdMJZeg/o+oswALYMId89LGKU15sYGmRgJfQhGSICDWqDuzlX6toPX7XPm1c8vwcTiuPA/UD5U+/yZkQ4yCcRcDlA/BZZHk8pBBVLvZXCue2hj1+RY95jLKXxMcTkMEUfKAr5kqxQjDu3bUQDxMfd88wUSV/O+cuJbW2i6pXPlZd/ShDm/1Zl+PkHwL+eNW812LmVajNeIpFyVmfpQFRRBQRp4eIqaw8Z+MBT9YmFZqHhocAmRvgzO9D7XiE="
 before_script:
+  - npm install codeclimate-test-reporter -g
   - export DISPLAY=:99.0
   - sh -e /etc/init.d/xvfb start
 #Temporary Meltdown workaround BEGIN
@@ -17,3 +18,6 @@ script:
   - npm run build dev
   - karma start test/karma/karma.conf.chrome.js --single-run
   - karma start test/karma/karma.conf.firefox.js --single-run
+  - karma start test/karma/karma.conf.chrome.coverage.js --single-run
+after_script:
+  - codeclimate-test-reporter < ./coverage/lcov.info

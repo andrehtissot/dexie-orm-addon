@@ -1,10 +1,10 @@
 {
   "name": "dexie-orm-addon",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "An ORM Addon for Dexie.js",
-  "main": "dist/dexieORMAddon.js",
-  "module": "dist/dexieORMAddon.es.js",
-  "jsnext:main": "dist/dexieORMAddon.es.js",
+  "main": "dist/DexieORMAddon.js",
+  "module": "dist/DexieORMAddon.es.js",
+  "jsnext:main": "dist/DexieORMAddon.es.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/andrehtissot/dexie-orm-addon.git"
@@ -26,6 +26,7 @@
     "test": "npm run test:chrome",
     "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
     "test:chrome:debug": "npm run build dev && karma start test/karma/karma.conf.chrome.js --log-level debug",
+    "test:chrome:coverage": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.js",
     "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
     "test:firefox:debug": "npm run build dev && karma start test/karma/karma.conf.firefox.js --log-level debug",
     "test:edge": "npm run build dev && karma start test/karma/karma.conf.edge.js --single-run",
@@ -42,32 +43,44 @@
       "# Build all targets",
       "just-build release test"
     ],
-    "dexie-orm": [
+    "main": [
       "# Build the umd module",
       "rollup -c tools/build-configs/rollup.config.js",
-      "babel --module-id DexieORMAddon dist/dexieORMAddon.es.js -o dist/dexieORMAddon.js --source-maps",
-      "node tools/insertBanner.js dist/dexieORMAddon.js dist/dexieORMAddon.es.js",
-      "node tools/replaceVersionAndDate.js dist/dexieORMAddon.js dist/dexieORMAddon.es.js",
+      "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.js --source-maps",
+      "node tools/insertBanner.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js",
+      "node tools/replaceVersionAndDate.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js",
+      "node tools/replaceExportForGlobal.js dist/DexieORMAddon.js",
       "eslint src"
     ],
     "release": [
       "# Build the umd module and minifies it.",
-      "just-build dexie-orm",
-      "uglifyjs dist/dexieORMAddon.js -m -c -o dist/dexieORMAddon.min.js --source-map \"filename='dist/dexieORMAddon.min.js.map',includeSources='dist/dexieORMAddon.js.map'\""
+      "just-build main",
+      "uglifyjs dist/DexieORMAddon.js -m -c -o dist/DexieORMAddon.min.js --source-map \"filename='dist/DexieORMAddon.min.js.map',includeSources='dist/DexieORMAddon.js.map'\""
     ],
     "dev": [
       "# Build the umd module and the tests",
-      "just-build dexie-orm test"
+      "just-build main test"
     ],
     "gzip": [
       "# Optionally gzip to find the size of the minified & gzipped version",
-      "gzip dist/dexieORMAddon.min.js -k -f -9"
+      "gzip dist/DexieORMAddon.min.js -k -f -9"
     ],
     "test": [
       "# Build the test suite.",
       "rollup -c tools/build-configs/rollup.tests.config.js",
       "mkdir -p test/tmp/",
       "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
+    ],
+    "test-coverage": [
+      "# Build the test coverage suite.",
+      "mkdir -p test/tmp/",
+      "rollup -c tools/build-configs/rollup.config.js",
+      "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.es6.js --source-maps",
+      "node tools/insertBanner.js dist/DexieORMAddon.es6.js dist/DexieORMAddon.es.js",
+      "node tools/replaceVersionAndDate.js dist/DexieORMAddon.es6.js dist/DexieORMAddon.es.js",
+      "node tools/replaceExportForGlobal.js dist/DexieORMAddon.es6.js",
+      "rollup -c tools/build-configs/rollup.tests.config.js",
+      "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.es6.js --source-maps"
     ]
   },
   "engines": {
@@ -83,12 +96,13 @@
     "just-build": "^0.9.16",
     "karma": "^2.0.2",
     "karma-chrome-launcher": "^2.2.0",
+    "karma-coverage": "^1.1.2",
     "karma-edge-launcher": "^0.4.2",
     "karma-firefox-launcher": "^1.1.0",
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha-reporter": "^2.2.5",
     "karma-opera-launcher": "^1.0.0",
-    "karma-qunit": "^2.0.1",
+    "karma-qunit": "^2.0.2",
     "karma-safari-launcher": "^1.0.0",
     "qunit": "^2.6.0",
     "qunitjs": "^2.4.1",
@@ -96,7 +110,7 @@
     "rollup-plugin-commonjs": "^9.1.3",
     "rollup-plugin-node-resolve": "^3.3.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
-    "uglify-js": "^3.3.23"
+    "uglify-es": "^3.3.9"
   },
   "dependencies": {
     "dexie": "^2.0.3"

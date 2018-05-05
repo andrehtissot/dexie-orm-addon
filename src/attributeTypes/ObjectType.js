@@ -9,7 +9,7 @@
  * Released under the MIT license
  */
 
-const TypeObject = {
+const ObjectType = {
     validate: (value, options) => {
         if(value === undefined && (options === undefined || options.require !== true)) {
             return true
@@ -27,4 +27,4 @@ const TypeObject = {
     }
 }
 
-export default TypeObject
+export default ObjectType

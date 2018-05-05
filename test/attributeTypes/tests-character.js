@@ -1,6 +1,7 @@
 import {module, test} from 'QUnit'
-import {typeValidateOk, typeValidateEqual} from './helper-functions'
-import Character from '../../src/attributeTypes/Character'
+import {typeValidateOk, typeValidateEqual, AttributeTypes} from './helper-functions'
+
+const { Character } = AttributeTypes()
 
 module("AttributeTypes.Character")
 

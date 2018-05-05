@@ -1,3 +1,4 @@
+import newDatabase from '../helper-functions/newDatabase'
 
 export function typeValidateOk(assert, type, options, examples) {
     for(let example of examples) {
@@ -10,3 +11,5 @@ export function typeValidateEqual(assert, type, options, expectedResult, example
         assert.equal(type.validate(example, options), expectedResult, JSON.stringify(example)+' '+expectedResult)
     }
 }
+
+export const AttributeTypes = () => newDatabase().AttributeTypes

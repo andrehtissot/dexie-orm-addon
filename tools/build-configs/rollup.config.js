@@ -4,7 +4,7 @@ export default {
   input: 'src/DexieORMAddon.js',
   output: [
     {
-      file: 'dist/dexieORMAddon.es.js',
+      file: 'dist/DexieORMAddon.es.js',
       format: 'es',
       name: 'DexieORMAddon',
       sourcemap: true

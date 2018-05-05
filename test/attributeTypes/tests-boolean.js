@@ -1,6 +1,7 @@
 import {module, test} from 'QUnit'
-import {typeValidateOk, typeValidateEqual} from './helper-functions'
-import Boolean from '../../src/attributeTypes/Boolean'
+import {typeValidateOk, typeValidateEqual, AttributeTypes} from './helper-functions'
+
+const { Boolean } = AttributeTypes()
 
 module("AttributeTypes.Boolean")
 

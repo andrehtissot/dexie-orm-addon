@@ -1,6 +1,7 @@
 import {module, test} from 'QUnit'
-import {typeValidateOk, typeValidateEqual} from './helper-functions'
-import Integer from '../../src/attributeTypes/Integer'
+import {typeValidateOk, typeValidateEqual, AttributeTypes} from './helper-functions'
+
+const { Integer } = AttributeTypes()
 
 module("AttributeTypes.Integer")
 

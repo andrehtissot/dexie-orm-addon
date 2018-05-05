@@ -1,6 +1,7 @@
 import {module, test} from 'QUnit'
-import {typeValidateOk, typeValidateEqual} from './helper-functions'
-import DateTime from '../../src/attributeTypes/DateTime'
+import {typeValidateOk, typeValidateEqual, AttributeTypes} from './helper-functions'
+
+const { DateTime } = AttributeTypes()
 
 module("AttributeTypes.DateTime")
 

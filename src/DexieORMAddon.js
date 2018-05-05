@@ -16,11 +16,11 @@ import DateTime from './attributeTypes/DateTime'
 import Integer from './attributeTypes/Integer'
 import Number from './attributeTypes/Number'
 import String from './attributeTypes/String'
-import TypeObject from './attributeTypes/Object'
+import ObjectType from './attributeTypes/ObjectType'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
 
-export const AttributeTypes = { Boolean, Character, DateTime, Integer, Number, Object, String }
+export const AttributeTypes = { Boolean, Character, DateTime, Integer, Number, ObjectType, String }
 
 export default function DexieORMAddon(db) {
     db.Model = generateModel(db)

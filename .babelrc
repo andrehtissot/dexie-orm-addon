@@ -3,12 +3,32 @@
     [
       "env", {
         "targets": {
-          "browsers": ["> 1%"]
+          "chrome": "64",
+          "edge": "15",
+          "firefox": "58",
+          "safari": "11",
+          "ios": "11",
+          "opera": "49"
         },
         "modules": "umd",
         "debug": false
       }
     ]
   ],
-  "plugins": []
+  "plugins": [],
+  "env": {
+    "coverage-test": {
+      "presets": [
+        [
+          "env", {
+            "targets": {
+              "es": "6"
+            },
+            "modules": "umd",
+            "debug": false
+          }
+        ]
+      ]
+    }
+  }
 }

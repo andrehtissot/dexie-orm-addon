@@ -14,10 +14,11 @@ export default {
     name: 'DexieORMAddonTests',
     sourcemap: true,
     globals: {
-      QUnit: "QUnit"
+      QUnit: 'QUnit',
+      DexieORMAddon: 'DexieORMAddon'
     }
   },
-  external: ['QUnit', 'babel-runtime'],
+  external: ['QUnit', 'babel-runtime', 'DexieORMAddon'],
   plugins: [
     sourcemaps(),
     nodeResolve({browser: true}),

@@ -1,4 +1,3 @@
-import DexieORMAddon from '../../src/DexieORMAddon'
 import DexieOpenedDatabasesAddon from 'dexie-opened-databases-addon'
 
 export function newTestDatabaseName() {

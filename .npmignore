@@ -183,3 +183,6 @@ samples/typescript/utils.js.map
 
 /.ntvs_analysis.dat
 /*.njsproj
+
+# codeclimate + travis temp dir
+coverage/
