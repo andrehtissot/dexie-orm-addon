@@ -7,6 +7,11 @@ module.exports = function (config) {
     configurations.preprocessors = {
       'dist/DexieORMAddon.es6.js': ['coverage']
     }
+    configurations.coverageReporter = {
+      type: 'lcovonly',
+      dir: 'coverage/',
+      subdir: './'
+    }
     configurations.files.push('dist/DexieORMAddon.es6.js')
     configurations.files.push('test/tmp/tests.js')
     configurations.plugins.push('karma-chrome-launcher')
