@@ -10,13 +10,17 @@ function validateMinAndMaxLength(value, options) {
     }
 }
 
+function validateType(value) {
+    if(typeof value !== 'string') {
+        throw 'is not a String'
+    }
+}
+
 const String = {
     validate: (value, options = { require: false }) => {
         if(value !== undefined || options.require === true) {
-            if(typeof value !== 'string') {
-                return 'is not a String'
-            }
             try {
+                validateType(value)
                 validateMinAndMaxLength(value, options)
             } catch(e) {
                 return e
