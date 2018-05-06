@@ -1,9 +1,6 @@
 const Integer = {
     validate: (value, options) => {
-        if(value === undefined && (options === undefined || options.require !== true)) {
-            return true
-        }
-        if(!Number.isInteger(value)) {
+        if(!Number.isInteger(value) && (value !== undefined || (options !== undefined && options.require === true))) {
             return 'is not an Integer'
         }
         if(options !== undefined) {

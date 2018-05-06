@@ -6,10 +6,7 @@ const ObjectType = {
         if(typeof value !== 'object') {
             return 'is not an Object'
         }
-        if(value !== null) {
-            return true
-        }
-        if(options !== undefined && options.allowNull === true) {
+        if(value !== null || options !== undefined && options.allowNull === true) {
             return true
         }
         return 'is null'
