@@ -6,6 +6,16 @@ function checkModelAssociation(model){
     }
 }
 
+function generateGetInstance(getMethodName) {
+    return async function() {
+        checkModelAssociation(this._ctx.table.model)
+        const record = await this[getMethodName]()
+        if(record !== undefined) {
+            return new this._ctx.table.model(record)
+        }
+    }
+}
+
 const CollectionMethods = {
     toInstancesArray: async function() {
         checkModelAssociation(this._ctx.table.model)
@@ -38,20 +48,6 @@ const CollectionMethods = {
         }
         return mapResult
     },
-    firstInstance: async function() {
-        checkModelAssociation(this._ctx.table.model)
-        const first = await this.first()
-        if(first !== undefined) {
-            return new this._ctx.table.model(first)
-        }
-    },
-    lastInstance: async function() {
-        checkModelAssociation(this._ctx.table.model)
-        const last = await this.last()
-        if(last !== undefined) {
-            return new this._ctx.table.model(last)
-        }
-    },
     sortInstancesBy: async function(keyPath) {
         checkModelAssociation(this._ctx.table.model)
         const arrayResult = await this.sortBy(keyPath),
@@ -60,19 +56,16 @@ const CollectionMethods = {
             arrayResult[i] = new model(arrayResult[i])
         }
         return arrayResult
-    }
+    },
+    firstInstance: generateGetInstance('first'),
+    lastInstance: generateGetInstance('last')
 }
 
 export default function addCollectionMethods(db) {
     db.Collection.prototype.toInstancesArray = CollectionMethods.toInstancesArray
-
     db.Collection.prototype.toMapIndexedBy = CollectionMethods.toMapIndexedBy
-
     db.Collection.prototype.toInstancesMapIndexedBy = CollectionMethods.toInstancesMapIndexedBy
-
     db.Collection.prototype.firstInstance = CollectionMethods.firstInstance
-
     db.Collection.prototype.lastInstance = CollectionMethods.lastInstance
-
     db.Collection.prototype.sortInstancesBy = CollectionMethods.sortInstancesBy
 }
