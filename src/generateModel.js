@@ -13,12 +13,16 @@ function extractPrimaryKeyValues(instance) {
     return primaryKeys.map((pk) => instance[pk])
 }
 
+function setAttribute(instance, attributesValues, attrName) {
+    if(attributesValues[attrName] !== undefined) {
+        instance[attrName] = attributesValues[attrName]
+    }
+}
+
 function setAttributes(instance, attributesValues) {
     if(typeof attributesValues === 'object') {
         for(let attrName of instance.constructor.attributesNames) {
-            if(attributesValues[attrName] !== undefined) {
-                instance[attrName] = attributesValues[attrName]
-            }
+            setAttribute(instance, attributesValues, attrName)
         }
     }
 }
@@ -31,13 +35,19 @@ function getPrimaryKeyValuesFromPrivateDataOrExtract(instance){
     return primaryKeyValues
 }
 
-function areRecordsDataValid(modelClass, records) {
+function areRecordDataValid(modelClass, record) {
     const attributesTypes = modelClass.attributesTypes
+    for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
+        if(attributeTypeObject.validate(record[attributeName], validationOptions) !== true) {
+            return false
+        }
+    }
+}
+
+function areRecordsDataValid(modelClass, records) {
     for(let record of records) {
-        for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-            if(attributeTypeObject.validate(record[attributeName], validationOptions) !== true) {
-                return false
-            }
+        if(areRecordDataValid(modelClass, record) === false) {
+            return false
         }
     }
     return true
@@ -53,6 +63,15 @@ function checkObjectStoreExistence(objectStore){
 function forbidDirectCallingToModel(staticObject, methodName){
     if(staticObject === BaseModel || staticObject.name === 'Model') {
         throw new DirectMehodCallToModelException(methodName)
+    }
+}
+
+function validateAttribute(instance, invalidAttributes, attributesNames, attributeName, attributeTypeObject, validationOptions) {
+    if(attributesNames.includes(attributeName)){
+        const validationMessage = attributeTypeObject.validate(instance[attributeName], validationOptions)
+        if(validationMessage !== true) {
+            invalidAttributes.set(attributeName, validationMessage)
+        }
     }
 }
 
@@ -148,12 +167,7 @@ export class BaseModel {
                 ? this.constructor.attributesNames
                 : attributesNamesToValidate
         for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-            if(attributesNames.includes(attributeName)){
-                const validationMessage = attributeTypeObject.validate(this[attributeName], validationOptions)
-                if(validationMessage !== true) {
-                    invalidAttributes.set(attributeName, validationMessage)
-                }
-            }
+            validateAttribute(this, invalidAttributes, attributesNames, attributeName, attributeTypeObject, validationOptions)
         }
         return invalidAttributes
     }
