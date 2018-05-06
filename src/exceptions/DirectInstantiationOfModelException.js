@@ -1,3 +1,5 @@
+import addCaptureStackTrace from './addCaptureStackTrace'
+
 export default class DirectInstantiationOfModelException extends Error {
     constructor(ignoredMessage, ...params) {
         super("Model should never be instatiated directly", ...params);
