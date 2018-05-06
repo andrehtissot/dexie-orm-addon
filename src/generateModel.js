@@ -49,41 +49,88 @@ function checkObjectStoreExistence(objectStore){
     }
 }
 
+
+function forbidDirectCallingToModel(staticObject, methodName){
+    if(staticObject === BaseModel || staticObject.name === 'Model') {
+        throw new DirectMehodCallToModelException(methodName)
+    }
+}
+
+export class BaseModel {
+    static get primaryKeys() {
+        forbidDirectCallingToModel(this, 'get primaryKeys()')
+        // Default primary key is the first attribute defined
+        return [ this.attributesTypes[0][0] ]
+    }
+
+    static get objectStoreName() {
+        forbidDirectCallingToModel(this, 'get objectStoreName()')
+        // Default objectStore name is the classe's name
+        return this.name
+    }
+
+    static get attributesTypes() {
+        forbidDirectCallingToModel(this, 'get attributesTypes()')
+        // Default objectStore has no attributes
+        throw new MethodMustBeImplementedException('get attributesTypes()')
+    }
+
+    static get relatesTo() {
+        forbidDirectCallingToModel(this, 'get relatesTo()')
+        // Default objectStore has no attributes
+        throw new MethodMustBeImplementedException('get relatesTo()')
+    }
+
+    static get attributesNames() {
+        forbidDirectCallingToModel(this, 'get attributesNames()')
+        return this.attributesTypes.map((a) => a[0])
+    }
+
+    get attributes() {
+        const attributes = {}
+        for(let attrName of this.constructor.attributesNames) {
+            if(this[attrName] !== undefined) {
+                attributes[attrName] = this[attrName]
+            }
+        }
+        return attributes
+    }
+
+    validate(attributesNamesToValidate) {
+        const attributesTypes = this.constructor.attributesTypes,
+            invalidAttributes = new Map(),
+            attributesNames = attributesNamesToValidate === undefined
+                ? this.constructor.attributesNames
+                : attributesNamesToValidate
+        for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
+            if(attributesNames.includes(attributeName)){
+                const validationMessage = attributeTypeObject.validate(this[attributeName], validationOptions)
+                if(validationMessage !== true) {
+                    invalidAttributes.set(attributeName, validationMessage)
+                }
+            }
+        }
+        return invalidAttributes
+    }
+
+    get isValid() {
+        const attributesTypes = this.constructor.attributesTypes
+        for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
+            if(attributeTypeObject.validate(this[attributeName], validationOptions) !== true) {
+                return false
+            }
+        }
+        return true
+    }
+}
+
+
 export default function generateModel(db) {
-    const Model = class Model {
+    const Model = class Model extends BaseModel {
         static get data() {
             forbidDirectCallingToModel(this, 'data()')
             db[this.objectStoreName].model = this
             return db[this.objectStoreName]
-        }
-
-        static get primaryKeys() {
-            forbidDirectCallingToModel(this, 'get primaryKeys()')
-            // Default primary key is the first attribute defined
-            return [ this.attributesTypes[0][0] ]
-        }
-
-        static get objectStoreName() {
-            forbidDirectCallingToModel(this, 'get objectStoreName()')
-            // Default objectStore name is the classe's name
-            return this.name
-        }
-
-        static get attributesTypes() {
-            forbidDirectCallingToModel(this, 'get attributesTypes()')
-            // Default objectStore has no attributes
-            throw new MethodMustBeImplementedException('get attributesTypes()')
-        }
-
-        static get relatesTo() {
-            forbidDirectCallingToModel(this, 'get relatesTo()')
-            // Default objectStore has no attributes
-            throw new MethodMustBeImplementedException('get relatesTo()')
-        }
-
-        static get attributesNames() {
-            forbidDirectCallingToModel(this, 'get attributesNames()')
-            return this.attributesTypes.map((a) => a[0])
         }
 
         static async saveData(records, options = { force: false }) {
@@ -112,6 +159,7 @@ export default function generateModel(db) {
         }
 
         constructor(attributesValues, options = { persisted: false }) {
+            super()
             if (this.constructor === Model) {
               throw new DirectInstantiationOfModelException();
             }
@@ -123,43 +171,6 @@ export default function generateModel(db) {
             } else {
                 privateData.set(this, {})
             }
-        }
-
-        get attributes() {
-            const attributes = {}
-            for(let attrName of this.constructor.attributesNames) {
-                if(this[attrName] !== undefined) {
-                    attributes[attrName] = this[attrName]
-                }
-            }
-            return attributes
-        }
-
-        validate(attributesNamesToValidate) {
-            const attributesTypes = this.constructor.attributesTypes,
-                invalidAttributes = new Map(),
-                attributesNames = attributesNamesToValidate === undefined
-                    ? this.constructor.attributesNames
-                    : attributesNamesToValidate
-            for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-                if(attributesNames.includes(attributeName)){
-                    const validationMessage = attributeTypeObject.validate(this[attributeName], validationOptions)
-                    if(validationMessage !== true) {
-                        invalidAttributes.set(attributeName, validationMessage)
-                    }
-                }
-            }
-            return invalidAttributes
-        }
-
-        get isValid() {
-            const attributesTypes = this.constructor.attributesTypes
-            for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-                if(attributeTypeObject.validate(this[attributeName], validationOptions) !== true) {
-                    return false
-                }
-            }
-            return true
         }
 
         async save(options = { force: false }) {
@@ -218,12 +229,6 @@ export default function generateModel(db) {
                     // Returns a dexie collection from the related model.
                     return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName])
             }
-        }
-    }
-
-    function forbidDirectCallingToModel(staticObject, methodName){
-        if(staticObject === Model) {
-            throw new DirectMehodCallToModelException(methodName)
         }
     }
     return Model
