@@ -66,7 +66,7 @@ function forbidDirectCallingToModel(staticObject, methodName){
     }
 }
 
-function validateAttribute(instance, invalidAttributes, attributesNames, attributeName, attributeTypeObject, validationOptions) {
+function validateAttribute(instance, invalidAttributes, attributesNames, [ attributeName, attributeTypeObject, validationOptions ]) {
     if(attributesNames.includes(attributeName)){
         const validationMessage = attributeTypeObject.validate(instance[attributeName], validationOptions)
         if(validationMessage !== true) {
@@ -166,8 +166,8 @@ export class BaseModel {
             attributesNames = attributesNamesToValidate === undefined
                 ? this.constructor.attributesNames
                 : attributesNamesToValidate
-        for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-            validateAttribute(this, invalidAttributes, attributesNames, attributeName, attributeTypeObject, validationOptions)
+        for(let attributeType of attributesTypes) {
+            validateAttribute(this, invalidAttributes, attributesNames, attributeType)
         }
         return invalidAttributes
     }
