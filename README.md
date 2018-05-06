@@ -8,6 +8,8 @@ An ORM Addon for Dexie.js
 [![Known Vulnerabilities](https://snyk.io/test/github/andrehtissot/dexie-orm-addon/badge.svg?targetFile=package.json)](https://snyk.io/test/github/andrehtissot/dexie-orm-addon?targetFile=package.json)
 [![Dependency Status](https://img.shields.io/david/andrehtissot/dexie-orm-addon.svg)](https://david-dm.org/andrehtissot/dexie-orm-addon)
 [![DevDependency Status](https://img.shields.io/david/dev/andrehtissot/dexie-orm-addon.svg)](https://david-dm.org/andrehtissot/dexie-orm-addon?type=dev)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f713e6d091832dea9764/maintainability)](https://codeclimate.com/github/andrehtissot/dexie-orm-addon/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f713e6d091832dea9764/test_coverage)](https://codeclimate.com/github/andrehtissot/dexie-orm-addon/test_coverage)
 
 
 ### Version 0
