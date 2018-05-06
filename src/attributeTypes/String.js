@@ -1,6 +1,6 @@
 const String = {
-    validate: (value, options) => {
-        if(value !== undefined || (options !== undefined && options.require === true)) {
+    validate: (value, options = { require: false }) => {
+        if(value !== undefined || options.require === true) {
             if(typeof value !== 'string') {
                 return 'is not a String'
             }

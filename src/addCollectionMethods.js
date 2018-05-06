@@ -16,15 +16,19 @@ function generateGetInstance(getMethodName) {
     }
 }
 
+function objectifyArray(arrayResult, model) {
+    for (let i = arrayResult.length - 1; i >= 0; i--) {
+        arrayResult[i] = new model(arrayResult[i])
+    }
+    return arrayResult
+}
+
 const CollectionMethods = {
     toInstancesArray: async function() {
         checkModelAssociation(this._ctx.table.model)
         const arrayResult = await this.toArray(),
             model = this._ctx.table.model
-        for (let i = arrayResult.length - 1; i >= 0; i--) {
-            arrayResult[i] = new model(arrayResult[i])
-        }
-        return arrayResult
+        return objectifyArray(arrayResult, model)
     },
     toMapIndexedBy: async function(indexingAttributeName) {
         const mapResult = new Map(),
@@ -52,10 +56,7 @@ const CollectionMethods = {
         checkModelAssociation(this._ctx.table.model)
         const arrayResult = await this.sortBy(keyPath),
             model = this._ctx.table.model
-        for (let i = arrayResult.length - 1; i >= 0; i--) {
-            arrayResult[i] = new model(arrayResult[i])
-        }
-        return arrayResult
+        return objectifyArray(arrayResult, model)
     },
     firstInstance: generateGetInstance('first'),
     lastInstance: generateGetInstance('last')
