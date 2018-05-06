@@ -1,14 +1,3 @@
-/*!
- * Dexie ORM Addon {version} ({date})
- * https://github.com/andrehtissot/dexie-orm-addon
- *
- * Requires Dexie IndexedDB Addon
- * http://dexie.org
- *
- * Copyright André Augusto Tissot
- * Released under the MIT license
- */
-
 const ObjectType = {
     validate: (value, options) => {
         if(value === undefined && (options === undefined || options.require !== true)) {

@@ -1,14 +1,3 @@
-/*!
- * Dexie ORM Addon {version} ({date})
- * https://github.com/andrehtissot/dexie-orm-addon
- *
- * Requires Dexie IndexedDB Addon
- * http://dexie.org
- *
- * Copyright André Augusto Tissot
- * Released under the MIT license
- */
-
 import DirectMehodCallToModelException from './exceptions/DirectMehodCallToModelException'
 import DirectInstantiationOfModelException from './exceptions/DirectInstantiationOfModelException'
 import ModelsObjectStoreDoestExistException from './exceptions/ModelsObjectStoreDoestExistException'
