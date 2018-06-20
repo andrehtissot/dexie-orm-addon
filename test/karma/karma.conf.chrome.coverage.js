@@ -13,7 +13,7 @@ module.exports = function (config) {
       subdir: './'
     }
     configurations.files.push('dist/DexieORMAddon.es6.js')
-    configurations.files.push('test/tmp/tests.js')
+    configurations.files.push('test/tmp/tests.es6.js')
     configurations.plugins.push('karma-chrome-launcher')
     configurations.plugins.push('karma-coverage')
     config.set(configurations)

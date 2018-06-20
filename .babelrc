@@ -3,12 +3,12 @@
     [
       "env", {
         "targets": {
-          "chrome": "64",
-          "edge": "15",
-          "firefox": "58",
-          "safari": "11",
-          "ios": "11",
-          "opera": "49"
+          "chrome": "66",
+          "edge": "17",
+          "firefox": "60",
+          "safari": "11.1",
+          "ios": "11.3",
+          "opera": "53"
         },
         "modules": "umd",
         "debug": false
@@ -25,6 +25,19 @@
               "es": "6"
             },
             "modules": "umd",
+            "debug": false
+          }
+        ]
+      ]
+    },
+    "ie11-support": {
+      "presets": [
+        [
+          "env", {
+            "targets": {
+              "browsers": "ie >= 11"
+            },
+            "modules": "commonjs",
             "debug": false
           }
         ]
