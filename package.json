@@ -27,6 +27,7 @@
     "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
     "test:chrome:debug": "npm run build dev && karma start test/karma/karma.conf.chrome.js --log-level debug",
     "test:chrome:coverage": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.js",
+    "test:chrome:coverage:html": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.html.js && google-chrome coverage/index.html",
     "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
     "test:firefox:debug": "npm run build dev && karma start test/karma/karma.conf.firefox.js --log-level debug",
     "test:edge": "npm run build dev && karma start test/karma/karma.conf.edge.js --single-run",

@@ -2,7 +2,7 @@
  * Dexie ORM Addon {version} ({date})
  * https://github.com/andrehtissot/dexie-orm-addon
  *
- * Requires Dexie IndexedDB Addon
+ * Requires Dexie IndexedDB
  * http://dexie.org
  *
  * Copyright André Augusto Tissot
