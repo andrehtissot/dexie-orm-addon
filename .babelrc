@@ -24,7 +24,7 @@
             "targets": {
               "es": "6"
             },
-            "modules": "umd",
+            "modules": "commonjs",
             "debug": false
           }
         ]
