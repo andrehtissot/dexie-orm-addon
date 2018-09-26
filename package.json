@@ -1,6 +1,6 @@
 {
   "name": "dexie-orm-addon",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "An ORM Addon for Dexie.js",
   "main": "dist/DexieORMAddon.js",
   "module": "dist/DexieORMAddon.es.js",
@@ -42,7 +42,7 @@
   "just-build": {
     "default": [
       "# Build all targets",
-      "just-build release test"
+      "just-build release test gzip"
     ],
     "main": [
       "# Build the umd module",
@@ -87,12 +87,12 @@
       "# Build the test coverage suite.",
       "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
       "rollup -c tools/build-configs/rollup.config.js",
-      "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.es6.js --source-maps",
-      "node tools/insertBanner.js dist/DexieORMAddon.es6.js dist/DexieORMAddon.es.js",
-      "node tools/replaceVersionAndDate.js dist/DexieORMAddon.es6.js dist/DexieORMAddon.es.js",
-      "node tools/replaceExportForGlobal.js dist/DexieORMAddon.es6.js",
+      "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o tools/tmp/rollup/tests.testCoverage.js --source-maps",
+      "node tools/insertBanner.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
+      "node tools/replaceVersionAndDate.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
+      "node tools/replaceExportForGlobal.js tools/tmp/rollup/tests.testCoverage.js",
       "rollup -c tools/build-configs/rollup.tests.config.js",
-      "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.es6.js --source-maps"
+      "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
     ]
   },
   "engines": {
@@ -109,10 +109,10 @@
     "cross-env": "^5.2.0",
     "dexie-opened-databases-addon": "1.0.0",
     "escape-string-regexp": "^1.0.5",
-    "eslint": "^4.19.1",
-    "hoek": "^5.0.3",
+    "eslint": "^5.6.0",
+    "hoek": "^5.0.4",
     "just-build": "^0.9.16",
-    "karma": "^2.0.3",
+    "karma": "^3.0.0",
     "karma-chrome-launcher": "^2.2.0",
     "karma-coverage": "^1.1.2",
     "karma-edge-launcher": "^0.4.2",
@@ -122,11 +122,11 @@
     "karma-opera-launcher": "^1.0.0",
     "karma-qunit": "^2.1.0",
     "karma-safari-launcher": "^1.0.0",
-    "qunit": "^2.6.1",
+    "qunit": "^2.6.2",
     "qunitjs": "^2.4.1",
-    "rollup": "^0.60.7",
-    "rollup-plugin-commonjs": "^9.1.3",
-    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup": "^0.66.2",
+    "rollup-plugin-commonjs": "^9.1.8",
+    "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
     "uglify-es": "^3.3.9"
   },

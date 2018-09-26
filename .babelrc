@@ -3,12 +3,12 @@
     [
       "env", {
         "targets": {
-          "chrome": "66",
+          "chrome": "69",
           "edge": "17",
-          "firefox": "60",
-          "safari": "11.1",
-          "ios": "11.3",
-          "opera": "53"
+          "firefox": "62",
+          "safari": "12",
+          "ios": "12",
+          "opera": "56"
         },
         "modules": "umd",
         "debug": false
@@ -22,7 +22,7 @@
         [
           "env", {
             "targets": {
-              "es": "6"
+              "chrome": "54"
             },
             "modules": "commonjs",
             "debug": false

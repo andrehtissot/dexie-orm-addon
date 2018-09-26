@@ -5,14 +5,14 @@ module.exports = function (config) {
     configurations.singleRun = true
     configurations.browsers = [ 'Chrome' ]
     configurations.preprocessors = {
-      'dist/DexieORMAddon.es6.js': ['coverage']
+      'tools/tmp/rollup/tests.testCoverage.js': ['coverage']
     }
     configurations.coverageReporter = {
       type: 'html',
       dir: 'coverage/',
       subdir: './'
     }
-    configurations.files.push('dist/DexieORMAddon.es6.js')
+    configurations.files.push('tools/tmp/rollup/tests.testCoverage.js')
     configurations.files.push('test/tmp/tests.js')
     configurations.plugins.push('karma-chrome-launcher')
     configurations.plugins.push('karma-coverage')
