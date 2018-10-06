@@ -91,6 +91,7 @@
       "node tools/insertBanner.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
       "node tools/replaceVersionAndDate.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
       "node tools/replaceExportForGlobal.js tools/tmp/rollup/tests.testCoverage.js",
+      "node tools/addCommonJSWrapperSkipComments.js tools/tmp/rollup/tests.testCoverage.js",
       "rollup -c tools/build-configs/rollup.tests.config.js",
       "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
     ]
@@ -107,9 +108,8 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-es2015": "^6.24.1",
     "cross-env": "^5.2.0",
-    "dexie-opened-databases-addon": "1.0.0",
-    "escape-string-regexp": "^1.0.5",
-    "eslint": "^5.6.0",
+    "dexie-opened-databases-addon": "1.0.1",
+    "eslint": "^5.6.1",
     "hoek": "^5.0.4",
     "just-build": "^0.9.16",
     "karma": "^3.0.0",
@@ -124,7 +124,7 @@
     "karma-safari-launcher": "^1.0.0",
     "qunit": "^2.6.2",
     "qunitjs": "^2.4.1",
-    "rollup": "^0.66.2",
+    "rollup": "^0.66.4",
     "rollup-plugin-commonjs": "^9.1.8",
     "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-sourcemaps": "^0.4.2",
