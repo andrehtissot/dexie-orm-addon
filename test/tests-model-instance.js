@@ -551,3 +551,23 @@ asyncTest("reload the record has composite primary keys", async ( assert ) => {
     assert.equal(userInstance.name, 'user name', 'name should be changed to saved value')
     assert.equal(userInstance.id, 1, 'id should be changed to saved value')
 })
+
+asyncTest("saving the record should throw exception if id is undefined", async ( assert ) => {const db = newDatabase(),
+    { AttributeTypes, Model } = db
+    db.version(1).stores({ ModelTest: 'id,name' })
+    class ModelTest extends Model {
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const instance = new ModelTest()
+    instance.id = 1
+    instance.name = "Test"
+    assert.ok(await instance.save(), 'async save() should successed, returning true')
+    assert.ok(await instance.reload(), 'async reload() should successed, returning true')
+    instance.id = undefined
+    assert.ok(await instance.reload(), 'async reload() should fail, returning false')
+})

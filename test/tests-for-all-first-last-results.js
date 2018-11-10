@@ -190,6 +190,20 @@ asyncTest('the Query generated returns an object with an attribute "first" with 
     assert.equal(first, undefined, "result[0] should return the first record data")
 })
 
+asyncTest('the Query generated returns an object with an attribute "first" with an invalid model association', async ( assert, asyncDone ) => {
+    const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
+        collectionQuery = modelTestData.toCollection()
+    collectionQuery._ctx.table.model = undefined
+    try {
+        await collectionQuery.firstInstance()
+        assert.ok(false, 'This method can only be called if this object was created from a model call')
+        asyncDone()
+    } catch(e) {
+        assert.equal(e.message, 'This method can only be called if this object was created from a model call', 'This method can only be called if this object was created from a model call')
+        asyncDone()
+    }
+}, { autoDone: false })
+
 module("(extend (new Dexie(dbName).Model)).data.firstInstance")
 
 asyncTest('the Query generated returns an object with an attribute "first" with the first element as raw object', async ( assert ) => {

@@ -122,7 +122,7 @@ asyncTest("Calling first directly from Model", async ( assert, asyncDone ) => {
     const { Model } = newDatabase()
     try {
         const modelData = Model.data
-        assert.ok(false, 'Model.data.firstInstance() should throw an exception')
+        assert.ok(false, 'data() should only be called from a class that extends Model')
         asyncDone()
     } catch(e) {
         assert.equal(e.message, 'data() should only be called from a class that extends Model', 'data() should only be called from a class that extends Model')
