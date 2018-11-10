@@ -1,8 +1,8 @@
-import addCaptureStackTrace from './addCaptureStackTrace'
+import generateException from './generateException'
 
-export default class MethodCalledWithoutAModelAssociatedException extends Error {
-    constructor(ignoredMessage, ...params) {
-        super("This method can only be called if this object was created from a model call", ...params)
-        addCaptureStackTrace(this)
-    }
-}
+const MethodCalledWithoutAModelAssociatedException = generateException((...params) => {
+    params[0] = "This method can only be called if this object was created from a model call"
+    return params
+})
+
+export default MethodCalledWithoutAModelAssociatedException

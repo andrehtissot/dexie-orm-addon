@@ -1,8 +1,8 @@
-import addCaptureStackTrace from './addCaptureStackTrace'
+import generateException from './generateException'
 
-export default class ModelsObjectStoreDoestExistException extends Error {
-    constructor(ignoredMessage, ...params) {
-        super("Model's ObjectStore doesn't exist in this database", ...params)
-        addCaptureStackTrace(this)
-    }
-}
+const ModelsObjectStoreDoestExistException = generateException((...params) => {
+    params[0] = "Model's ObjectStore doesn't exist in this database"
+    return params
+})
+
+export default ModelsObjectStoreDoestExistException

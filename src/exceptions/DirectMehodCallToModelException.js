@@ -1,8 +1,8 @@
-import addCaptureStackTrace from './addCaptureStackTrace'
+import generateException from './generateException'
 
-export default class DORMWDirectMehodCallToModelException extends Error {
-    constructor(methodName, ...params) {
-        super(`${methodName} should only be called from a class that extends Model`, ...params)
-        addCaptureStackTrace(this)
-    }
-}
+const DORMWDirectMehodCallToModelException = generateException((...params) => {
+    params[0] = `${params[0]} should only be called from a class that extends Model`
+    return params
+})
+
+export default DORMWDirectMehodCallToModelException

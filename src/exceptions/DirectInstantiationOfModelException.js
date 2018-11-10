@@ -1,10 +1,8 @@
-import addCaptureStackTrace from './addCaptureStackTrace'
+import generateException from './generateException'
 
-export default class DirectInstantiationOfModelException extends Error {
-    constructor(ignoredMessage, ...params) {
-        super("Model should never be instatiated directly", ...params);
-        if (Error.captureStackTrace) {
-            Error.captureStackTrace(this, this.constructor);
-        }
-    }
-}
+const DirectInstantiationOfModelException = generateException((...params) => {
+    params[0] = "Model should never be instatiated directly"
+    return params
+})
+
+export default DirectInstantiationOfModelException
