@@ -1,4 +1,10 @@
-function validateMinAndMaxLength(value, options) {
+const validateType = (value) => {
+    if(typeof value !== 'string') {
+        throw 'is not a String'
+    }
+}
+
+const validateMinAndMaxLength = (value, options) => {
     if(!options) {
         return
     }
@@ -7,12 +13,6 @@ function validateMinAndMaxLength(value, options) {
     }
     if(options.maxLength !== undefined && value.length > options.maxLength) {
         throw "has it's length is higher than maximum"
-    }
-}
-
-function validateType(value) {
-    if(typeof value !== 'string') {
-        throw 'is not a String'
     }
 }
 
