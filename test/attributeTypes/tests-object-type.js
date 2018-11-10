@@ -22,6 +22,13 @@ test("AttributeTypes.ObjectType.validate with {allowNull:true}", ( assert ) => {
     typeValidateEqual(assert, ObjectType, options, 'is not an Object', [33, -32, 1, -1, 0, 53.0, 2, 433, -2, 3, -3, 4, '33', '-32', '1', '-1', '0', '', '53.0', '2', '433', '-2', '3', '-3', '4', 'j', 'sada', 3.2, 3.122233, 3.444444, 23.123, 3.2, '3.2', () => {}])
 })
 
+test("AttributeTypes.ObjectType.validate with null", ( assert ) => {
+    const options = null
+    typeValidateOk(assert, ObjectType, options, [{ attr: 'value' }, undefined, {}])
+    typeValidateEqual(assert, ObjectType, options, 'is not an Object', [33, -32, 1, -1, 0, 53.0, 2, 433, -2, 3, -3, 4, '33', '-32', '1', '-1', '0', '', '53.0', '2', '433', '-2', '3', '-3', '4', 'j', 'sada', 3.2, 3.122233, 3.444444, 23.123, 3.2, '3.2', () => {}])
+    typeValidateEqual(assert, ObjectType, options, 'is null', [null])
+})
+
 module("AttributeTypes.ObjectType with require=true")
 
 test("AttributeTypes.ObjectType.validate with {require:true}", ( assert ) => {

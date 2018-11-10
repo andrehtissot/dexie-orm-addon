@@ -37,6 +37,12 @@ test("AttributeTypes.String.validate with {minLength:…,maxLength:…}", ( asse
     typeValidateEqual(assert, String, options, 'is not a String', [3.2, {}, () => {}, new Date(), null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4])
 })
 
+test("AttributeTypes.String.validate with null", ( assert ) => {
+    const options = null
+    typeValidateOk(assert, String, options, ['33', undefined, '-32', '1', '-1', '0', '', '53.0', '2', '433', '-2', '3', '-3', '4', 'j', 'sada', '3.2', 'isds', 'sda sda '])
+    typeValidateEqual(assert, String, options, 'is not a String', [3.2, {}, () => {}, new Date(), null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4])
+})
+
 module("AttributeTypes.String with require=true")
 
 test("AttributeTypes.String.validate with {require:true}", ( assert ) => {

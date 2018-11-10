@@ -37,6 +37,12 @@ test("AttributeTypes.Integer.validate with {min:…, max:…}", ( assert ) => {
     typeValidateEqual(assert, Integer, options, 'is higher than maximum', [33, 53.0, 433, 3, 4])
 })
 
+test("AttributeTypes.Integer.validate with null", ( assert ) => {
+    const options = null
+    typeValidateOk(assert, Integer, options, [33, -32, undefined, 1, -1, 0, 53.0, 2, 433, -2, 3, -3, 4])
+    typeValidateEqual(assert, Integer, options, 'is not an Integer', ['33', '-32', '1', '-1', '0', '', '53.0', '2', '433', '-2', '3', '-3', '4', 'j', 'sada', 3.2, 3.122233, 3.444444, 23.123, 3.2, '3.2', null, {}, () => {}])
+})
+
 module("AttributeTypes.Integer with require=true")
 
 test("AttributeTypes.Integer.validate with {require: true}", ( assert ) => {

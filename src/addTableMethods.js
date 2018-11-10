@@ -1,5 +1,3 @@
-import MethodCalledWithoutAModelAssociatedException from './exceptions/MethodCalledWithoutAModelAssociatedException'
-
 const TableMethods = {
     toInstancesArray: function() {
         return this.toCollection().toInstancesArray()

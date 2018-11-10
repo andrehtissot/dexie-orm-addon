@@ -1,5 +1,5 @@
 function validateMinAndMaxLength(value, options) {
-    if(options === undefined) {
+    if(!options) {
         return
     }
     if(options.minLength !== undefined && value.length < options.minLength) {
@@ -18,7 +18,7 @@ function validateType(value) {
 
 const String = {
     validate: (value, options = { require: false }) => {
-        if(value !== undefined || options.require === true) {
+        if(value !== undefined || (options && options.require === true)) {
             try {
                 validateType(value)
                 validateMinAndMaxLength(value, options)

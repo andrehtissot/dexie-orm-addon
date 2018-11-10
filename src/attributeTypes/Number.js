@@ -2,7 +2,7 @@ import validateMinAndMax from './validateMinAndMax'
 
 const Number = {
     validate: (value, options = { require: false }) => {
-        if(typeof value !== 'number' && (value !== undefined || options.require === true)) {
+        if(typeof value !== 'number' && (value !== undefined || (options && options.require === true))) {
             return 'is not a Number'
         }
         try {

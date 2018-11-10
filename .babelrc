@@ -3,9 +3,9 @@
     [
       "env", {
         "targets": {
-          "chrome": "69",
+          "chrome": "70",
           "edge": "17",
-          "firefox": "62",
+          "firefox": "63",
           "safari": "12",
           "ios": "12",
           "opera": "56"

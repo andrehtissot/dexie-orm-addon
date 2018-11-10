@@ -1,5 +1,5 @@
 export default function validateMinAndMax(value, options) {
-    if(options === undefined) {
+    if(!options) {
         return
     }
     if(options.min !== undefined && value < options.min) {

@@ -420,6 +420,31 @@ asyncTest("saving four valid new records", async ( assert ) => {
     assert.equal(await db.ModelTest.count(), 4, 'should persist the 4 records')
 })
 
+asyncTest("Calling saveData when the store object is unreachable from Model", async ( assert, asyncDone ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    class ModelTest extends Model {
+        static get attributesTypes() {
+            return [
+                [ 'id', AttributeTypes.Integer, { min: 1 } ],
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const records = []
+    for (let i = 1; i < 5; i++) {
+        records.push( { id: i, name: 'Test '+i } )
+    }
+    try {
+        await ModelTest.saveData(records),
+        assert.ok(false, "Model's ObjectStore doesn't exist in this database")
+        asyncDone()
+    } catch(e) {
+        assert.equal(e.message, "Model's ObjectStore doesn't exist in this database", "Model's ObjectStore doesn't exist in this database")
+        asyncDone()
+    }
+}, { autoDone: false })
+
 asyncTest("failing to save four records, due to an invalid", async ( assert ) => {
     const db = newDatabase(),
         { AttributeTypes, Model } = db

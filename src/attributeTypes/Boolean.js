@@ -3,7 +3,7 @@ const Boolean = {
         if(value === true || value === false) {
             return true
         }
-        if(value === undefined && (options.require !== true)) {
+        if(value === undefined && (!options || options.require !== true)) {
             return true
         }
         return 'is not a Boolean'

@@ -124,7 +124,7 @@ asyncTest("simple bool validation test", async ( assert ) => {
         const instance = new ModelTest(recordsData[i])
         assert.notOk(instance.isValid, 'instance '+i+' should not be valid')
     }
-    const instance = new ModelTest(recordsData[3])
+    const instance = new ModelTest(recordsData[3], { persisted: true })
     assert.ok(instance.isValid, 'instance 3 should be valid')
 })
 
@@ -157,6 +157,37 @@ asyncTest("saving a simple valid new record", async ( assert ) => {
     if(typeof db.ModelTest === 'object') {
         const foundInstances = await db.ModelTest.toArray()
         assert.deepEqual(foundInstances, [ { id: 1, name: 'Test' } ], 'the record retrieved should be equal to previously defined')
+    }
+})
+
+asyncTest("saving a simple valid new record with no primary key", async ( assert ) => {
+    const db = newDatabase(),
+        { AttributeTypes, Model } = db
+    db.version(1).stores({ ModelTest: 'name' })
+    class ModelTest extends Model {
+        static get primaryKeys() {
+            return [ 'id' ]
+        }
+
+        static get attributesTypes() {
+            return [
+                [ 'name', AttributeTypes.String, { minLength: 1 } ]
+            ]
+        }
+    }
+    const instance = new ModelTest()
+    assert.equal(typeof instance.save, 'function', 'instance.save is accessible as a function')
+    instance.name = "Test"
+    const savePromise = instance.save(),
+        didItSave = await savePromise
+    assert.equal(typeof savePromise.then, 'function', 'async save() returns a promise (check 1)')
+    assert.equal(typeof savePromise.catch, 'function', 'async save() returns a promise (check 2)')
+    assert.ok(didItSave, 'async save() should save successfully, returning true')
+    assert.equal(instance.name, 'Test', "Instance's name value shouldn't change after save")
+    assert.equal(typeof db.ModelTest, 'object', 'ModelTest should be accessible as a valid objectStore')
+    if(typeof db.ModelTest === 'object') {
+        const foundInstances = await db.ModelTest.toArray()
+        assert.deepEqual(foundInstances, [ { name: 'Test' } ], 'the record retrieved should be equal to previously defined')
     }
 })
 
