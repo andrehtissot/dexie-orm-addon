@@ -1,6 +1,7 @@
 # dexie-orm-addon
 An ORM Addon for Dexie.js
 
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ed663f90fe3943758bfa34229fc2eaec)](https://app.codacy.com/app/andrehtissot/dexie-orm-addon?utm_source=github.com&utm_medium=referral&utm_content=andrehtissot/dexie-orm-addon&utm_campaign=Badge_Grade_Dashboard)
 [![Build Status](https://www.travis-ci.org/andrehtissot/dexie-orm-addon.svg?branch=master)](https://www.travis-ci.org/andrehtissot/dexie-orm-addon)
 [![npm downloads](https://img.shields.io/npm/dt/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![npm version](https://img.shields.io/npm/v/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
