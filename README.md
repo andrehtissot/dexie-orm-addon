@@ -11,7 +11,7 @@ An ORM Addon for Dexie.js
 [![DevDependency Status](https://img.shields.io/david/dev/andrehtissot/dexie-orm-addon.svg)](https://david-dm.org/andrehtissot/dexie-orm-addon?type=dev)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f713e6d091832dea9764/maintainability)](https://codeclimate.com/github/andrehtissot/dexie-orm-addon/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f713e6d091832dea9764/test_coverage)](https://codeclimate.com/github/andrehtissot/dexie-orm-addon/test_coverage)
-
+[![Codacy Score](https://api.codacy.com/project/badge/Grade/ed663f90fe3943758bfa34229fc2eaec)](https://app.codacy.com/app/andrehtissot/dexie-orm-addon?utm_source=github.com&utm_medium=referral&utm_content=andrehtissot/dexie-orm-addon&utm_campaign=Badge_Grade_Dashboard)
 
 ### Version 0
 
