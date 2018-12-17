@@ -1,15 +1,17 @@
 {
+  "plugins": ["prettier"],
   "parserOptions": {
     "ecmaVersion": 2017,
     "sourceType": "module",
-    "ecmaFeatures": {
-    }
+    "ecmaFeatures": {}
   },
   "env": {
     "node": true
   },
   "rules": {
-    "no-undef": ["error"]
+    "no-undef": ["error"],
+    "semi": ["warn", "never"],
+    "prettier/prettier": "error"
   },
   "globals": {
     "Dexie": true,

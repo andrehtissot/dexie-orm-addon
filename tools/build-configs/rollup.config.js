@@ -1,15 +1,15 @@
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import sourcemaps from 'rollup-plugin-sourcemaps'
 
 export default {
-  input: 'src/DexieORMAddon.js',
-  output: [
-    {
-      file: 'dist/DexieORMAddon.es.js',
-      format: 'es',
-      name: 'DexieORMAddon',
-      sourcemap: true
-    },
-  ],
-  external: ['babel-runtime/core-js/map', 'babel-runtime/helpers/typeof'],
-  plugins: [ sourcemaps() ]
-};
+    input: 'src/DexieORMAddon.js',
+    output: [
+        {
+            file: 'dist/DexieORMAddon.es.js',
+            format: 'es',
+            name: 'DexieORMAddon',
+            sourcemap: true,
+        },
+    ],
+    external: ['babel-runtime/core-js/map', 'babel-runtime/helpers/typeof'],
+    plugins: [sourcemaps()],
+}

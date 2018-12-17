@@ -1,13 +1,13 @@
 const Character = {
     validate: (value, options = { require: false }) => {
-        if(value === undefined && (!options || options.require !== true)) {
+        if (value === undefined && (!options || options.require !== true)) {
             return true
         }
-        if(typeof value !== 'string' || value.length !== 1) {
+        if (typeof value !== 'string' || value.length !== 1) {
             return 'is not a Character'
         }
         return true
-    }
+    },
 }
 
 export default Character

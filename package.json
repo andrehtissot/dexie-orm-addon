@@ -1,137 +1,143 @@
 {
-  "name": "dexie-orm-addon",
-  "version": "0.2.5",
-  "description": "An ORM Addon for Dexie.js",
-  "main": "dist/DexieORMAddon.js",
-  "module": "dist/DexieORMAddon.es.js",
-  "jsnext:main": "dist/DexieORMAddon.es.js",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/andrehtissot/dexie-orm-addon.git"
-  },
-  "keywords": [
-    "indexeddb",
-    "browser",
-    "database",
-    "dexie"
-  ],
-  "author": "André Augusto Tissot <https://github.com/andrehtissot>",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/andrehtissot/dexie-orm-addon/issues"
-  },
-  "scripts": {
-    "build": "just-build",
-    "watch": "just-build --watch",
-    "test": "npm run test:chrome",
-    "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
-    "test:chrome:debug": "npm run build dev && karma start test/karma/karma.conf.chrome.js --log-level debug",
-    "test:chrome:coverage": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.js",
-    "test:chrome:coverage:html": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.html.js && google-chrome coverage/index.html",
-    "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
-    "test:firefox:debug": "npm run build dev && karma start test/karma/karma.conf.firefox.js --log-level debug",
-    "test:edge": "npm run build dev && karma start test/karma/karma.conf.edge.js --single-run",
-    "test:edge:debug": "npm run build dev && karma start test/karma/karma.conf.edge.js --log-level debug",
-    "test:ie11": "SET BABEL_ENV=ie11-support && npm run build ie11-support && karma start test/karma/karma.conf.ie11.js --single-run",
-    "test:ie11:debug": "SET BABEL_ENV=ie11-support && npm run build ie11-support && karma start test/karma/karma.conf.ie11.js --log-level debug",
-    "test:safari": "npm run build dev && karma start test/karma/karma.conf.safari.js --single-run",
-    "test:safari:debug": "npm run build dev && karma start test/karma/karma.conf.safari.js --log-level debug",
-    "test:opera": "npm run build dev && karma start test/karma/karma.conf.opera.js --single-run",
-    "test:opera:debug": "npm run build dev && karma start test/karma/karma.conf.opera.js --log-level debug"
-  },
-  "just-build": {
-    "default": [
-      "# Build all targets",
-      "just-build release test gzip"
+    "name": "dexie-orm-addon",
+    "version": "0.2.5",
+    "description": "An ORM Addon for Dexie.js",
+    "main": "dist/DexieORMAddon.js",
+    "module": "dist/DexieORMAddon.es.js",
+    "jsnext:main": "dist/DexieORMAddon.es.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrehtissot/dexie-orm-addon.git"
+    },
+    "keywords": [
+        "indexeddb",
+        "browser",
+        "database",
+        "dexie"
     ],
-    "main": [
-      "# Build the umd module",
-      "rollup -c tools/build-configs/rollup.config.js",
-      "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.js --source-maps",
-      "node tools/insertBanner.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js",
-      "node tools/replaceVersionAndDate.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js",
-      "node tools/replaceExportForGlobal.js dist/DexieORMAddon.js",
-      "eslint src"
-    ],
-    "release": [
-      "# Build the umd module and minifies it.",
-      "just-build main",
-      "uglifyjs dist/DexieORMAddon.js -m -c -o dist/DexieORMAddon.min.js --source-map \"filename='dist/DexieORMAddon.min.js.map',includeSources='dist/DexieORMAddon.js.map'\""
-    ],
-    "dev": [
-      "# Build the umd module and the tests",
-      "just-build main test"
-    ],
-    "gzip": [
-      "# Optionally gzip to find the size of the minified & gzipped version",
-      "gzip dist/DexieORMAddon.min.js -k -f -9"
-    ],
-    "test": [
-      "# Build the test suite.",
-      "rollup -c tools/build-configs/rollup.tests.config.js",
-      "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
-      "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
-    ],
-    "ie11-support": [
-      "# Build the test suite with IE 11 support.",
-      "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
-      "rollup -c tools/build-configs/rollup.config.js",
-      "babel --presets es2015 --plugins transform-async-to-generator --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.ie11up.js --source-maps",
-      "node tools/insertBanner.js dist/DexieORMAddon.ie11up.js dist/DexieORMAddon.es.js",
-      "node tools/replaceVersionAndDate.js dist/DexieORMAddon.ie11up.js dist/DexieORMAddon.es.js",
-      "node tools/replaceExportForGlobal.js dist/DexieORMAddon.ie11up.js",
-      "rollup -c tools/build-configs/rollup.tests.config.js",
-      "babel --presets es2015 --plugins transform-async-to-generator tools/tmp/rollup/tests.es.js -o test/tmp/tests.ie11up.js --source-maps"
-    ],
-    "test-coverage": [
-      "# Build the test coverage suite.",
-      "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
-      "rollup -c tools/build-configs/rollup.config.js",
-      "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o tools/tmp/rollup/tests.testCoverage.js --source-maps",
-      "node tools/insertBanner.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
-      "node tools/replaceVersionAndDate.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
-      "node tools/replaceExportForGlobal.js tools/tmp/rollup/tests.testCoverage.js",
-      "node tools/addCommonJSWrapperSkipComments.js tools/tmp/rollup/tests.testCoverage.js",
-      "rollup -c tools/build-configs/rollup.tests.config.js",
-      "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
-    ]
-  },
-  "engines": {
-    "node": ">=9.4"
-  },
-  "homepage": "https://github.com/andrehtissot/dexie-orm-addon/blob/master/README.md",
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-syntax-async-functions": "^6.13.0",
-    "babel-plugin-transform-async-to-generator": "^6.24.1",
-    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-preset-es2015": "^6.24.1",
-    "cross-env": "^5.2.0",
-    "dexie-opened-databases-addon": "1.0.1",
-    "eslint": "^5.10.0",
-    "hoek": "^6.1.2",
-    "just-build": "^0.9.16",
-    "karma": "^3.1.3",
-    "karma-chrome-launcher": "^2.2.0",
-    "karma-coverage": "^1.1.2",
-    "karma-edge-launcher": "^0.4.2",
-    "karma-firefox-launcher": "^1.1.0",
-    "karma-ie-launcher": "^1.0.0",
-    "karma-mocha-reporter": "^2.2.5",
-    "karma-opera-launcher": "^1.0.0",
-    "karma-qunit": "^2.1.0",
-    "karma-safari-launcher": "^1.0.0",
-    "qunit": "^2.8.0",
-    "qunitjs": "^2.4.1",
-    "rollup": "^0.68.0",
-    "rollup-plugin-commonjs": "^9.2.0",
-    "rollup-plugin-node-resolve": "^4.0.0",
-    "rollup-plugin-sourcemaps": "^0.4.2",
-    "uglify-es": "^3.3.9",
-    "merge": ">=1.2.1"
-  },
-  "dependencies": {
-    "dexie": "^2.0.4"
-  }
+    "author": "André Augusto Tissot <https://github.com/andrehtissot>",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/andrehtissot/dexie-orm-addon/issues"
+    },
+    "scripts": {
+        "build": "just-build",
+        "watch": "just-build --watch",
+        "test": "npm run test:chrome",
+        "test:chrome": "npm run build dev && karma start test/karma/karma.conf.chrome.js --single-run",
+        "test:chrome:debug": "npm run build dev && karma start test/karma/karma.conf.chrome.js --log-level debug",
+        "test:chrome:coverage": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.js",
+        "test:chrome:coverage:html": "BABEL_ENV=coverage-test npm run build test-coverage && karma start test/karma/karma.conf.chrome.coverage.html.js && google-chrome coverage/index.html",
+        "test:firefox": "npm run build dev && karma start test/karma/karma.conf.firefox.js --single-run",
+        "test:firefox:debug": "npm run build dev && karma start test/karma/karma.conf.firefox.js --log-level debug",
+        "test:edge": "npm run build dev && karma start test/karma/karma.conf.edge.js --single-run",
+        "test:edge:debug": "npm run build dev && karma start test/karma/karma.conf.edge.js --log-level debug",
+        "test:ie11": "SET BABEL_ENV=ie11-support && npm run build ie11-support && karma start test/karma/karma.conf.ie11.js --single-run",
+        "test:ie11:debug": "SET BABEL_ENV=ie11-support && npm run build ie11-support && karma start test/karma/karma.conf.ie11.js --log-level debug",
+        "test:safari": "npm run build dev && karma start test/karma/karma.conf.safari.js --single-run",
+        "test:safari:debug": "npm run build dev && karma start test/karma/karma.conf.safari.js --log-level debug",
+        "test:opera": "npm run build dev && karma start test/karma/karma.conf.opera.js --single-run",
+        "test:opera:debug": "npm run build dev && karma start test/karma/karma.conf.opera.js --log-level debug",
+        "prettier-src": "find ./src -name '*.js' -or -name '*.json' | xargs prettier --write",
+        "prettier-tools": "find ./tools -name '*.js' -or -name '*.json' | xargs prettier --write",
+        "prettier-test": "find ./test -name '*.js' -or -name '*.json' | xargs prettier --write",
+        "prettier-all": "npm run prettier-src && npm run prettier-tools && npm run prettier-test",
+        "eslint-all": "eslint --fix ./src ./tools ./test"
+    },
+    "just-build": {
+        "default": [
+            "# Build all targets",
+            "just-build release test gzip"
+        ],
+        "main": [
+            "# Build the umd module",
+            "rollup -c tools/build-configs/rollup.config.js",
+            "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.js --source-maps",
+            "node tools/insertBanner.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js dist/DexieORMAddon.d.ts",
+            "node tools/replaceVersionAndDate.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js dist/DexieORMAddon.d.ts",
+            "node tools/replaceExportForGlobal.js dist/DexieORMAddon.js"
+        ],
+        "release": [
+            "# Build the umd module and minifies it.",
+            "just-build main",
+            "uglifyjs dist/DexieORMAddon.js -m -c -o dist/DexieORMAddon.min.js --source-map \"filename='dist/DexieORMAddon.min.js.map',includeSources='dist/DexieORMAddon.js.map'\""
+        ],
+        "dev": [
+            "# Build the umd module and the tests",
+            "just-build main test"
+        ],
+        "gzip": [
+            "# Optionally gzip to find the size of the minified & gzipped version",
+            "gzip dist/DexieORMAddon.min.js -k -f -9"
+        ],
+        "test": [
+            "# Build the test suite.",
+            "rollup -c tools/build-configs/rollup.tests.config.js",
+            "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
+            "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
+        ],
+        "ie11-support": [
+            "# Build the test suite with IE 11 support.",
+            "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
+            "rollup -c tools/build-configs/rollup.config.js",
+            "babel --presets es2015 --plugins transform-async-to-generator --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.ie11up.js --source-maps",
+            "node tools/insertBanner.js dist/DexieORMAddon.ie11up.js dist/DexieORMAddon.es.js",
+            "node tools/replaceVersionAndDate.js dist/DexieORMAddon.ie11up.js dist/DexieORMAddon.es.js",
+            "node tools/replaceExportForGlobal.js dist/DexieORMAddon.ie11up.js",
+            "rollup -c tools/build-configs/rollup.tests.config.js",
+            "babel --presets es2015 --plugins transform-async-to-generator tools/tmp/rollup/tests.es.js -o test/tmp/tests.ie11up.js --source-maps"
+        ],
+        "test-coverage": [
+            "# Build the test coverage suite.",
+            "node -e \"var fs=require('fs');var path=require('path');var dir=path.join('test','tmp');if(!fs.existsSync(dir)){fs.mkdirSync(dir);}\"",
+            "rollup -c tools/build-configs/rollup.config.js",
+            "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o tools/tmp/rollup/tests.testCoverage.js --source-maps",
+            "node tools/insertBanner.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
+            "node tools/replaceVersionAndDate.js tools/tmp/rollup/tests.testCoverage.js dist/DexieORMAddon.es.js",
+            "node tools/replaceExportForGlobal.js tools/tmp/rollup/tests.testCoverage.js",
+            "node tools/addCommonJSWrapperSkipComments.js tools/tmp/rollup/tests.testCoverage.js",
+            "rollup -c tools/build-configs/rollup.tests.config.js",
+            "babel tools/tmp/rollup/tests.es.js -o test/tmp/tests.js --source-maps"
+        ]
+    },
+    "engines": {
+        "node": ">=9.4"
+    },
+    "homepage": "https://github.com/andrehtissot/dexie-orm-addon/blob/master/README.md",
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-plugin-syntax-async-functions": "^6.13.0",
+        "babel-plugin-transform-async-to-generator": "^6.24.1",
+        "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
+        "babel-preset-env": "^1.7.0",
+        "babel-preset-es2015": "^6.24.1",
+        "cross-env": "^5.2.0",
+        "dexie-opened-databases-addon": "1.0.1",
+        "eslint": "^5.10.0",
+        "eslint-plugin-prettier": "^3.0.0",
+        "hoek": "^6.1.2",
+        "just-build": "^0.9.16",
+        "karma": "^3.1.3",
+        "karma-chrome-launcher": "^2.2.0",
+        "karma-coverage": "^1.1.2",
+        "karma-edge-launcher": "^0.4.2",
+        "karma-firefox-launcher": "^1.1.0",
+        "karma-ie-launcher": "^1.0.0",
+        "karma-mocha-reporter": "^2.2.5",
+        "karma-opera-launcher": "^1.0.0",
+        "karma-qunit": "^2.1.0",
+        "karma-safari-launcher": "^1.0.0",
+        "merge": ">=1.2.1",
+        "prettier": "^1.15.3",
+        "qunit": "^2.8.0",
+        "qunitjs": "^2.4.1",
+        "rollup": "^0.68.0",
+        "rollup-plugin-commonjs": "^9.2.0",
+        "rollup-plugin-node-resolve": "^4.0.0",
+        "rollup-plugin-sourcemaps": "^0.4.2",
+        "uglify-es": "^3.3.9"
+    },
+    "dependencies": {
+        "dexie": "^2.0.4"
+    }
 }

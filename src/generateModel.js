@@ -7,29 +7,29 @@ const privateData = new WeakMap()
 
 function extractPrimaryKeyValues(instance) {
     const primaryKeys = instance.constructor.primaryKeys
-    if(primaryKeys.length === 1) {
+    if (primaryKeys.length === 1) {
         return instance[primaryKeys[0]]
     }
-    return primaryKeys.map((pk) => instance[pk])
+    return primaryKeys.map(pk => instance[pk])
 }
 
 function setAttribute(instance, attributesValues, attrName) {
-    if(attributesValues[attrName] !== undefined) {
+    if (attributesValues[attrName] !== undefined) {
         instance[attrName] = attributesValues[attrName]
     }
 }
 
 function setAttributes(instance, attributesValues) {
-    if(typeof attributesValues === 'object') {
-        for(let attrName of instance.constructor.attributesNames) {
+    if (typeof attributesValues === 'object') {
+        for (let attrName of instance.constructor.attributesNames) {
             setAttribute(instance, attributesValues, attrName)
         }
     }
 }
 
-function getPrimaryKeyValuesFromPrivateDataOrExtract(instance){
+function getPrimaryKeyValuesFromPrivateDataOrExtract(instance) {
     let primaryKeyValues = privateData.get(instance).persistedPrimarykeys
-    if(primaryKeyValues === undefined) {
+    if (primaryKeyValues === undefined) {
         return extractPrimaryKeyValues(instance)
     }
     return primaryKeyValues
@@ -37,39 +37,43 @@ function getPrimaryKeyValuesFromPrivateDataOrExtract(instance){
 
 function areRecordDataValid(modelClass, record) {
     const attributesTypes = modelClass.attributesTypes
-    for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-        if(attributeTypeObject.validate(record[attributeName], validationOptions) !== true) {
+    for (let [attributeName, attributeTypeObject, validationOptions] of attributesTypes) {
+        if (attributeTypeObject.validate(record[attributeName], validationOptions) !== true) {
             return false
         }
     }
 }
 
 function areRecordsDataValid(modelClass, records) {
-    for(let record of records) {
-        if(areRecordDataValid(modelClass, record) === false) {
+    for (let record of records) {
+        if (areRecordDataValid(modelClass, record) === false) {
             return false
         }
     }
     return true
 }
 
-function checkObjectStoreExistence(objectStore){
-    if(objectStore === undefined) {
+function checkObjectStoreExistence(objectStore) {
+    if (objectStore === undefined) {
         throw new ModelsObjectStoreDoestExistException()
     }
 }
 
-
-function forbidDirectCallingToModel(staticObject, methodName){
-    if(staticObject === BaseModel || staticObject.name === 'Model') {
+function forbidDirectCallingToModel(staticObject, methodName) {
+    if (staticObject === BaseModel || staticObject.name === 'Model') {
         throw new DirectMehodCallToModelException(methodName)
     }
 }
 
-function validateAttribute(instance, invalidAttributes, attributesNames, [ attributeName, attributeTypeObject, validationOptions ]) {
-    if(attributesNames.includes(attributeName)){
+function validateAttribute(
+    instance,
+    invalidAttributes,
+    attributesNames,
+    [attributeName, attributeTypeObject, validationOptions]
+) {
+    if (attributesNames.includes(attributeName)) {
         const validationMessage = attributeTypeObject.validate(instance[attributeName], validationOptions)
-        if(validationMessage !== true) {
+        if (validationMessage !== true) {
             invalidAttributes.set(attributeName, validationMessage)
         }
     }
@@ -85,7 +89,7 @@ export class BaseModel {
     static get primaryKeys() {
         forbidDirectCallingToModel(this, 'get primaryKeys()')
         // Default primary key is the first attribute defined
-        return [ this.attributesTypes[0][0] ]
+        return [this.attributesTypes[0][0]]
     }
 
     static get objectStoreName() {
@@ -108,13 +112,13 @@ export class BaseModel {
 
     static get attributesNames() {
         forbidDirectCallingToModel(this, 'get attributesNames()')
-        return this.attributesTypes.map((a) => a[0])
+        return this.attributesTypes.map(a => a[0])
     }
 
     static async saveData(records, options = { force: false }) {
         forbidDirectCallingToModel(this, 'async saveData()')
         checkObjectStoreExistence(this.db[this.objectStoreName])
-        if(!options.force && !areRecordsDataValid(this, records)) {
+        if (!options.force && !areRecordsDataValid(this, records)) {
             return false
         }
         await this.db[this.objectStoreName].bulkPut(records)
@@ -124,12 +128,12 @@ export class BaseModel {
     static async save(records, options = { force: false }) {
         forbidDirectCallingToModel(this, 'async save()')
         checkObjectStoreExistence(this.db[this.objectStoreName])
-        if(!options.force && !areRecordsDataValid(this, records)) {
+        if (!options.force && !areRecordsDataValid(this, records)) {
             return false
         }
         const didSave = await this.saveData(records, options)
         if (didSave) {
-            for(let record of records) {
+            for (let record of records) {
                 privateData.get(record).persistedPrimarykeys = extractPrimaryKeyValues(record)
             }
         }
@@ -138,12 +142,12 @@ export class BaseModel {
 
     constructor(attributesValues, options = { persisted: false }) {
         if (this.constructor.name === 'Model') {
-          throw new DirectInstantiationOfModelException();
+            throw new DirectInstantiationOfModelException()
         }
         setAttributes(this, attributesValues)
-        if(options.persisted === true) {
+        if (options.persisted === true) {
             privateData.set(this, {
-                persistedPrimarykeys: extractPrimaryKeyValues(this)
+                persistedPrimarykeys: extractPrimaryKeyValues(this),
             })
         } else {
             privateData.set(this, {})
@@ -152,8 +156,8 @@ export class BaseModel {
 
     get attributes() {
         const attributes = {}
-        for(let attrName of this.constructor.attributesNames) {
-            if(this[attrName] !== undefined) {
+        for (let attrName of this.constructor.attributesNames) {
+            if (this[attrName] !== undefined) {
                 attributes[attrName] = this[attrName]
             }
         }
@@ -163,10 +167,9 @@ export class BaseModel {
     validate(attributesNamesToValidate) {
         const attributesTypes = this.constructor.attributesTypes,
             invalidAttributes = new Map(),
-            attributesNames = attributesNamesToValidate === undefined
-                ? this.constructor.attributesNames
-                : attributesNamesToValidate
-        for(let attributeType of attributesTypes) {
+            attributesNames =
+                attributesNamesToValidate === undefined ? this.constructor.attributesNames : attributesNamesToValidate
+        for (let attributeType of attributesTypes) {
             validateAttribute(this, invalidAttributes, attributesNames, attributeType)
         }
         return invalidAttributes
@@ -174,8 +177,8 @@ export class BaseModel {
 
     get isValid() {
         const attributesTypes = this.constructor.attributesTypes
-        for(let [ attributeName, attributeTypeObject, validationOptions ] of attributesTypes) {
-            if(attributeTypeObject.validate(this[attributeName], validationOptions) !== true) {
+        for (let [attributeName, attributeTypeObject, validationOptions] of attributesTypes) {
+            if (attributeTypeObject.validate(this[attributeName], validationOptions) !== true) {
                 return false
             }
         }
@@ -184,11 +187,11 @@ export class BaseModel {
 
     async save(options = { force: false }) {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
-        if( !options.force && !this.isValid ) {
+        if (!options.force && !this.isValid) {
             return false
         }
         privateData.get(this).persistedPrimarykeys = extractPrimaryKeyValues(this)
-        if(privateData.get(this).persistedPrimarykeys === undefined) {
+        if (privateData.get(this).persistedPrimarykeys === undefined) {
             await this.constructor.db[this.constructor.objectStoreName].add(this.attributes)
         } else {
             await this.constructor.db[this.constructor.objectStoreName].put(this.attributes)
@@ -199,7 +202,7 @@ export class BaseModel {
     async delete() {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
         const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
-        if(primaryKeyValues === undefined) {
+        if (primaryKeyValues === undefined) {
             return false
         }
         await this.constructor.db[this.constructor.objectStoreName].delete(primaryKeyValues)
@@ -209,11 +212,11 @@ export class BaseModel {
     async reload() {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
         const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
-        if(primaryKeyValues === undefined) {
+        if (primaryKeyValues === undefined) {
             return false
         }
         const attributesValues = await this.constructor.db[this.constructor.objectStoreName].get(primaryKeyValues)
-        if(attributesValues === undefined) {
+        if (attributesValues === undefined) {
             return false
         }
         setAttributes(this, attributesValues)
@@ -222,25 +225,36 @@ export class BaseModel {
 
     fetch(relationshipName) {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
-        if(this.constructor.relatesTo[relationshipName] === undefined) {
+        if (this.constructor.relatesTo[relationshipName] === undefined) {
             return undefined
         }
-        const [ relationshipType, internalAttibuteName, relatedModelClass, relatedModelAttributeName ] = this.constructor.relatesTo[relationshipName]
-        switch(relationshipType){
+        const [
+            relationshipType,
+            internalAttibuteName,
+            relatedModelClass,
+            relatedModelAttributeName,
+        ] = this.constructor.relatesTo[relationshipName]
+        switch (relationshipType) {
             case 'one':
             case 'first':
                 // Returns a promise. The related instance is returned when promise is done.
-                return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName]).firstInstance()
+                return relatedModelClass.data
+                    .where(relatedModelAttributeName)
+                    .equals(this[internalAttibuteName])
+                    .firstInstance()
             case 'last':
                 // Returns a promise. The related instance is returned when promise is done.
-                return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName]).reverse().firstInstance()
+                return relatedModelClass.data
+                    .where(relatedModelAttributeName)
+                    .equals(this[internalAttibuteName])
+                    .reverse()
+                    .firstInstance()
             case 'all':
                 // Returns a dexie collection from the related model.
                 return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName])
         }
     }
 }
-
 
 export default function generateModel(db) {
     const Model = class Model extends BaseModel {

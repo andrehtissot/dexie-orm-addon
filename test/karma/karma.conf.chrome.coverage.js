@@ -1,16 +1,16 @@
 const configurations = require('./karma.common')
 
-module.exports = function (config) {
+module.exports = function(config) {
     configurations.reporters.push('coverage')
     configurations.singleRun = true
-    configurations.browsers = [ 'Chrome' ]
+    configurations.browsers = ['Chrome']
     configurations.preprocessors = {
-      'tools/tmp/rollup/tests.testCoverage.js': ['coverage']
+        'tools/tmp/rollup/tests.testCoverage.js': ['coverage'],
     }
     configurations.coverageReporter = {
-      type: 'lcovonly',
-      dir: 'coverage/',
-      subdir: './'
+        type: 'lcovonly',
+        dir: 'coverage/',
+        subdir: './',
     }
     configurations.files.push('tools/tmp/rollup/tests.testCoverage.js')
     configurations.files.push('test/tmp/tests.js')

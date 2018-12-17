@@ -1,13 +1,13 @@
 import DexieOpenedDatabasesAddon from 'dexie-opened-databases-addon'
 
 export function newTestDatabaseName() {
-    return 'testDB'+(window.performance.timing.navigationStart+window.performance.now())
+    return `testDB ${window.performance.timing.navigationStart + window.performance.now()}`
 }
 
 export default function newDatabase(options = {}) {
     let dbName = options.dbName
-    if(dbName === undefined) {
+    if (dbName === undefined) {
         dbName = newTestDatabaseName()
     }
-    return new Dexie(dbName, { addons: [ DexieORMAddon, DexieOpenedDatabasesAddon ] })
+    return new Dexie(dbName, { addons: [DexieORMAddon, DexieOpenedDatabasesAddon] })
 }

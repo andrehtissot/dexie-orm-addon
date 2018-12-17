@@ -1,13 +1,13 @@
-import {done} from 'QUnit'
+import { done } from 'QUnit'
 
 export default async function deleteAllDatabases() {
     const databasesName = await Dexie.getDatabaseNames()
-    for(let datanaseName of databasesName) {
-        if(Dexie.openedDatabases.has(datanaseName)) {
+    for (let datanaseName of databasesName) {
+        if (Dexie.openedDatabases.has(datanaseName)) {
             Dexie.openedDatabases.get(datanaseName).close()
         }
     }
-    for(let datanaseName of databasesName) {
+    for (let datanaseName of databasesName) {
         Dexie.delete(datanaseName)
     }
 }
@@ -18,12 +18,12 @@ export function deleteAllDatabasesWhenDone() {
 }
 
 var shouldDeleteAllDatabasesWhenDoneCanceled = false
-export function cancelDeleteAllDatabasesWhenDone(){
+export function cancelDeleteAllDatabasesWhenDone() {
     shouldDeleteAllDatabasesWhenDoneCanceled = true
 }
 
 done(() => {
-    if(!shouldDeleteAllDatabasesWhenDoneCanceled && shouldDeleteAllDatabasesWhenDone){
+    if (!shouldDeleteAllDatabasesWhenDoneCanceled && shouldDeleteAllDatabasesWhenDone) {
         deleteAllDatabases()
     }
 })

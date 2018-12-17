@@ -22,10 +22,10 @@ const TableMethods = {
     },
     getInstance: async function(...args) {
         const found = await this.get(...args)
-        if(found !== undefined) {
+        if (found !== undefined) {
             return new this.model(found)
         }
-    }
+    },
 }
 
 export default function addTableMethods(db) {
