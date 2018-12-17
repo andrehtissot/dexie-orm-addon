@@ -64,9 +64,9 @@ test('extend, but dont implement any method or attribute', assert => {
 })
 
 test('extend, implement and override methods and attributes', assert => {
-    const { AttributeTypes, Model } = newDatabase()
+    const { Model, IntegerType, StringType } = newDatabase()
     class Person extends Model {}
-    const attributes = [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]],
+    const attributes = [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]],
         relationship = {
             person: ['all', 'name', Person, 'name'],
         }
@@ -102,13 +102,13 @@ test('Calling primaryKeys directly from Model', assert => {
 })
 
 test('default primary key should be first attribute defined', assert => {
-    const { AttributeTypes, Model } = newDatabase()
+    const { Model, IntegerType, StringType } = newDatabase()
     class ModelTest1 extends Model {
         static get objectStoreName() {
             return 'ObjectStoreTest1'
         }
         static get attributesTypes() {
-            return [['name', AttributeTypes.String, { minLength: 1 }], ['id', AttributeTypes.Integer, { min: 1 }]]
+            return [['name', StringType, { minLength: 1 }], ['id', IntegerType, { min: 1 }]]
         }
     }
     assert.deepEqual(ModelTest1.primaryKeys, ['name'], 'name is the primary key if the first defined attribute is name')
@@ -117,7 +117,7 @@ test('default primary key should be first attribute defined', assert => {
             return 'ObjectStoreTest2'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.deepEqual(ModelTest2.primaryKeys, ['id'], 'id is the primary key if the first defined attribute is id')
@@ -135,10 +135,10 @@ test('Calling attributesNames directly from Model', assert => {
 })
 
 test('recover attributes names', assert => {
-    const { AttributeTypes, Model } = newDatabase()
+    const { Model, IntegerType, StringType } = newDatabase()
     class ModelTest1 extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.equal(typeof ModelTest1.attributesNames, 'object', 'get attributesNames() should return an object')
@@ -170,14 +170,14 @@ asyncTest(
 
 asyncTest("geting the data should retrieve the model's table dexie object", async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
     class ModelTest extends Model {
         static get objectStoreName() {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest', 'get objectStoreName() should be overwrittable')
@@ -214,7 +214,7 @@ asyncTest('simple find first', async assert => {
     let user1 = { id: 1, name: 'Test User 1' },
         user2 = { id: 2, name: 'Test User 2' }
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.on('populate', () => {
         db.ObjectStoreTest.add(user1)
         db.ObjectStoreTest.add(user2)
@@ -225,7 +225,7 @@ asyncTest('simple find first', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest', 'get objectStoreName() should be overwrittable')
@@ -240,14 +240,14 @@ asyncTest('simple find first', async assert => {
 
 asyncTest('find first when objectStore is empty', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model, Migrations } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
     class ModelTest extends Model {
         static get objectStoreName() {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest', 'get objectStoreName() should be overwrittable')
@@ -264,7 +264,7 @@ asyncTest(
     'Calling firstData directly from Model',
     async (assert, asyncDone) => {
         const db = newDatabase(),
-            { AttributeTypes, Model } = db
+            { Model } = db
         try {
             await Model.data.first()
             assert.ok(false, 'data() should only be called from a class that extends Model')
@@ -283,7 +283,7 @@ asyncTest(
 
 asyncTest('simple find first', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db,
+        { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
         user2 = { id: 2, name: 'Test User 2' }
     db.on('populate', () => {
@@ -296,7 +296,7 @@ asyncTest('simple find first', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.deepEqual(
@@ -308,14 +308,14 @@ asyncTest('simple find first', async assert => {
 
 asyncTest('find first when objectStore is empty', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
     class ModelTest extends Model {
         static get objectStoreName() {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.deepEqual(
@@ -349,7 +349,7 @@ asyncTest(
 
 asyncTest('simple find last', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db,
+        { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
         user2 = { id: 2, name: 'Test User 2' }
     db.on('populate', () => {
@@ -362,7 +362,7 @@ asyncTest('simple find last', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.equal(ModelTest.objectStoreName, 'ObjectStoreTest')
@@ -373,14 +373,14 @@ asyncTest('simple find last', async assert => {
 
 asyncTest('find last when objectStore is empty', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
     class ModelTest extends Model {
         static get objectStoreName() {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.deepEqual(
@@ -395,7 +395,7 @@ module('(extend (new Dexie(dbName).Model)).data.last()')
 asyncTest(
     'Calling lastData directly from Model',
     async (assert, asyncDone) => {
-        const { AttributeTypes, Model } = newDatabase()
+        const { Model } = newDatabase()
         try {
             await Model.data.last()
             assert.ok(false, 'data() should only be called from a class that extends Model')
@@ -414,7 +414,7 @@ asyncTest(
 
 asyncTest('simple find last', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db,
+        { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
         user2 = { id: 2, name: 'Test User 2' }
     db.on('populate', () => {
@@ -427,7 +427,7 @@ asyncTest('simple find last', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.deepEqual(
@@ -439,14 +439,14 @@ asyncTest('simple find last', async assert => {
 
 asyncTest('find last when objectStore is empty', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
     class ModelTest extends Model {
         static get objectStoreName() {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     assert.deepEqual(
@@ -480,11 +480,11 @@ asyncTest(
 
 asyncTest('saving four valid new records', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const records = []
@@ -504,10 +504,10 @@ asyncTest(
     'Calling saveData when the store object is unreachable from Model',
     async (assert, asyncDone) => {
         const db = newDatabase(),
-            { AttributeTypes, Model } = db
+            { Model, IntegerType, StringType } = db
         class ModelTest extends Model {
             static get attributesTypes() {
-                return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+                return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
             }
         }
         const records = []
@@ -531,11 +531,11 @@ asyncTest(
 
 asyncTest('failing to save four records, due to an invalid', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const records = []
@@ -554,11 +554,11 @@ asyncTest('failing to save four records, due to an invalid', async assert => {
 
 asyncTest('saving four valid or invalid new records with force', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const records = []
@@ -599,11 +599,11 @@ asyncTest(
 
 asyncTest('saving four valid new records', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const records = []
@@ -621,11 +621,11 @@ asyncTest('saving four valid new records', async assert => {
 
 asyncTest('failing to save four records, due to an invalid', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const records = []
@@ -644,11 +644,11 @@ asyncTest('failing to save four records, due to an invalid', async assert => {
 
 asyncTest('saving four valid or invalid new records with force', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const records = []

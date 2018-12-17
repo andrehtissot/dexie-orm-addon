@@ -9,10 +9,10 @@ deleteAllDatabasesWhenDone()
 module('(new (extend (new Dexie(dbName).Model))).attributes')
 
 test('recover data as object', assert => {
-    const { AttributeTypes, Model } = newDatabase()
+    const { Model, IntegerType, StringType } = newDatabase()
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -30,7 +30,7 @@ module('(new (extend (new Dexie(dbName).Model))).validate()')
 
 asyncTest('simple validation test', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db,
+        { Model, IntegerType, StringType } = db,
         recordsData = [
             { id: 0, name: 'invalid id' },
             { id: 'string id', name: 23 },
@@ -43,7 +43,7 @@ asyncTest('simple validation test', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instances = [],
@@ -159,7 +159,7 @@ module('(new (extend (new Dexie(dbName).Model))).isValid')
 
 asyncTest('simple bool validation test', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db,
+        { Model, IntegerType, StringType } = db,
         recordsData = [
             { id: 0, name: 'invalid id' },
             { id: 'string id', name: 23 },
@@ -172,7 +172,7 @@ asyncTest('simple bool validation test', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     for (let i = 0; i < 3; i++) {
@@ -187,11 +187,11 @@ module('(new (extend (new Dexie(dbName).Model))).save()')
 
 asyncTest('saving a simple valid new record', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -218,7 +218,7 @@ asyncTest('saving a simple valid new record', async assert => {
 
 asyncTest('saving a simple valid new record with no primary key', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'name' })
     class ModelTest extends Model {
         static get primaryKeys() {
@@ -226,7 +226,7 @@ asyncTest('saving a simple valid new record with no primary key', async assert =
         }
 
         static get attributesTypes() {
-            return [['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -251,11 +251,11 @@ asyncTest('saving a simple valid new record with no primary key', async assert =
 
 asyncTest('saving a simple invalid new record fails', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -279,11 +279,11 @@ asyncTest('saving a simple invalid new record fails', async assert => {
 
 asyncTest('saving a simple invalid new record works if forced', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -310,11 +310,11 @@ asyncTest('saving a simple invalid new record works if forced', async assert => 
 
 asyncTest('saving a simple valid previous existing record', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -344,11 +344,11 @@ asyncTest('saving a simple valid previous existing record', async assert => {
 
 asyncTest('duplicate record changing its default primary key value', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()
@@ -379,11 +379,11 @@ asyncTest('duplicating record changing its composite primary key attributes and 
         return
     }
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: '[id+code]' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['code', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['code', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest(),
@@ -407,7 +407,7 @@ module('(new (extend (new Dexie(dbName).Model))).delete()')
 
 asyncTest('simple delete', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db,
+        { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
         user2 = { id: 2, name: 'Test User 2' }
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
@@ -419,7 +419,7 @@ asyncTest('simple delete', async assert => {
             return 'ObjectStoreTest'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     for (let expectedRecord of [user2, user1]) {
@@ -452,14 +452,14 @@ asyncTest('delete for composite primary key', async assert => {
     }
     assert.expect(30)
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: '[id+code]' })
     class ModelTest extends Model {
         static get primaryKeys() {
             return ['id', 'code']
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['code', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['code', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest(),
@@ -496,14 +496,14 @@ module('(new (extend (new Dexie(dbName).Model))).reload()')
 
 asyncTest('simple reload', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })
     class User extends Model {
         static get objectStoreName() {
             return 'users'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const userData = { id: 1, name: 'user name' },
@@ -520,14 +520,14 @@ asyncTest('simple reload', async assert => {
 
 asyncTest('reload when record is not currently in the database', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })
     class User extends Model {
         static get objectStoreName() {
             return 'users'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const userData = { id: 1, name: 'user name' },
@@ -543,14 +543,14 @@ asyncTest('reload when record is not currently in the database', async assert =>
 
 asyncTest('reload after a record was delete', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })
     class User extends Model {
         static get objectStoreName() {
             return 'users'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const userData = { id: 1, name: 'user name' },
@@ -573,7 +573,7 @@ asyncTest('reload the record has composite primary keys', async assert => {
         return
     }
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: '[id+name]' })
     class User extends Model {
         static get primaryKeys() {
@@ -583,7 +583,7 @@ asyncTest('reload the record has composite primary keys', async assert => {
             return 'users'
         }
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const userData = { id: 1, name: 'user name' },
@@ -600,11 +600,11 @@ asyncTest('reload the record has composite primary keys', async assert => {
 
 asyncTest('saving the record should throw exception if id is undefined', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
     class ModelTest extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
         }
     }
     const instance = new ModelTest()

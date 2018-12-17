@@ -9,14 +9,14 @@ module('(new (extend (new Dexie(dbName).Model))).relateTo<one>')
 
 asyncTest('simple relationship to one', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ User: 'id,personId', Person: 'id,name' })
     class Person extends Model {
         static get attributesTypes() {
             return [
-                ['id', AttributeTypes.Integer, { min: 1 }],
-                ['name', AttributeTypes.String, { minLength: 1 }],
-                ['userId', AttributeTypes.Integer, { min: 1 }],
+                ['id', IntegerType, { min: 1 }],
+                ['name', StringType, { minLength: 1 }],
+                ['userId', IntegerType, { min: 1 }],
             ]
         }
         static get relatesTo() {
@@ -27,7 +27,7 @@ asyncTest('simple relationship to one', async assert => {
     }
     class User extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 1 }], ['personId', AttributeTypes.Integer, { min: 1 }]]
+            return [['id', IntegerType, { min: 1 }], ['personId', IntegerType, { min: 1 }]]
         }
         static get relatesTo() {
             return {
@@ -70,11 +70,11 @@ module('(new (extend (new Dexie(dbName).Model))).relateTo<all>')
 
 asyncTest('simple relationship to all', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ Game: 'id,title,personId', Person: 'id,name' })
     class Person extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 0 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 0 }], ['name', StringType, { minLength: 1 }]]
         }
         static get relatesTo() {
             return {
@@ -85,9 +85,9 @@ asyncTest('simple relationship to all', async assert => {
     class Game extends Model {
         static get attributesTypes() {
             return [
-                ['id', AttributeTypes.Integer, { min: 0 }],
-                ['title', AttributeTypes.String, { minLength: 1 }],
-                ['personId', AttributeTypes.Integer, { min: 0 }],
+                ['id', IntegerType, { min: 0 }],
+                ['title', StringType, { minLength: 1 }],
+                ['personId', IntegerType, { min: 0 }],
             ]
         }
     }
@@ -123,11 +123,11 @@ module('(new (extend (new Dexie(dbName).Model))).relateTo<first and last>')
 
 asyncTest('simple relationship to all', async assert => {
     const db = newDatabase(),
-        { AttributeTypes, Model } = db
+        { Model, IntegerType, StringType } = db
     db.version(1).stores({ Game: 'id,title,personId', Person: 'id,name' })
     class Person extends Model {
         static get attributesTypes() {
-            return [['id', AttributeTypes.Integer, { min: 0 }], ['name', AttributeTypes.String, { minLength: 1 }]]
+            return [['id', IntegerType, { min: 0 }], ['name', StringType, { minLength: 1 }]]
         }
         static get relatesTo() {
             return {
@@ -139,9 +139,9 @@ asyncTest('simple relationship to all', async assert => {
     class Game extends Model {
         static get attributesTypes() {
             return [
-                ['id', AttributeTypes.Integer, { min: 0 }],
-                ['title', AttributeTypes.String, { minLength: 1 }],
-                ['personId', AttributeTypes.Integer, { min: 0 }],
+                ['id', IntegerType, { min: 0 }],
+                ['title', StringType, { minLength: 1 }],
+                ['personId', IntegerType, { min: 0 }],
             ]
         }
     }

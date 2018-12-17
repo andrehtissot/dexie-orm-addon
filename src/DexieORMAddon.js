@@ -1,19 +1,23 @@
 import generateModel from './generateModel'
-import Boolean from './attributeTypes/Boolean'
-import Character from './attributeTypes/Character'
-import DateTime from './attributeTypes/DateTime'
-import Integer from './attributeTypes/Integer'
-import Number from './attributeTypes/Number'
-import String from './attributeTypes/String'
+import BooleanType from './attributeTypes/BooleanType'
+import CharacterType from './attributeTypes/CharacterType'
+import DateTimeType from './attributeTypes/DateTimeType'
+import IntegerType from './attributeTypes/IntegerType'
+import NumberType from './attributeTypes/NumberType'
+import StringType from './attributeTypes/StringType'
 import ObjectType from './attributeTypes/ObjectType'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
 
-export const AttributeTypes = { Boolean, Character, DateTime, Integer, Number, ObjectType, String }
-
 export default function DexieORMAddon(db) {
     db.Model = generateModel(db)
-    db.AttributeTypes = AttributeTypes
+    db.BooleanType = BooleanType
+    db.CharacterType = CharacterType
+    db.DateTimeType = DateTimeType
+    db.IntegerType = IntegerType
+    db.NumberType = NumberType
+    db.ObjectType = ObjectType
+    db.StringType = StringType
     addCollectionMethods(db)
     addTableMethods(db)
 }

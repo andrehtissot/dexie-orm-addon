@@ -20,6 +20,7 @@
     "bugs": {
         "url": "https://github.com/andrehtissot/dexie-orm-addon/issues"
     },
+    "typings": "dist/DexieORMAddon.d.ts",
     "scripts": {
         "build": "just-build",
         "watch": "just-build --watch",
@@ -53,8 +54,9 @@
             "# Build the umd module",
             "rollup -c tools/build-configs/rollup.config.js",
             "babel --module-id DexieORMAddon dist/DexieORMAddon.es.js -o dist/DexieORMAddon.js --source-maps",
-            "node tools/insertBanner.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js",
-            "node tools/replaceVersionAndDate.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js",
+            "cp src/DexieORMAddon.d.ts dist/DexieORMAddon.d.ts",
+            "node tools/insertBanner.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js dist/DexieORMAddon.d.ts",
+            "node tools/replaceVersionAndDate.js dist/DexieORMAddon.js dist/DexieORMAddon.es.js dist/DexieORMAddon.d.ts",
             "node tools/replaceExportForGlobal.js dist/DexieORMAddon.js"
         ],
         "release": [

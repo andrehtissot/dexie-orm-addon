@@ -12,4 +12,4 @@ export function typeValidateEqual(assert, type, options, expectedResult, example
     }
 }
 
-export const AttributeTypes = () => newDatabase().AttributeTypes
+export const AttributeTypes = () => newDatabase()
