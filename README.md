@@ -4,6 +4,7 @@ An ORM Addon for Dexie.js
 [![Build Status](https://www.travis-ci.org/andrehtissot/dexie-orm-addon.svg?branch=master)](https://www.travis-ci.org/andrehtissot/dexie-orm-addon)
 [![npm downloads](https://img.shields.io/npm/dt/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![npm version](https://img.shields.io/npm/v/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
+[![node version](https://img.shields.io/node/v/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![GitHub license](https://img.shields.io/github/license/andrehtissot/dexie-orm-addon.svg)](https://github.com/andrehtissot/dexie-orm-addon/blob/master/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/andrehtissot/dexie-orm-addon.svg)](https://github.com/andrehtissot/dexie-orm-addon/issues)
 [![Known Vulnerabilities](https://snyk.io/test/github/andrehtissot/dexie-orm-addon/badge.svg?targetFile=package.json)](https://snyk.io/test/github/andrehtissot/dexie-orm-addon?targetFile=package.json)
@@ -12,6 +13,7 @@ An ORM Addon for Dexie.js
 [![Maintainability](https://api.codeclimate.com/v1/badges/f713e6d091832dea9764/maintainability)](https://codeclimate.com/github/andrehtissot/dexie-orm-addon/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f713e6d091832dea9764/test_coverage)](https://codeclimate.com/github/andrehtissot/dexie-orm-addon/test_coverage)
 [![Codacy Score](https://api.codacy.com/project/badge/Grade/ed663f90fe3943758bfa34229fc2eaec)](https://app.codacy.com/app/andrehtissot/dexie-orm-addon?utm_source=github.com&utm_medium=referral&utm_content=andrehtissot/dexie-orm-addon&utm_campaign=Badge_Grade_Dashboard)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://github.com/prettier/prettier)
 
 ### Version 0
 
