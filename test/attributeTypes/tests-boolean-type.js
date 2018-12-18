@@ -10,7 +10,6 @@ test('BooleanType', assert => {
 })
 
 test('BooleanType.validate', assert => {
-    document.TEEEEEEEEST = BooleanType
     const options = undefined
     typeValidateOk(assert, BooleanType, options, [undefined, true, false])
     // prettier-ignore
