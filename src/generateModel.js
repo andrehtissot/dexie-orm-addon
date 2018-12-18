@@ -5,7 +5,7 @@ import MethodMustBeImplementedException from './exceptions/MethodMustBeImplement
 
 const privateData = new WeakMap()
 
-function extractPrimaryKeyValues(instance) {
+const extractPrimaryKeyValues = instance => {
     const primaryKeys = instance.constructor.primaryKeys
     if (primaryKeys.length === 1) {
         return instance[primaryKeys[0]]
@@ -13,13 +13,13 @@ function extractPrimaryKeyValues(instance) {
     return primaryKeys.map(pk => instance[pk])
 }
 
-function setAttribute(instance, attributesValues, attrName) {
+const setAttribute = (instance, attributesValues, attrName) => {
     if (attributesValues[attrName] !== undefined) {
         instance[attrName] = attributesValues[attrName]
     }
 }
 
-function setAttributes(instance, attributesValues) {
+const setAttributes = (instance, attributesValues) => {
     if (typeof attributesValues === 'object') {
         for (let attrName of instance.constructor.attributesNames) {
             setAttribute(instance, attributesValues, attrName)
@@ -27,7 +27,7 @@ function setAttributes(instance, attributesValues) {
     }
 }
 
-function getPrimaryKeyValuesFromPrivateDataOrExtract(instance) {
+const getPrimaryKeyValuesFromPrivateDataOrExtract = instance => {
     let primaryKeyValues = privateData.get(instance).persistedPrimarykeys
     if (primaryKeyValues === undefined) {
         return extractPrimaryKeyValues(instance)
@@ -35,7 +35,7 @@ function getPrimaryKeyValuesFromPrivateDataOrExtract(instance) {
     return primaryKeyValues
 }
 
-function areRecordDataValid(modelClass, record) {
+const areRecordDataValid = (modelClass, record) => {
     const attributesTypes = modelClass.attributesTypes
     for (let [attributeName, attributeTypeObject, validationOptions] of attributesTypes) {
         if (attributeTypeObject.validate(record[attributeName], validationOptions) !== true) {
@@ -44,7 +44,7 @@ function areRecordDataValid(modelClass, record) {
     }
 }
 
-function areRecordsDataValid(modelClass, records) {
+const areRecordsDataValid = (modelClass, records) => {
     for (let record of records) {
         if (areRecordDataValid(modelClass, record) === false) {
             return false
@@ -53,30 +53,52 @@ function areRecordsDataValid(modelClass, records) {
     return true
 }
 
-function checkObjectStoreExistence(objectStore) {
+const checkObjectStoreExistence = objectStore => {
     if (objectStore === undefined) {
         throw new ModelsObjectStoreDoestExistException()
     }
 }
 
-function forbidDirectCallingToModel(staticObject, methodName) {
+const forbidDirectCallingToModel = (staticObject, methodName) => {
     if (staticObject === BaseModel || staticObject.name === 'Model') {
         throw new DirectMehodCallToModelException(methodName)
     }
 }
 
-function validateAttribute(
+const validateAttribute = (
     instance,
     invalidAttributes,
     attributesNames,
     [attributeName, attributeTypeObject, validationOptions]
-) {
+) => {
     if (attributesNames.includes(attributeName)) {
         const validationMessage = attributeTypeObject.validate(instance[attributeName], validationOptions)
         if (validationMessage !== true) {
             invalidAttributes.set(attributeName, validationMessage)
         }
     }
+}
+
+// Returns a promise. The related instance is returned when promise is done.
+const fetchFirst = (relatedModelClass, relatedModelAttributeName, attributeValue) => {
+    return relatedModelClass.data
+        .where(relatedModelAttributeName)
+        .equals(attributeValue)
+        .firstInstance()
+}
+
+// Returns a promise. The related instance is returned when promise is done.
+const fetchLast = (relatedModelClass, relatedModelAttributeName, attributeValue) => {
+    return relatedModelClass.data
+        .where(relatedModelAttributeName)
+        .equals(attributeValue)
+        .reverse()
+        .firstInstance()
+}
+
+// Returns a dexie collection from the related model.
+const fetchAll = (relatedModelClass, relatedModelAttributeName, attributeValue) => {
+    return relatedModelClass.data.where(relatedModelAttributeName).equals(attributeValue)
 }
 
 export class BaseModel {
@@ -237,26 +259,16 @@ export class BaseModel {
         switch (relationshipType) {
             case 'one':
             case 'first':
-                // Returns a promise. The related instance is returned when promise is done.
-                return relatedModelClass.data
-                    .where(relatedModelAttributeName)
-                    .equals(this[internalAttibuteName])
-                    .firstInstance()
+                return fetchFirst(relatedModelClass, relatedModelAttributeName, this[internalAttibuteName])
             case 'last':
-                // Returns a promise. The related instance is returned when promise is done.
-                return relatedModelClass.data
-                    .where(relatedModelAttributeName)
-                    .equals(this[internalAttibuteName])
-                    .reverse()
-                    .firstInstance()
+                return fetchLast(relatedModelClass, relatedModelAttributeName, this[internalAttibuteName])
             case 'all':
-                // Returns a dexie collection from the related model.
-                return relatedModelClass.data.where(relatedModelAttributeName).equals(this[internalAttibuteName])
+                return fetchAll(relatedModelClass, relatedModelAttributeName, this[internalAttibuteName])
         }
     }
 }
 
-export default function generateModel(db) {
+export const generateModel = db => {
     const Model = class Model extends BaseModel {
         static get db() {
             return db
@@ -264,3 +276,5 @@ export default function generateModel(db) {
     }
     return Model
 }
+
+export default generateModel

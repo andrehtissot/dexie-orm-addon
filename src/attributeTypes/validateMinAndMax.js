@@ -1,4 +1,4 @@
-export default function validateMinAndMax(value, options) {
+export const validateMinAndMax = (value, options) => {
     if (!options) {
         return
     }
@@ -9,3 +9,5 @@ export default function validateMinAndMax(value, options) {
         throw 'is higher than maximum'
     }
 }
+
+export default validateMinAndMax

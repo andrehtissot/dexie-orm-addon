@@ -1,12 +1,12 @@
 import MethodCalledWithoutAModelAssociatedException from './exceptions/MethodCalledWithoutAModelAssociatedException'
 
-function checkModelAssociation(model) {
+const checkModelAssociation = model => {
     if (model === undefined) {
         throw new MethodCalledWithoutAModelAssociatedException()
     }
 }
 
-function generateGetInstance(getMethodName) {
+const generateGetInstance = getMethodName => {
     return async function() {
         checkModelAssociation(this._ctx.table.model)
         const record = await this[getMethodName]()
@@ -16,7 +16,7 @@ function generateGetInstance(getMethodName) {
     }
 }
 
-function objectifyArray(arrayResult, model) {
+const objectifyArray = (arrayResult, model) => {
     for (let i = arrayResult.length - 1; i >= 0; i--) {
         arrayResult[i] = new model(arrayResult[i])
     }
@@ -62,7 +62,7 @@ const CollectionMethods = {
     lastInstance: generateGetInstance('last'),
 }
 
-export default function addCollectionMethods(db) {
+export const addCollectionMethods = db => {
     db.Collection.prototype.toInstancesArray = CollectionMethods.toInstancesArray
     db.Collection.prototype.toMapIndexedBy = CollectionMethods.toMapIndexedBy
     db.Collection.prototype.toInstancesMapIndexedBy = CollectionMethods.toInstancesMapIndexedBy
@@ -70,3 +70,5 @@ export default function addCollectionMethods(db) {
     db.Collection.prototype.lastInstance = CollectionMethods.lastInstance
     db.Collection.prototype.sortInstancesBy = CollectionMethods.sortInstancesBy
 }
+
+export default addCollectionMethods

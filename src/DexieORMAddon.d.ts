@@ -79,6 +79,6 @@ declare module 'dexie' {
     }
 }
 
-declare function DexieORMAddon(db: Dexie): void
+declare const DexieORMAddon: (db: Dexie) => void
 
 export default DexieORMAddon

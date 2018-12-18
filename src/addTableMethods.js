@@ -28,7 +28,7 @@ const TableMethods = {
     },
 }
 
-export default function addTableMethods(db) {
+export const addTableMethods = db => {
     db.Table.prototype.toInstancesArray = TableMethods.toInstancesArray
     db.Table.prototype.toMapIndexedBy = TableMethods.toMapIndexedBy
     db.Table.prototype.toInstancesMapIndexedBy = TableMethods.toInstancesMapIndexedBy
@@ -38,3 +38,5 @@ export default function addTableMethods(db) {
     db.Table.prototype.lastInstance = TableMethods.lastInstance
     db.Table.prototype.getInstance = TableMethods.getInstance
 }
+
+export default addTableMethods

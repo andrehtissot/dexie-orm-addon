@@ -1,6 +1,6 @@
 import validateMinAndMax from './validateMinAndMax'
 
-function validateType(value, options) {
+const validateType = (value, options) => {
     if (!(value instanceof Date) && (value !== undefined || (options && options.require === true))) {
         throw 'is not a Date'
     }
