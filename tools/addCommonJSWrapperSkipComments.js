@@ -9,7 +9,7 @@ const referenceTexts = [
     'var _slicedToArray = function () {',
 ]
 
-files.forEach(file => {
+files.forEach((file) => {
     let fileContent = fs.readFileSync(file, 'utf-8')
     for (let referenceText of referenceTexts) {
         fileContent = fileContent.replace(referenceText, ignoreComment + referenceText)

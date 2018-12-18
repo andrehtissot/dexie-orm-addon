@@ -10,12 +10,13 @@
     },
     "extends": "eslint:recommended",
     "rules": {
-        "no-undef": ["error"],
-        "semi": ["error", "never"],
+        "arrow-parens": ["error", "always"],
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "no-console": ["error", { "allow": ["warn", "error"] }],
+        "no-undef": ["error"],
+        "prettier/prettier": "error",
         "quotes": ["error", "single", { "avoidEscape": true }],
-        "prettier/prettier": "error"
+        "semi": ["error", "never"]
     },
     "globals": {
         "Dexie": true,

@@ -15,7 +15,7 @@ async function newModulesAndSimpleExampleClassWithData() {
 
 module('(extend (new Dexie(dbName).Model)).data')
 
-test('Calling data() directly from Model', assert => {
+test('Calling data() directly from Model', (assert) => {
     const { Model } = newDatabase()
     assert.equal(typeof Model, 'function', 'Model should be accessible as a class')
     assert.throws(
@@ -31,7 +31,7 @@ module('(extend (new Dexie(dbName).Model)).data.toArray()')
 
 asyncTest(
     'the Query generated returns an object with a method toArray() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(typeof modelTestData.toArray, 'function', 'result should have the method "toArray"')
         if (typeof modelTestData.toArray !== 'function') {
@@ -47,7 +47,7 @@ module('(extend (new Dexie(dbName).Model)).data.toCollection().toInstancesArray(
 
 asyncTest(
     'the Query generated returns an object with a method toInstancesArray() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(typeof modelTestData.toCollection, 'function', 'result should have the method "toInstancesArray"')
         if (typeof modelTestData.toCollection !== 'function') {
@@ -70,7 +70,7 @@ module('(extend (new Dexie(dbName).Model)).data.toInstancesArray()')
 
 asyncTest(
     'the Query generated returns an object with a method toInstancesArray() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(
             typeof modelTestData.toInstancesArray,
@@ -92,7 +92,7 @@ module('(extend (new Dexie(dbName).Model)).data.toCollection().toMapIndexedBy()'
 
 asyncTest(
     'the Query generated returns an object with a method toMapIndexedBy() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(
             typeof modelTestData.toCollection().toMapIndexedBy,
@@ -127,7 +127,7 @@ module('(extend (new Dexie(dbName).Model)).data.toMapIndexedBy()')
 
 asyncTest(
     'the Query generated returns an object with a method toMapIndexedBy() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(typeof modelTestData.toMapIndexedBy, 'function', 'result should have the method "toMapIndexedBy"')
         if (typeof modelTestData.toMapIndexedBy !== 'function') {
@@ -158,7 +158,7 @@ module('(extend (new Dexie(dbName).Model)).data.toCollection().toInstancesMapInd
 
 asyncTest(
     'the Query generated returns an object with a method toInstancesMapIndexedBy() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(
             typeof modelTestData.toCollection().toInstancesMapIndexedBy,
@@ -201,7 +201,7 @@ module('(extend (new Dexie(dbName).Model)).data.toInstancesMapIndexedBy()')
 
 asyncTest(
     'the Query generated returns an object with a method toInstancesMapIndexedBy() with all the values retrieved',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(
             typeof modelTestData.toInstancesMapIndexedBy,
@@ -242,7 +242,7 @@ asyncTest(
 
 module('(extend (new Dexie(dbName).Model)).data.count')
 
-asyncTest('the Query generated returns an object with an attribute "count" with the elements count', async assert => {
+asyncTest('the Query generated returns an object with an attribute "count" with the elements count', async (assert) => {
     const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
         count = await modelTestData.count()
     assert.equal(typeof count, 'number', 'result should have the method "count"')
@@ -253,7 +253,7 @@ module('(extend (new Dexie(dbName).Model)).data.first')
 
 asyncTest(
     'the Query generated returns an object with an attribute "first" with the first element as raw object',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.deepEqual(
             await modelTestData.first(),
@@ -265,7 +265,7 @@ asyncTest(
 
 asyncTest(
     'the Query generated returns an object with an attribute "first" with the undefined if there is no records in query result',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClass()
         assert.equal(await modelTestData.first(), undefined, 'result[0] should return the first record data')
     }
@@ -275,7 +275,7 @@ module('(extend (new Dexie(dbName).Model)).data.toCollection().firstInstance')
 
 asyncTest(
     'the Query generated returns an object with an attribute "first" with the first element as raw object',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
             first = await modelTestData.toCollection().firstInstance()
         assert.deepEqual(
@@ -288,7 +288,7 @@ asyncTest(
 
 asyncTest(
     'the Query generated returns an object with an attribute "first" with the undefined if there is no records in query result',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClass(),
             first = await modelTestData.toCollection().firstInstance()
         assert.equal(first, undefined, 'result[0] should return the first record data')
@@ -321,7 +321,7 @@ module('(extend (new Dexie(dbName).Model)).data.firstInstance')
 
 asyncTest(
     'the Query generated returns an object with an attribute "first" with the first element as raw object',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
             first = await modelTestData.firstInstance()
         assert.deepEqual(
@@ -334,7 +334,7 @@ asyncTest(
 
 asyncTest(
     'the Query generated returns an object with an attribute "first" with the undefined if there is no records in query result',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClass(),
             first = await modelTestData.firstInstance()
         assert.equal(first, undefined, 'result[0] should return the first record data')
@@ -345,7 +345,7 @@ module('(extend (new Dexie(dbName).Model)).data.last')
 
 asyncTest(
     'the Query generated returns an object with an attribute "last" with the last element as raw object',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
             last = await modelTestData.last()
         assert.deepEqual(last, { id: 2, name: 'Test 2' }, 'result[0] should return the last record data')
@@ -354,7 +354,7 @@ asyncTest(
 
 asyncTest(
     'the Query generated returns an object with an attribute "last" with the undefined if there is no records in query result',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClass(),
             last = await modelTestData.last()
         assert.deepEqual(last, undefined, 'result[0] should return the last record data')
@@ -365,7 +365,7 @@ module('(extend (new Dexie(dbName).Model)).data.lastInstance')
 
 asyncTest(
     'the Query generated returns an object with an attribute "last" with the last element as raw object',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
             last = await modelTestData.lastInstance()
         assert.deepEqual(
@@ -378,7 +378,7 @@ asyncTest(
 
 asyncTest(
     'the Query generated returns an object with an attribute "last" with the undefined if there is no records in query result',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClass(),
             last = await modelTestData.lastInstance()
         assert.equal(last, undefined, 'result[0] should return the last record data')
@@ -389,7 +389,7 @@ module('(extend (new Dexie(dbName).Model)).data.lastInstance')
 
 asyncTest(
     'the Query generated returns an object with an attribute "last" with the last element as raw object',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
             last = await modelTestData.toCollection().lastInstance()
         assert.deepEqual(
@@ -402,7 +402,7 @@ asyncTest(
 
 asyncTest(
     'the Query generated returns an object with an attribute "last" with the undefined if there is no records in query result',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClass(),
             last = await modelTestData.toCollection().lastInstance()
         assert.equal(last, undefined, 'result[0] should return the last record data')

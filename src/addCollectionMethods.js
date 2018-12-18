@@ -1,12 +1,12 @@
 import MethodCalledWithoutAModelAssociatedException from './exceptions/MethodCalledWithoutAModelAssociatedException'
 
-const checkModelAssociation = model => {
+const checkModelAssociation = (model) => {
     if (model === undefined) {
         throw new MethodCalledWithoutAModelAssociatedException()
     }
 }
 
-const generateGetInstance = getMethodName => {
+const generateGetInstance = (getMethodName) => {
     return async function() {
         checkModelAssociation(this._ctx.table.model)
         const record = await this[getMethodName]()
@@ -62,7 +62,7 @@ const CollectionMethods = {
     lastInstance: generateGetInstance('last'),
 }
 
-export const addCollectionMethods = db => {
+export const addCollectionMethods = (db) => {
     db.Collection.prototype.toInstancesArray = CollectionMethods.toInstancesArray
     db.Collection.prototype.toMapIndexedBy = CollectionMethods.toMapIndexedBy
     db.Collection.prototype.toInstancesMapIndexedBy = CollectionMethods.toInstancesMapIndexedBy

@@ -28,7 +28,7 @@ const TableMethods = {
     },
 }
 
-export const addTableMethods = db => {
+export const addTableMethods = (db) => {
     db.Table.prototype.toInstancesArray = TableMethods.toInstancesArray
     db.Table.prototype.toMapIndexedBy = TableMethods.toMapIndexedBy
     db.Table.prototype.toInstancesMapIndexedBy = TableMethods.toInstancesMapIndexedBy

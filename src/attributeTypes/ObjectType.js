@@ -1,6 +1,6 @@
 const isAValidUndefined = (value, options) => value === undefined && (!options || options.require !== true)
 const isAValidNull = (value, options) => value !== null || (options && options.allowNull === true)
-const isTypeObject = value => typeof value !== 'object'
+const isTypeObject = (value) => typeof value !== 'object'
 
 const ObjectType = {
     validate: (value, options = { require: false, allowNull: false }) => {

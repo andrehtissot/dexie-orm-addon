@@ -5,12 +5,12 @@ import MethodMustBeImplementedException from './exceptions/MethodMustBeImplement
 
 const privateData = new WeakMap()
 
-const extractPrimaryKeyValues = instance => {
+const extractPrimaryKeyValues = (instance) => {
     const primaryKeys = instance.constructor.primaryKeys
     if (primaryKeys.length === 1) {
         return instance[primaryKeys[0]]
     }
-    return primaryKeys.map(pk => instance[pk])
+    return primaryKeys.map((pk) => instance[pk])
 }
 
 const setAttribute = (instance, attributesValues, attrName) => {
@@ -27,7 +27,7 @@ const setAttributes = (instance, attributesValues) => {
     }
 }
 
-const getPrimaryKeyValuesFromPrivateDataOrExtract = instance => {
+const getPrimaryKeyValuesFromPrivateDataOrExtract = (instance) => {
     let primaryKeyValues = privateData.get(instance).persistedPrimarykeys
     if (primaryKeyValues === undefined) {
         return extractPrimaryKeyValues(instance)
@@ -53,7 +53,7 @@ const areRecordsDataValid = (modelClass, records) => {
     return true
 }
 
-const checkObjectStoreExistence = objectStore => {
+const checkObjectStoreExistence = (objectStore) => {
     if (objectStore === undefined) {
         throw new ModelsObjectStoreDoestExistException()
     }
@@ -134,7 +134,7 @@ export class BaseModel {
 
     static get attributesNames() {
         forbidDirectCallingToModel(this, 'get attributesNames()')
-        return this.attributesTypes.map(a => a[0])
+        return this.attributesTypes.map((a) => a[0])
     }
 
     static async saveData(records, options = { force: false }) {
@@ -271,7 +271,7 @@ export class BaseModel {
     }
 }
 
-export const generateModel = db => {
+export const generateModel = (db) => {
     const Model = class Model extends BaseModel {
         static get db() {
             return db

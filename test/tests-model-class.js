@@ -8,7 +8,7 @@ deleteAllDatabasesWhenDone()
 
 module('new Dexie(dbName).Model')
 
-test('attribute Model holds an object', assert => {
+test('attribute Model holds an object', (assert) => {
     assert.equal(typeof Dexie, 'function', 'Dexie is accessible as a class')
     const dbName = newTestDatabaseName(),
         db = new Dexie(dbName, { addons: [DexieORMAddon] })
@@ -17,7 +17,7 @@ test('attribute Model holds an object', assert => {
 
 module('(extend (new Dexie(dbName).Model)).constructor()')
 
-test('extend, but dont implement any method or attribute', assert => {
+test('extend, but dont implement any method or attribute', (assert) => {
     const { Model } = newDatabase()
     class EmptyModelTest extends Model {}
     assert.equal(
@@ -64,7 +64,7 @@ test('extend, but dont implement any method or attribute', assert => {
     )
 })
 
-test('extend, implement and override methods and attributes', assert => {
+test('extend, implement and override methods and attributes', (assert) => {
     const { Model, IntegerType, StringType } = newDatabase()
     class Person extends Model {}
     const attributes = [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]],
@@ -93,7 +93,7 @@ test('extend, implement and override methods and attributes', assert => {
 
 module('(extend (new Dexie(dbName).Model)).primaryKeys')
 
-test('Calling primaryKeys directly from Model', assert => {
+test('Calling primaryKeys directly from Model', (assert) => {
     const { Model } = newDatabase()
     assert.throws(
         () => Model.primaryKeys,
@@ -102,7 +102,7 @@ test('Calling primaryKeys directly from Model', assert => {
     )
 })
 
-test('default primary key should be first attribute defined', assert => {
+test('default primary key should be first attribute defined', (assert) => {
     const { Model, IntegerType, StringType } = newDatabase()
     class ModelTest1 extends Model {
         static get objectStoreName() {
@@ -126,7 +126,7 @@ test('default primary key should be first attribute defined', assert => {
 
 module('(extend (new Dexie(dbName).Model)).attributesNames')
 
-test('Calling attributesNames directly from Model', assert => {
+test('Calling attributesNames directly from Model', (assert) => {
     const { Model } = newDatabase()
     assert.throws(
         () => Model.attributesNames,
@@ -135,7 +135,7 @@ test('Calling attributesNames directly from Model', assert => {
     )
 })
 
-test('recover attributes names', assert => {
+test('recover attributes names', (assert) => {
     const { Model, IntegerType, StringType } = newDatabase()
     class ModelTest1 extends Model {
         static get attributesTypes() {
@@ -169,7 +169,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest("geting the data should retrieve the model's table dexie object", async assert => {
+asyncTest("geting the data should retrieve the model's table dexie object", async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
@@ -211,7 +211,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('simple find first', async assert => {
+asyncTest('simple find first', async (assert) => {
     let user1 = { id: 1, name: 'Test User 1' },
         user2 = { id: 2, name: 'Test User 2' }
     const db = newDatabase(),
@@ -239,7 +239,7 @@ asyncTest('simple find first', async assert => {
     )
 })
 
-asyncTest('find first when objectStore is empty', async assert => {
+asyncTest('find first when objectStore is empty', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
@@ -282,7 +282,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('simple find first', async assert => {
+asyncTest('simple find first', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
@@ -307,7 +307,7 @@ asyncTest('simple find first', async assert => {
     )
 })
 
-asyncTest('find first when objectStore is empty', async assert => {
+asyncTest('find first when objectStore is empty', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
@@ -348,7 +348,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('simple find last', async assert => {
+asyncTest('simple find last', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
@@ -372,7 +372,7 @@ asyncTest('simple find last', async assert => {
     assert.deepEqual(record.attributes, user2, 'attributes of retrieved record should be as previously defined')
 })
 
-asyncTest('find last when objectStore is empty', async assert => {
+asyncTest('find last when objectStore is empty', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
@@ -413,7 +413,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('simple find last', async assert => {
+asyncTest('simple find last', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
@@ -438,7 +438,7 @@ asyncTest('simple find last', async assert => {
     )
 })
 
-asyncTest('find last when objectStore is empty', async assert => {
+asyncTest('find last when objectStore is empty', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ObjectStoreTest: 'id,name' })
@@ -479,7 +479,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('saving four valid new records', async assert => {
+asyncTest('saving four valid new records', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -530,7 +530,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('failing to save four records, due to an invalid', async assert => {
+asyncTest('failing to save four records, due to an invalid', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -553,7 +553,7 @@ asyncTest('failing to save four records, due to an invalid', async assert => {
     assert.equal(await db.ModelTest.count(), 0, 'should not persist the records')
 })
 
-asyncTest('saving four valid or invalid new records with force', async assert => {
+asyncTest('saving four valid or invalid new records with force', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -598,7 +598,7 @@ asyncTest(
     { autoDone: false }
 )
 
-asyncTest('saving four valid new records', async assert => {
+asyncTest('saving four valid new records', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -620,7 +620,7 @@ asyncTest('saving four valid new records', async assert => {
     assert.equal(await db.ModelTest.count(), 4, 'should persist the 4 records')
 })
 
-asyncTest('failing to save four records, due to an invalid', async assert => {
+asyncTest('failing to save four records, due to an invalid', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -643,7 +643,7 @@ asyncTest('failing to save four records, due to an invalid', async assert => {
     assert.equal(await db.ModelTest.count(), 0, 'should not persist the records')
 })
 
-asyncTest('saving four valid or invalid new records with force', async assert => {
+asyncTest('saving four valid or invalid new records with force', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })

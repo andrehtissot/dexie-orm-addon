@@ -9,7 +9,7 @@ import ObjectType from './attributeTypes/ObjectType'
 import addCollectionMethods from './addCollectionMethods'
 import addTableMethods from './addTableMethods'
 
-export const DexieORMAddon = db => {
+export const DexieORMAddon = (db) => {
     db.Model = generateModel(db)
     db.BooleanType = BooleanType
     db.CharacterType = CharacterType

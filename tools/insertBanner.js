@@ -11,7 +11,7 @@ const removeBannerDuplicates = function(fileContent) {
     )
 }
 
-files.forEach(file => {
+files.forEach((file) => {
     let fileContent = fs.readFileSync(file, 'utf-8')
     fs.writeFileSync(file, bannerContent + removeBannerDuplicates(fileContent), 'utf-8')
 })

@@ -7,7 +7,7 @@ deleteAllDatabasesWhenDone()
 
 module('(new (extend (new Dexie(dbName).Model))).relateTo undefined')
 
-asyncTest('undefined relatesTo', async assert => {
+asyncTest('undefined relatesTo', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType } = db
     db.version(1).stores({ User: 'id' })
@@ -23,7 +23,7 @@ asyncTest('undefined relatesTo', async assert => {
     assert.notOk(await user.fetch('person'), 'fetch() should not be successful with empty relatesTo')
 })
 
-asyncTest('undefined valued relatesTo', async assert => {
+asyncTest('undefined valued relatesTo', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType } = db
     db.version(1).stores({ User: 'id' })
@@ -43,7 +43,7 @@ asyncTest('undefined valued relatesTo', async assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).relateTo<one>')
 
-asyncTest('simple relationship to one', async assert => {
+asyncTest('simple relationship to one', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ User: 'id,personId', Person: 'id,name' })
@@ -104,7 +104,7 @@ asyncTest('simple relationship to one', async assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).relateTo<all>')
 
-asyncTest('simple relationship to all', async assert => {
+asyncTest('simple relationship to all', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ Game: 'id,title,personId', Person: 'id,name' })
@@ -157,7 +157,7 @@ asyncTest('simple relationship to all', async assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).relateTo<first and last>')
 
-asyncTest('simple relationship to all', async assert => {
+asyncTest('simple relationship to all', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ Game: 'id,title,personId', Person: 'id,name' })

@@ -3,7 +3,7 @@ import DexieOpenedDatabasesAddon from 'dexie-opened-databases-addon'
 import { test, done } from 'QUnit'
 
 export function asyncTest(testDescription, testFunction, options = { autoDone: true }) {
-    test(testDescription, assert => {
+    test(testDescription, (assert) => {
         var asyncDone = assert.async()
         testFunction(assert, asyncDone)
             .then(() => {
@@ -11,7 +11,7 @@ export function asyncTest(testDescription, testFunction, options = { autoDone: t
                     asyncDone()
                 }
             })
-            .catch(e => {
+            .catch((e) => {
                 if (options.autoDone === true || options.autoDone === 'on failure') {
                     asyncDone()
                 }

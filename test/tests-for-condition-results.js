@@ -17,7 +17,7 @@ async function newModulesAndSimpleExampleClassWithData() {
 
 module('(extend (new Dexie(dbName).Model)).data.getInstance()')
 
-asyncTest('the method getInstance() should return a valid instance of ModelTest', async assert => {
+asyncTest('the method getInstance() should return a valid instance of ModelTest', async (assert) => {
     const { modelTestData, ModelTest } = await newModulesAndSimpleExampleClassWithData()
     assert.equal(typeof modelTestData.getInstance, 'function', 'result should have the method "getInstance"')
     for (let i = 1; i < 5; i++) {
@@ -29,7 +29,7 @@ asyncTest('the method getInstance() should return a valid instance of ModelTest'
 
 asyncTest(
     'the method getInstance() should return undefined if there is no record with that value as primary key',
-    async assert => {
+    async (assert) => {
         const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
         assert.equal(typeof modelTestData.getInstance, 'function', 'result should have the method "getInstance"')
         assert.equal(await modelTestData.getInstance(0), undefined, 'getInstance(0) should be undefined')
@@ -46,7 +46,7 @@ asyncTest(
 
 module('(extend (new Dexie(dbName).Model)).data.toCollection().sortInstancesBy()')
 
-asyncTest('where() returns a Dexie WhereClause that can be used to retrieve sorted instances', async assert => {
+asyncTest('where() returns a Dexie WhereClause that can be used to retrieve sorted instances', async (assert) => {
     const { modelTestData } = await newModulesAndSimpleExampleClassWithData()
     assert.equal(typeof modelTestData.where, 'function', 'result should have the method "where"')
     const resultAsArray = await modelTestData

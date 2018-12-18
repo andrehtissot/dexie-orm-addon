@@ -8,7 +8,7 @@ deleteAllDatabasesWhenDone()
 
 module('(new (extend (new Dexie(dbName).Model))).attributes')
 
-test('recover data as object', assert => {
+test('recover data as object', (assert) => {
     const { Model, IntegerType, StringType } = newDatabase()
     class ModelTest extends Model {
         static get attributesTypes() {
@@ -28,7 +28,7 @@ test('recover data as object', assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).validate()')
 
-asyncTest('simple validation test', async assert => {
+asyncTest('simple validation test', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db,
         recordsData = [
@@ -157,7 +157,7 @@ asyncTest('simple validation test', async assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).isValid')
 
-asyncTest('simple bool validation test', async assert => {
+asyncTest('simple bool validation test', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db,
         recordsData = [
@@ -185,7 +185,7 @@ asyncTest('simple bool validation test', async assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).save()')
 
-asyncTest('saving a simple valid new record', async assert => {
+asyncTest('saving a simple valid new record', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -216,7 +216,7 @@ asyncTest('saving a simple valid new record', async assert => {
     }
 })
 
-asyncTest('saving a simple valid new record with no primary key', async assert => {
+asyncTest('saving a simple valid new record with no primary key', async (assert) => {
     const db = newDatabase(),
         { Model, StringType } = db
     db.version(1).stores({ ModelTest: 'name' })
@@ -249,7 +249,7 @@ asyncTest('saving a simple valid new record with no primary key', async assert =
     }
 })
 
-asyncTest('saving a simple invalid new record fails', async assert => {
+asyncTest('saving a simple invalid new record fails', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -277,7 +277,7 @@ asyncTest('saving a simple invalid new record fails', async assert => {
     }
 })
 
-asyncTest('saving a simple invalid new record works if forced', async assert => {
+asyncTest('saving a simple invalid new record works if forced', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -308,7 +308,7 @@ asyncTest('saving a simple invalid new record works if forced', async assert => 
     }
 })
 
-asyncTest('saving a simple valid previous existing record', async assert => {
+asyncTest('saving a simple valid previous existing record', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -342,7 +342,7 @@ asyncTest('saving a simple valid previous existing record', async assert => {
     }
 })
 
-asyncTest('duplicate record changing its default primary key value', async assert => {
+asyncTest('duplicate record changing its default primary key value', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -372,7 +372,7 @@ asyncTest('duplicate record changing its default primary key value', async asser
     }
 })
 
-asyncTest('duplicating record changing its composite primary key attributes and values', async assert => {
+asyncTest('duplicating record changing its composite primary key attributes and values', async (assert) => {
     if (!(await doesSupportCompositeObjectStoreKeys())) {
         // For some browsers, like Internet Explorer, Edge and Safari (< v10), there is no support for composite primary keys.
         assert.ok(true, 'Current browser does not support composite primary keys')
@@ -405,7 +405,7 @@ asyncTest('duplicating record changing its composite primary key attributes and 
 
 module('(new (extend (new Dexie(dbName).Model))).delete()')
 
-asyncTest('simple delete', async assert => {
+asyncTest('simple delete', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db,
         user1 = { id: 1, name: 'Test User 1' },
@@ -444,7 +444,7 @@ asyncTest('simple delete', async assert => {
     assert.equal(record, null, 'there is no records to return')
 })
 
-asyncTest('delete for composite primary key', async assert => {
+asyncTest('delete for composite primary key', async (assert) => {
     if (!(await doesSupportCompositeObjectStoreKeys())) {
         // For some browsers, like Internet Explorer, Edge and Safari (< v10), there is no support for composite primary keys.
         assert.ok(true, 'Current browser does not support composite primary keys')
@@ -494,7 +494,7 @@ asyncTest('delete for composite primary key', async assert => {
 
 module('(new (extend (new Dexie(dbName).Model))).reload()')
 
-asyncTest('simple reload', async assert => {
+asyncTest('simple reload', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })
@@ -518,7 +518,7 @@ asyncTest('simple reload', async assert => {
     assert.equal(userInstance.id, 1, 'id should be changed to saved value')
 })
 
-asyncTest('reload when record is not currently in the database', async assert => {
+asyncTest('reload when record is not currently in the database', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })
@@ -541,7 +541,7 @@ asyncTest('reload when record is not currently in the database', async assert =>
     assert.equal(userInstance.id, 2, 'if the id was not persisted, should not be reloadable')
 })
 
-asyncTest('reload after a record was delete', async assert => {
+asyncTest('reload after a record was delete', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })
@@ -566,7 +566,7 @@ asyncTest('reload after a record was delete', async assert => {
     assert.equal(userInstance.id, 2, 'id should be changed to saved value')
 })
 
-asyncTest('reload the record has composite primary keys', async assert => {
+asyncTest('reload the record has composite primary keys', async (assert) => {
     if (!(await doesSupportCompositeObjectStoreKeys())) {
         // For some browsers, like Internet Explorer, Edge and Safari (< v10), there is no support for composite primary keys.
         assert.ok(true, 'Current browser does not support composite primary keys')
@@ -598,7 +598,7 @@ asyncTest('reload the record has composite primary keys', async assert => {
     assert.equal(userInstance.id, 1, 'id should be changed to saved value')
 })
 
-asyncTest('saving the record should throw exception if id is undefined', async assert => {
+asyncTest('saving the record should throw exception if id is undefined', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ ModelTest: 'id,name' })
@@ -616,7 +616,7 @@ asyncTest('saving the record should throw exception if id is undefined', async a
     assert.ok(await instance.reload(), 'async reload() should fail, returning false')
 })
 
-asyncTest('save/reload/delete with empty primaryKey', async assert => {
+asyncTest('save/reload/delete with empty primaryKey', async (assert) => {
     const db = newDatabase(),
         { Model, IntegerType, StringType } = db
     db.version(1).stores({ users: 'id,name' })

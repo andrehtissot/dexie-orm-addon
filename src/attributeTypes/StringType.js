@@ -1,4 +1,4 @@
-const validateType = value => {
+const validateType = (value) => {
     if (typeof value !== 'string') {
         throw 'is not a String'
     }

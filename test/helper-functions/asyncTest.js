@@ -1,7 +1,7 @@
 import { test } from 'QUnit'
 
 export default function asyncTest(testDescription, testFunction, options = { autoDone: true }) {
-    test(testDescription, assert => {
+    test(testDescription, (assert) => {
         var asyncDone = assert.async()
         testFunction(assert, asyncDone)
             .then(() => {
@@ -9,7 +9,7 @@ export default function asyncTest(testDescription, testFunction, options = { aut
                     asyncDone()
                 }
             })
-            .catch(e => {
+            .catch((e) => {
                 if (options.autoDone === true || options.autoDone === 'on failure') {
                     asyncDone()
                 }
