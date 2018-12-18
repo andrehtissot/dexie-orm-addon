@@ -224,7 +224,7 @@ export class BaseModel {
     async delete() {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
         const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
-        if (primaryKeyValues === undefined) {
+        if (primaryKeyValues.length === 0) {
             return false
         }
         await this.constructor.db[this.constructor.objectStoreName].delete(primaryKeyValues)
@@ -234,7 +234,7 @@ export class BaseModel {
     async reload() {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
         const primaryKeyValues = getPrimaryKeyValuesFromPrivateDataOrExtract(this)
-        if (primaryKeyValues === undefined) {
+        if (primaryKeyValues.length === 0) {
             return false
         }
         const attributesValues = await this.constructor.db[this.constructor.objectStoreName].get(primaryKeyValues)
@@ -247,7 +247,10 @@ export class BaseModel {
 
     fetch(relationshipName) {
         checkObjectStoreExistence(this.constructor.db[this.constructor.objectStoreName])
-        if (this.constructor.relatesTo[relationshipName] === undefined) {
+        if (
+            typeof this.constructor.relatesTo !== 'object' ||
+            this.constructor.relatesTo[relationshipName] === undefined
+        ) {
             return undefined
         }
         const [

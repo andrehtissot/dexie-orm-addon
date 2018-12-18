@@ -5,6 +5,42 @@ import { module } from 'QUnit'
 
 deleteAllDatabasesWhenDone()
 
+module('(new (extend (new Dexie(dbName).Model))).relateTo undefined')
+
+asyncTest('undefined relatesTo', async assert => {
+    const db = newDatabase(),
+        { Model, IntegerType } = db
+    db.version(1).stores({ User: 'id' })
+    class User extends Model {
+        static get attributesTypes() {
+            return [['id', IntegerType, { min: 1 }]]
+        }
+        static get relatesTo() {
+            return undefined
+        }
+    }
+    const user = new User({ id: 0 })
+    assert.notOk(await user.fetch('person'), 'fetch() should not be successful with empty relatesTo')
+})
+
+asyncTest('undefined valued relatesTo', async assert => {
+    const db = newDatabase(),
+        { Model, IntegerType } = db
+    db.version(1).stores({ User: 'id' })
+    class User extends Model {
+        static get attributesTypes() {
+            return [['id', IntegerType, { min: 1 }]]
+        }
+        static get relatesTo() {
+            return {
+                person: undefined,
+            }
+        }
+    }
+    const user = new User({ id: 0 })
+    assert.notOk(await user.fetch('person'), 'fetch() should not be successful with empty relatesTo')
+})
+
 module('(new (extend (new Dexie(dbName).Model))).relateTo<one>')
 
 asyncTest('simple relationship to one', async assert => {

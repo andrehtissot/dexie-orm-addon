@@ -40,10 +40,10 @@
         "test:opera": "npm run build dev && karma start test/karma/karma.conf.opera.js --single-run",
         "test:opera:debug": "npm run build dev && karma start test/karma/karma.conf.opera.js --log-level debug",
         "prettier-src": "find ./src -name '*.js' -or -name '*.json' | xargs prettier --write",
-        "prettier-tools": "find ./tools -name '*.js' -or -name '*.json' | xargs prettier --write",
-        "prettier-test": "find ./test -name '*.js' -or -name '*.json' | xargs prettier --write",
+        "prettier-tools": "find ./tools -name '*.js' -or -name '*.json' | grep -v tools/tmp | xargs prettier --write",
+        "prettier-test": "find ./test -name '*.js' -or -name '*.json' | grep -v test/tmp | xargs prettier --write",
         "prettier-all": "npm run prettier-src && npm run prettier-tools && npm run prettier-test",
-        "eslint-all": "eslint --fix ./src ./tools ./test"
+        "eslint-all": "eslint --fix ./src ./tools ./test --ignore-pattern test/tmp --ignore-pattern tools/tmp"
     },
     "just-build": {
         "default": [

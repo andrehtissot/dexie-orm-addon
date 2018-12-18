@@ -615,3 +615,25 @@ asyncTest('saving the record should throw exception if id is undefined', async a
     instance.id = undefined
     assert.ok(await instance.reload(), 'async reload() should fail, returning false')
 })
+
+asyncTest('save/reload/delete with empty primaryKey', async assert => {
+    const db = newDatabase(),
+        { Model, IntegerType, StringType } = db
+    db.version(1).stores({ users: 'id,name' })
+    class User extends Model {
+        static get primaryKeys() {
+            return []
+        }
+        static get objectStoreName() {
+            return 'users'
+        }
+        static get attributesTypes() {
+            return [['id', IntegerType, { min: 1 }], ['name', StringType, { minLength: 1 }]]
+        }
+    }
+    const userData = { id: 1, name: 'user name' },
+        userInstance = new User(userData)
+    assert.ok(await userInstance.save(), 'save() should be successful even with empty primaryKey')
+    assert.notOk(await userInstance.reload(), 'reload() should not be successful with empty primaryKey')
+    assert.notOk(await userInstance.delete(), 'delete() should not be successful with empty primaryKey')
+})
