@@ -1,3 +1,5 @@
+/*global DexieORMAddon*/
+
 var compositeObjectStoreKeysIsSupported = () => {
     return new Promise(resolve => {
         const db = new Dexie('CompositeObjectStoreKeysSupportTest', { addons: [DexieORMAddon] })

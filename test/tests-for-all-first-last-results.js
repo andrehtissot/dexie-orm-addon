@@ -246,9 +246,6 @@ asyncTest('the Query generated returns an object with an attribute "count" with 
     const { modelTestData } = await newModulesAndSimpleExampleClassWithData(),
         count = await modelTestData.count()
     assert.equal(typeof count, 'number', 'result should have the method "count"')
-    if (typeof count !== '') {
-        return // prevent the code bellow to fail
-    }
     assert.equal(count, 2, 'return from "count" should be 2')
 })
 

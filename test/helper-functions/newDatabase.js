@@ -1,3 +1,4 @@
+/*global DexieORMAddon window*/
 import DexieOpenedDatabasesAddon from 'dexie-opened-databases-addon'
 
 export function newTestDatabaseName() {

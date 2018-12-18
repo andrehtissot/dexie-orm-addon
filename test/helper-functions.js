@@ -1,3 +1,4 @@
+/*global DexieORMAddon*/
 import DexieOpenedDatabasesAddon from 'dexie-opened-databases-addon'
 import { test, done } from 'QUnit'
 

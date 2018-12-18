@@ -1,23 +1,27 @@
 {
-  "plugins": ["prettier"],
-  "parserOptions": {
-    "ecmaVersion": 2017,
-    "sourceType": "module",
-    "ecmaFeatures": {}
-  },
-  "env": {
-    "node": true
-  },
-  "rules": {
-    "no-undef": ["error"],
-    "semi": ["warn", "never"],
-    "prettier/prettier": "error"
-  },
-  "globals": {
-    "Dexie": true,
-    "Promise": true,
-    "WeakMap": true,
-    "Map": true,
-    "Set": true
-  }
+    "plugins": ["prettier"],
+    "parserOptions": {
+        "ecmaVersion": 2017,
+        "sourceType": "module",
+        "ecmaFeatures": {}
+    },
+    "env": {
+        "node": true
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "no-undef": ["error"],
+        "semi": ["error", "never"],
+        "indent": ["error", 4, { "SwitchCase": 1 }],
+        "no-console": ["error", { "allow": ["warn", "error"] }],
+        "quotes": ["error", "single", { "avoidEscape": true }],
+        "prettier/prettier": "error"
+    },
+    "globals": {
+        "Dexie": true,
+        "Promise": true,
+        "WeakMap": true,
+        "Map": true,
+        "Set": true
+    }
 }

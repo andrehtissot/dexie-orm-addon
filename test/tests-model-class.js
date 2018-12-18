@@ -1,3 +1,4 @@
+/*global DexieORMAddon*/
 import asyncTest from './helper-functions/asyncTest'
 import newDatabase, { newTestDatabaseName } from './helper-functions/newDatabase'
 import { deleteAllDatabasesWhenDone } from './helper-functions/deleteAllDatabases'
@@ -153,7 +154,7 @@ asyncTest(
     async (assert, asyncDone) => {
         const { Model } = newDatabase()
         try {
-            const modelData = Model.data
+            Model.data
             assert.ok(false, 'data() should only be called from a class that extends Model')
             asyncDone()
         } catch (e) {

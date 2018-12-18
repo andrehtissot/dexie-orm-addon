@@ -22,7 +22,7 @@ test('StringType.validate with {minLength:…}', assert => {
     // prettier-ignore
     typeValidateOk(assert, StringType, options, [ '33', '-32', '-1', '53.0', '433', '-2', '-3', undefined, 'sada', '3.2', 'isds', 'sda sda ' ])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is lower than mininum", [ '1', '0', '', '2', '3', '4', 'j' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is lower than mininum', [ '1', '0', '', '2', '3', '4', 'j' ])
     // prettier-ignore
     typeValidateEqual(assert, StringType, options, 'is not a String', [ 3.2, {}, () => {}, new Date(), null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4 ])
 })
@@ -32,7 +32,7 @@ test('StringType.validate with {maxLength:…}', assert => {
     // prettier-ignore
     typeValidateOk(assert, StringType, options, ['33', '1', '0', '', '2', undefined, '-2', '3', '-3', '4', 'j'])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is higher than maximum", [ '53.0', '433', 'sada', '3.2', 'isds', 'sda sda ' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is higher than maximum', [ '53.0', '433', 'sada', '3.2', 'isds', 'sda sda ' ])
     // prettier-ignore
     typeValidateEqual(assert, StringType, options, 'is not a String', [ 3.2, {}, () => {}, new Date(), null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4 ])
 })
@@ -42,9 +42,9 @@ test('StringType.validate with {minLength:…,maxLength:…}', assert => {
     // prettier-ignore
     typeValidateOk(assert, StringType, options, ['33', '-32', '-1', '433', undefined, '-2', '-3', '3.2'])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is higher than maximum", [ '53.0', 'sada', 'isds', 'sda sda ' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is higher than maximum', [ '53.0', 'sada', 'isds', 'sda sda ' ])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is lower than mininum", [ '1', '0', '', '2', '3', '4', 'j' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is lower than mininum', [ '1', '0', '', '2', '3', '4', 'j' ])
     // prettier-ignore
     typeValidateEqual(assert, StringType, options, 'is not a String', [ 3.2, {}, () => {}, new Date(), null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4 ])
 })
@@ -72,7 +72,7 @@ test('StringType.validate with {require:true, minLength:…}', assert => {
     // prettier-ignore
     typeValidateOk(assert, StringType, options, [ '33', '-32', '-1', '53.0', '433', '-2', '-3', 'sada', '3.2', 'isds', 'sda sda ' ])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is lower than mininum", [ '1', '0', '', '2', '3', '4', 'j' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is lower than mininum', [ '1', '0', '', '2', '3', '4', 'j' ])
     // prettier-ignore
     typeValidateEqual(assert, StringType, options, 'is not a String', [ 3.2, {}, () => {}, new Date(), undefined, null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4 ])
 })
@@ -82,7 +82,7 @@ test('StringType.validate with {require:true, maxLength:…}', assert => {
     // prettier-ignore
     typeValidateOk(assert, StringType, options, ['33', '1', '0', '', '2', '-2', '3', '-3', '4', 'j'])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is higher than maximum", [ '53.0', '433', 'sada', '3.2', 'isds', 'sda sda ' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is higher than maximum', [ '53.0', '433', 'sada', '3.2', 'isds', 'sda sda ' ])
     // prettier-ignore
     typeValidateEqual(assert, StringType, options, 'is not a String', [ 3.2, {}, () => {}, new Date(), undefined, null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4 ])
 })
@@ -92,9 +92,9 @@ test('StringType.validate with {require:true, minLength:…, maxLength:…}', as
     // prettier-ignore
     typeValidateOk(assert, StringType, options, ['33', '-32', '-1', '433', '-2', '-3', '3.2'])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is higher than maximum", [ '53.0', 'sada', 'isds', 'sda sda ' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is higher than maximum', [ '53.0', 'sada', 'isds', 'sda sda ' ])
     // prettier-ignore
-    typeValidateEqual(assert, StringType, options, "has it's length is lower than mininum", [ '1', '0', '', '2', '3', '4', 'j' ])
+    typeValidateEqual(assert, StringType, options, 'has it\'s length is lower than mininum', [ '1', '0', '', '2', '3', '4', 'j' ])
     // prettier-ignore
     typeValidateEqual(assert, StringType, options, 'is not a String', [ 3.2, {}, () => {}, new Date(), undefined, null, -32, -1, 0, -2, -3, 33, 53.0, 433, 3, 4 ])
 })

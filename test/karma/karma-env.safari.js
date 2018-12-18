@@ -1,3 +1,4 @@
+/*global QUnit*/
 QUnit.assert.deepEqual = function(a, b, message) {
     this.pushResult({
         result: JSON.stringify(a) === JSON.stringify(a),

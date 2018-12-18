@@ -218,7 +218,7 @@ asyncTest('saving a simple valid new record', async assert => {
 
 asyncTest('saving a simple valid new record with no primary key', async assert => {
     const db = newDatabase(),
-        { Model, IntegerType, StringType } = db
+        { Model, StringType } = db
     db.version(1).stores({ ModelTest: 'name' })
     class ModelTest extends Model {
         static get primaryKeys() {
