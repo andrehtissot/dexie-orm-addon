@@ -11,7 +11,7 @@ export declare interface IAttributeType {
     validate: (value: any, options?: IAttributeTypeOptions) => boolean
 }
 
-export type ModelAttributeType = [string, IAttributeType, IAttributeTypeOptions]
+export type ModelAttributeType = [string, IAttributeType, IAttributeTypeOptions?]
 
 export enum RelationshipType {
     one = 'one',
@@ -26,7 +26,7 @@ export declare interface ModelRelationshipTypes {
     [attributeName: string]: ModelRelationshipType
 }
 
-export declare class BaseModel {
+declare class BaseModel {
     attributes: object[]
     constructor(attributesValues: object, options?: { persisted: boolean })
     delete(): Promise<boolean>
