@@ -13,10 +13,6 @@ export declare interface IAttributeType {
 
 export type ModelAttributeType = [string, IAttributeType, IAttributeTypeOptions]
 
-declare interface AttributeValue {
-    [attributeName: string]: any
-}
-
 export enum RelationshipType {
     one = 'one',
     first = 'first',
@@ -31,8 +27,8 @@ export declare interface ModelRelationshipTypes {
 }
 
 export declare class BaseModel {
-    attributes: AttributeValue[]
-    constructor(attributesValues: AttributeValue[], options?: { persisted: boolean })
+    attributes: object[]
+    constructor(attributesValues: object, options?: { persisted: boolean })
     delete(): Promise<boolean>
     fetch(relationshipName: string): Promise<Model> | Promise<Collection<any, any>>
     isValid: boolean
