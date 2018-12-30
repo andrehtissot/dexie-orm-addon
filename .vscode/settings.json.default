@@ -1,0 +1,31 @@
+{
+    "saveAndRun": {
+        "commands": [
+            {
+                "match": "\\.html?$",
+                "cmd": "prettier --write ${file}",
+                "useShortcut": false,
+                "silent": true
+            },
+            {
+                "match": "\\.css$",
+                "cmd": "prettier --write ${file}",
+                "useShortcut": false,
+                "silent": true
+            },
+            {
+                "match": "\\.jsx?$",
+                "cmd": "prettier --write ${file} && eslint --fix ${file}",
+                "useShortcut": false,
+                "silent": false
+            },
+            {
+                "match": "\\.json$",
+                "cmd": "prettier --write ${file} && eslint --fix ${file}",
+                "useShortcut": false,
+                "silent": true
+            }
+        ]
+    },
+    "editor.tabSize": 4
+}
