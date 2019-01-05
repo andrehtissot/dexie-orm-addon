@@ -1,47 +1,50 @@
 {
   "presets": [
-    [
-      "env", {
-        "targets": {
-          "chrome": "70",
-          "edge": "17",
-          "firefox": "63",
-          "safari": "12",
-          "ios": "12",
-          "opera": "56"
-        },
-        "modules": "umd",
-        "debug": false
-      }
-    ]
+      [
+          "env",
+          {
+              "targets": {
+                  "chrome": "71",
+                  "edge": "18",
+                  "firefox": "64",
+                  "safari": "12",
+                  "ios": "12",
+                  "opera": "56"
+              },
+              "modules": "umd",
+              "debug": false
+          }
+      ]
   ],
   "plugins": [],
   "env": {
-    "coverage-test": {
-      "presets": [
-        [
-          "env", {
-            "targets": {
-              "chrome": "54"
-            },
-            "modules": "commonjs",
-            "debug": false
-          }
-        ]
-      ]
-    },
-    "ie11-support": {
-      "presets": [
-        [
-          "env", {
-            "targets": {
-              "browsers": "ie >= 11"
-            },
-            "modules": "commonjs",
-            "debug": false
-          }
-        ]
-      ]
-    }
+      "coverage-test": {
+          "presets": [
+              [
+                  "env",
+                  {
+                      "targets": {
+                          "chrome": "54"
+                      },
+                      "modules": "commonjs",
+                      "debug": false
+                  }
+              ]
+          ]
+      },
+      "ie11-support": {
+          "presets": [
+              [
+                  "env",
+                  {
+                      "targets": {
+                          "browsers": "ie >= 11"
+                      },
+                      "modules": "commonjs",
+                      "debug": false
+                  }
+              ]
+          ]
+      }
   }
 }

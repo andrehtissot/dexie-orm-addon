@@ -1,12 +1,14 @@
 # For a cleaner node module:
 test/
 tools/
+src/
 .travis.yml
 .gitignore
 dist/*.min.js
 dist/*.min.js.map
 .babelrc
 .eslintrc.json
+.npmignore
 
 # From .gitignore:
 # Ignore node_modules
