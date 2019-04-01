@@ -20,35 +20,6 @@ export enum RelationshipType {
     all = 'all',
 }
 
-export declare type ModelRelationshipType = [RelationshipType, string, Model, string]
-
-export declare interface ModelRelationshipTypes {
-    [attributeName: string]: ModelRelationshipType
-}
-
-declare class BaseModel {
-    attributes: object[]
-    constructor(attributesValues: object, options?: { persisted: boolean })
-    delete(): Promise<boolean>
-    fetch(relationshipName: string): Promise<Model> | Promise<Collection<any, any>>
-    isValid: boolean
-    reload(): Promise<boolean>
-    save(options?: { force: boolean }): Promise<boolean>
-    static attributesNames: string[]
-    static attributesTypes: ModelAttributeType[]
-    static data: Table<any, any>
-    static objectStoreName: string
-    static primaryKeys: string[]
-    static relatesTo: ModelRelationshipTypes
-    static save(records: Model[], options?: { force: boolean }): Promise<boolean>
-    static saveData(records: object[], options?: { force: boolean }): Promise<boolean>
-    validate(attributesNamesToValidate: string[]): Map<string, string>
-}
-
-declare class Model extends BaseModel {
-    static db: Dexie
-}
-
 declare const BooleanType: {
     validate: (value: boolean, options?: { require: boolean }) => boolean
 }
@@ -77,29 +48,55 @@ declare const StringType: {
     validate: (value: string, options?: { require: boolean; allowNull: boolean }) => boolean
 }
 
-declare interface Collection<T, Key> extends Dexie.Collection<T, Key> {
-    toInstancesArray(): Promise<Model[]>
-    toMapIndexedBy(): Promise<Map<Key, object>>
-    toInstancesMapIndexedBy(): Promise<Map<Key, Model>>
-    firstInstance(): Promise<Model>
-    lastInstance(): Promise<Model>
-    sortInstancesBy(): Promise<Model[]>
-}
-
-declare interface Table<T, Key> extends Dexie.Table<T, Key> {
-    toInstancesArray(): Promise<Model[]>
-    toMapIndexedBy(): Promise<Map<Key, object>>
-    toInstancesMapIndexedBy(): Promise<Map<Key, Model>>
-    first(): Promise<object>
-    firstInstance(): Promise<Model>
-    last(): Promise<object>
-    lastInstance(): Promise<Model>
-    getInstance(): Promise<Model>
-}
-
 declare module 'dexie' {
-    export interface Collection<T, Key> {}
-    export interface Table<T, Key> {}
+    export type ModelRelationshipType = [RelationshipType, string, Model, string]
+
+    export interface ModelRelationshipTypes {
+        [attributeName: string]: ModelRelationshipType
+    }
+
+    export interface Collection<T, Key> extends Dexie.Collection<T, Key> {
+        toInstancesArray(): Promise<Model[]>
+        toMapIndexedBy(): Promise<Map<Key, object>>
+        toInstancesMapIndexedBy(): Promise<Map<Key, Model>>
+        firstInstance(): Promise<Model>
+        lastInstance(): Promise<Model>
+        sortInstancesBy(): Promise<Model[]>
+    }
+
+    export interface Table<T, Key> extends Dexie.Table<T, Key> {
+        toInstancesArray(): Promise<Model[]>
+        toMapIndexedBy(): Promise<Map<Key, object>>
+        toInstancesMapIndexedBy(): Promise<Map<Key, Model>>
+        first(): Promise<object>
+        firstInstance(): Promise<Model>
+        last(): Promise<object>
+        lastInstance(): Promise<Model>
+        getInstance(): Promise<Model>
+    }
+
+    export class BaseModel {
+        attributes: object[]
+        constructor(attributesValues: object, options?: { persisted: boolean })
+        delete(): Promise<boolean>
+        fetch(relationshipName: string): Promise<Model> | Promise<Collection<any, any>>
+        isValid: boolean
+        reload(): Promise<boolean>
+        save(options?: { force: boolean }): Promise<boolean>
+        static attributesNames: string[]
+        static attributesTypes: ModelAttributeType[]
+        static data: Table<any, any>
+        static objectStoreName: string
+        static primaryKeys: string[]
+        static relatesTo: ModelRelationshipTypes
+        static save(records: Model[], options?: { force: boolean }): Promise<boolean>
+        static saveData(records: object[], options?: { force: boolean }): Promise<boolean>
+        validate(attributesNamesToValidate: string[]): Map<string, string>
+    }
+
+    export class Model extends BaseModel {
+        static db: Dexie
+    }
 
     export default class Dexie {
         Model: typeof Model
