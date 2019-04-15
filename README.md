@@ -18,6 +18,7 @@ An ORM Addon for Dexie.js
 [![minzipped size](https://img.shields.io/bundlephobia/minzip/dexie-orm-addon.svg)](https://www.npmjs.com/package/dexie-orm-addon)
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/andrehtissot/dexie-orm-addon.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/andrehtissot/dexie-orm-addon/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/andrehtissot/dexie-orm-addon.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/andrehtissot/dexie-orm-addon/context:javascript)
+[![DeepScan grade](https://deepscan.io/api/teams/3417/projects/5067/branches/39494/badge/grade.svg)](https://deepscan.io/dashboard#view=project&tid=3417&pid=5067&bid=39494)
 
 ### Version 0
 
