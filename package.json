@@ -23,6 +23,7 @@
     "typings": "dist/DexieORMAddon.d.ts",
     "scripts": {
         "build": "just-build",
+        "build-release": "just-build release",
         "watch": "just-build --watch",
         "test": "npm run test:chrome",
         "test:chrome": "just-build dev && karma start test/karma/karma.conf.chrome.js --single-run",
