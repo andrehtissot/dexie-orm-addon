@@ -50,6 +50,7 @@
         "default": [
             "# Build all targets",
             "just-build release test",
+            "just-build minimized",
             "just-build gzip"
         ],
         "main": [
@@ -63,7 +64,9 @@
         ],
         "release": [
             "# Build the umd module and minifies it.",
-            "just-build main",
+            "just-build main"
+        ],
+        "minimized": [
             "uglifyjs dist/DexieORMAddon.js -m -c -o dist/DexieORMAddon.min.js --source-map \"filename='dist/DexieORMAddon.min.js.map',includeSources='dist/DexieORMAddon.js.map'\""
         ],
         "dev": [
