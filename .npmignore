@@ -189,3 +189,7 @@ samples/typescript/utils.js.map
 
 # codeclimate + travis temp dir
 coverage/
+.codeclimate.yml
+
+# Prettier rules
+.prettierrc
